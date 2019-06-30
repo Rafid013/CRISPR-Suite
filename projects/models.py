@@ -9,7 +9,7 @@ class Project(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('projects:show', kwargs={'pk': self.pk})
+        return reverse('projects:show_project', kwargs={'project_id': self.pk})
 
     def __str__(self):
         return self.project_name
@@ -21,6 +21,10 @@ class PredictionModel(models.Model):
                                                            (3, "CRISPRpred(SEQ)")))
     model_name = models.CharField(max_length=100)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    trained = models.BooleanField(default=False)
 
     def __str__(self):
         return self.model_name + ' ' + str(self.model_type)
+
+    def get_absolute_url(self):
+        return reverse('projects:show_model', kwargs={'project_id': self.project.pk, 'model_id': self.pk})

@@ -1,1 +1,11 @@
-<h1>This is project {{ project.project_name }}</h1>
+{% if all_models %}
+<ul>
+    {% for model in all_models %}
+    <li>
+        <a href="{% url 'projects:show_model' project_id=model.project.pk model_id=model.id %}">{{ model.model_name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <h3>You don't have any prediction models in this project</h3>
+{% endif %}
