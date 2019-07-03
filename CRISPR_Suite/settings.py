@@ -14,6 +14,13 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, 'static/'),
+)
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'media/')
+)
+MEDIA_URL = "/media/"
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "crispy_forms",
+    "easy_thumbnails",
 ]
 
 MIDDLEWARE = [
@@ -77,12 +86,8 @@ WSGI_APPLICATION = 'CRISPR_Suite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'CRISPR_SUITE',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -124,3 +129,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+CRISPY_TEMPLATE_PACK = "bootstrap3"
+THUMBNAIL_EXTENSION = "png"

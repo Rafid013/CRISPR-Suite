@@ -1,7 +1,23 @@
-<form action="" method="post">
+{% extends "user/form_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Sign Up{% endblock %}
+
+{% block form_heading %}Signing Up is Free{% endblock %}
+
+{% block form %}
+
+    <form  method="post">
     {% csrf_token %}
-    {% include 'form_template.html' %}
-    <div class="form-group">
-        <button type="submit">Sign Up</button>
+    {{ form|crispy }}
+    <button  type="submit"  class="btn btn-success">Sign Up</button>
+    <div class="form-message">
+    <p>
+      Already signed up? <a href="{% url 'user:login' %}">Log in</a>.
+    </p>
     </div>
-</form>
+    </form>
+{% endblock form %}
+
+
