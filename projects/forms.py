@@ -13,4 +13,4 @@ class PredictionModelForm(forms.ModelForm):
 
     class Meta:
         model = PredictionModel
-        fields = ['model_type', 'model_name']
+        fields = ['model_type', 'model_name', 'training_file', 'consent_for_file']
