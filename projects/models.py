@@ -23,10 +23,10 @@ class PredictionModel(models.Model):
     model_type = models.PositiveSmallIntegerField(choices=((1, "CRISPRpred"),
                                                            (2, "CRISPRpred++"),
                                                            (3, "CRISPRpred(SEQ)")))
-    model_name = models.CharField(max_length=100, unique=True)
+    model_name = models.CharField(max_length=100)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     training_file = models.FileField(upload_to=get_upload_path)
-    consent_for_file = models.BooleanField(default=False)
+    consent_for_file = models.BooleanField(verbose_name="Can we use the file for research purposes?")
 
     def __str__(self):
         return self.model_name + ' ' + str(self.get_model_type_display())

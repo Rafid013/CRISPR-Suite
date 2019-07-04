@@ -2,6 +2,7 @@ from django.views import generic
 from .models import Project, PredictionModel
 from .forms import ProjectForm, PredictionModelForm
 from django.shortcuts import render, redirect
+from subprocess import Popen, PIPE
 
 
 class ProjectListView(generic.View):
@@ -105,16 +106,20 @@ class PredictionModelCreate(generic.View):
             model_name = form.cleaned_data['model_name']
             model_type = form.cleaned_data['model_type']
             training_file = form.cleaned_data['training_file']
+            consent_for_file = form.cleaned_data['consent_for_file']
 
             # finally create new project
             prediction_model.model_name = model_name
             prediction_model.model_type = model_type
             prediction_model.training_file = training_file
+            prediction_model.consent_for_file = consent_for_file
 
             project_id = kwargs.get('project_id')
             project = Project.objects.filter(pk=project_id)[0]
 
             prediction_model.project = project
             prediction_model.save()
+            Popen(['python', 'CRISPR Methods/CRISPRpred/train_crisprpred.py', project.project_name, model_name,
+                   str(training_file)], stdout=PIPE, stderr=PIPE)
             return redirect(project)
         return render(request, self.template_name, {'form': form})
