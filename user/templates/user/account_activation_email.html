@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}You're receiving this email because you requested an account at CRISPRSuite.com{% endblocktrans %}
+
+{% trans "Please go to the following page and activate your account:" %}
+{% block reset_link %}
+http://{{ domain }}{% url 'user:activate' uid=uid token=token %}
+{% endblock %}
+
+{% trans "Thanks for using our site!" %}
+
+{% blocktrans %}The CRISPR Suite team{% endblocktrans %}
+
+{% endautoescape %}

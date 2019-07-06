@@ -1,0 +1,15 @@
+{% extends "user/form_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Account Verification{% endblock %}
+
+{% block form_heading %}Verification Mail Sent{% endblock %}
+
+{% block form %}
+<div class="form-message">
+  <p>
+    Please check your mail. You would have received an account verification mail from us.
+  </p>
+</div>
+{% endblock form %}

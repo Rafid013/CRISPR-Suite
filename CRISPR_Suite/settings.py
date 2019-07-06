@@ -131,3 +131,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 THUMBNAIL_EXTENSION = "png"
+
+#EMAIL confirmation
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS=True
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='crisprsuite@gmail.com'
+EMAIL_HOST_PASSWORD='crisprsuite123'
+EMAIL_PORT=587
