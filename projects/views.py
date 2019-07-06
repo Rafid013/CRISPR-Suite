@@ -2,7 +2,7 @@ from django.views import generic
 from .models import Project, PredictionModel
 from .forms import ProjectForm, PredictionModelForm
 from django.shortcuts import render, redirect
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, run
 
 
 class ProjectListView(generic.View):
@@ -119,7 +119,9 @@ class PredictionModelCreate(generic.View):
 
             prediction_model.project = project
             prediction_model.save()
-            Popen(['python', 'CRISPR Methods/CRISPRpred/train_crisprpred.py', project.project_name, model_name,
-                   str(training_file)], stdout=PIPE, stderr=PIPE)
+            log = open('Logs/log_' + str(project_id) + '_' + str(prediction_model.pk) + '.txt', 'w')
+            Popen(['python', 'CRISPR_Methods/train_crisprpred.py', str(project.pk),
+                   project.project_name, prediction_model.model_name,
+                   str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
             return redirect(project)
         return render(request, self.template_name, {'form': form})

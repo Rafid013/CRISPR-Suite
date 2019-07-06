@@ -37,7 +37,7 @@ class UserSignUpView(View):
             if user is not None:  # goes to this condition only if authentication works
                 if user.is_active:
                     login(request, user)
-                    return redirect('projects:index')
+                    return redirect('home')
 
         return render(request, self.template_name, {'form': form})
 
