@@ -2,7 +2,7 @@ from django.views import generic
 from .models import Project, PredictionModel
 from .forms import ProjectForm, PredictionModelForm
 from django.shortcuts import render, redirect
-from subprocess import Popen, PIPE, run
+from subprocess import Popen
 
 
 class ProjectListView(generic.View):
@@ -120,8 +120,17 @@ class PredictionModelCreate(generic.View):
             prediction_model.project = project
             prediction_model.save()
             log = open('Logs/log_' + str(project_id) + '_' + str(prediction_model.pk) + '.txt', 'w')
-            Popen(['python', 'CRISPR_Methods/train_crisprpred.py', str(project.pk),
-                   project.project_name, prediction_model.model_name,
-                   str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
+            if prediction_model.model_type == 1:
+                Popen(['python', 'CRISPR_Methods/train_crisprpred.py', str(project.pk),
+                       project.project_name, prediction_model.model_name,
+                       str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
+            elif prediction_model.model_type == 2:
+                Popen(['python', 'CRISPR_Methods/train_crisprpred_plus.py', str(project.pk),
+                       project.project_name, prediction_model.model_name,
+                       str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
+            else:
+                Popen(['python', 'CRISPR_Methods/train_crisprpred_seq.py', str(project.pk),
+                       project.project_name, prediction_model.model_name,
+                       str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
             return redirect(project)
         return render(request, self.template_name, {'form': form})

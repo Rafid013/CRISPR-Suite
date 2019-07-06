@@ -5,7 +5,7 @@ import sys
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -29,14 +29,15 @@ training_file = pd.read_csv(project_directory + filename, delimiter=',')
 train_y = pd.DataFrame(training_file['label'].astype(np.int8), columns=['label'])
 pos_ind = position_independent(training_file, 4).astype(np.int8)
 pos_spe = position_specific(training_file, 4).astype(np.int8)
-train_x = pd.concat([pos_ind, pos_spe], axis=1, sort=False)
+gap = gap_features(training_file).astype(np.int8)
+train_x = pd.concat([pos_ind, pos_spe, gap], axis=1, sort=False)
 
-rf = RandomForestClassifier(n_estimators=500, n_jobs=-1, random_state=1, verbose=2)
+extraTree = ExtraTreesClassifier(n_estimators=500, n_jobs=-1, random_state=1)
 
-steps = [('SFM', SelectFromModel(estimator=rf, max_features=2899, threshold=-np.inf)),
+steps = [('SFM', SelectFromModel(estimator=extraTree)),
          ('scaler', StandardScaler()),
-         ('SVM', SVC(C=1, gamma='auto', kernel='rbf',
-                     random_state=1, probability=True, cache_size=20000, verbose=2))]
+         ('SVM', SVC(C=10, gamma=0.001, kernel='rbf', random_state=1, probability=True,
+                     cache_size=20000, verbose=2, shrinking=False))]
 
 pipeline = Pipeline(steps)
 
