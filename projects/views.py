@@ -2,6 +2,7 @@ from django.views import generic
 from .models import Project, PredictionModel
 from .forms import ProjectForm, PredictionModelForm
 from django.shortcuts import render, redirect
+from subprocess import Popen, PIPE, run
 
 
 class ProjectListView(generic.View):
@@ -82,6 +83,7 @@ class ProjectCreate(generic.View):
                 return redirect(project)
             else:
                 return render(request, 'login_warning.html')
+        return render(request, self.template_name, {'form': form})
 
 
 class PredictionModelCreate(generic.View):
@@ -96,22 +98,30 @@ class PredictionModelCreate(generic.View):
         return render(request, self.template_name, {'form': form, 'project_name': project_name})
 
     def post(self, request, **kwargs):
-        form = self.form_class(request.POST)
-
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             prediction_model = form.save(commit=False)
 
             # clean data
             model_name = form.cleaned_data['model_name']
             model_type = form.cleaned_data['model_type']
+            training_file = form.cleaned_data['training_file']
+            consent_for_file = form.cleaned_data['consent_for_file']
 
             # finally create new project
             prediction_model.model_name = model_name
             prediction_model.model_type = model_type
+            prediction_model.training_file = training_file
+            prediction_model.consent_for_file = consent_for_file
 
             project_id = kwargs.get('project_id')
             project = Project.objects.filter(pk=project_id)[0]
 
             prediction_model.project = project
             prediction_model.save()
+            log = open('Logs/log_' + str(project_id) + '_' + str(prediction_model.pk) + '.txt', 'w')
+            Popen(['python', 'CRISPR_Methods/train_crisprpred.py', str(project.pk),
+                   project.project_name, prediction_model.model_name,
+                   str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
             return redirect(project)
+        return render(request, self.template_name, {'form': form})

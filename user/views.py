@@ -112,6 +112,7 @@ class UserLogInView(View):
 
 
 class LogoutView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         logout(request)
         return redirect('home')
