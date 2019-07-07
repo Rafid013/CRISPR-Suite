@@ -2,7 +2,9 @@
 <ul>
     {% for model in all_models %}
     <li>
-        <a href="{% url 'projects:show_model' project_id=model.project.pk model_id=model.id %}">{{ model.model_name }}</a>
+        <h3>{{ model.model_name }}</h3>
+        <a href="{% url 'projects:predict_model' project_id=model.project.pk model_id=model.id %}">(Predict)</a>
+        <a href="{% url 'projects:download_prediction' project_id=model.project.pk model_id=model.id %}">(Download Prediction)</a>
     </li>
     {% endfor %}
 </ul>

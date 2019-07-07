@@ -3,6 +3,8 @@ from .models import Project, PredictionModel
 from .forms import ProjectForm, PredictionModelForm
 from django.shortcuts import render, redirect
 from subprocess import Popen
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
 
 
 class ProjectListView(generic.View):
@@ -53,6 +55,51 @@ class ShowPredictionModelView(generic.View):
             return render(request, 'error404.html', {})
         else:
             return render(request, 'login_warning.html', {})
+
+
+class PredictView(generic.View):
+    model = PredictionModel
+    template_name = 'projects/prediction.html'
+
+    def get(self, request, **kwargs):
+        if self.request.user.is_authenticated:
+            project_id = kwargs.get('project_id')
+            model_id = kwargs.get('model_id')
+            projects = Project.objects.filter(pk=project_id, user=self.request.user)
+            if projects:
+                project = projects[0]
+                models = PredictionModel.objects.filter(project=project, pk=model_id)
+                if models:
+                    model = models[0]
+
+                    try:
+                        f = open('media/project_' + project_id + '/' + model.model_name + '.pkl', 'rb')
+                    except FileNotFoundError:
+                        return render(request, 'training_not_finished.html', {})
+
+                    return render(request, self.template_name, {'model': model})
+            return render(request, 'error404.html', {})
+        else:
+            return render(request, 'login_warning.html', {})
+
+    @staticmethod
+    def post(request, **kwargs):
+        file = request.FILES.get('file')
+
+        project_id = kwargs.get('project_id')
+        model_id = kwargs.get('model_id')
+        project = Project.objects.filter(pk=project_id)[0]
+        prediction_model = PredictionModel.objects.filter(project=project, pk=model_id)[0]
+
+        fs = FileSystemStorage()
+        filename = fs.save('project_' + str(project_id) + '/' + file.name, file)
+
+        log = open('Logs/log_' + str(project_id) + '_' + str(prediction_model.pk) + '_prediction.txt', 'w')
+        Popen(['python', 'CRISPR_Methods/predict.py', str(project.pk),
+               project.project_name, str(prediction_model.model_type), prediction_model.model_name,
+               str(filename), project.user.email], stdout=log, stderr=log)
+
+        return redirect(project)
 
 
 class ProjectCreate(generic.View):
@@ -117,6 +164,11 @@ class PredictionModelCreate(generic.View):
             project_id = kwargs.get('project_id')
             project = Project.objects.filter(pk=project_id)[0]
 
+            models = PredictionModel.objects.filter(model_name=model_name)
+            if models:
+                return render(request, self.template_name, {'form': form, 'project_name': project.project_name,
+                                                            'error': 'A model with this name already exists'})
+
             prediction_model.project = project
             prediction_model.save()
             log = open('Logs/log_' + str(project_id) + '_' + str(prediction_model.pk) + '.txt', 'w')
@@ -134,3 +186,24 @@ class PredictionModelCreate(generic.View):
                        str(prediction_model.training_file), project.user.email], stdout=log, stderr=log)
             return redirect(project)
         return render(request, self.template_name, {'form': form})
+
+
+def download_prediction_file(request, project_id, model_id):
+    if request.user.is_authenticated:
+        projects = Project.objects.filter(pk=project_id, user=request.user)
+        if projects:
+            project = projects[0]
+            models = PredictionModel.objects.filter(project=project, pk=model_id)
+            if models:
+                model = models[0]
+                try:
+                    file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
+                except FileNotFoundError:
+                    return render(request, 'prediction_not_finished.html', {})
+
+                response = HttpResponse(file, content_type='text/csv')
+                response['Content-Disposition'] = 'attachment; filename=' + model.model_name + '_prediction.csv'
+                return response
+        return render(request, 'error404.html', {})
+    else:
+        return render(request, 'login_warning.html', {})
