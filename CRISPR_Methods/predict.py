@@ -8,17 +8,28 @@ import smtplib
 import ssl
 
 
-# get project_id, project_name, model_type, model_name, prediction_file, email in command line input
+# get project_id, project_name, model_id, model_type, model_name, prediction_file, email in command line input
 project_id = sys.argv[1]
 project_name = sys.argv[2]
-model_type = sys.argv[3]
-model_name = sys.argv[4]
-prediction_file = sys.argv[5]
-email = sys.argv[6]
+model_id = sys.argv[3]
+model_type = sys.argv[4]
+model_name = sys.argv[5]
+prediction_file = sys.argv[6]
+email = sys.argv[7]
 
 project_directory = 'media/'
 
-f = open(project_directory + 'project_' + str(project_id) + '/' + model_name + '.pkl', 'rb')
+if model_id == 'cp':
+    f = open('CRISPR_Methods/crisprpred.pkl', 'rb')
+    model_name = 'crisprpred'
+elif model_id == 'cpp':
+    f = open('CRISPR_Methods/crisprpred_plus.pkl', 'rb')
+    model_name = 'crisprpred_plus'
+elif model_id == 'cp':
+    f = open('CRISPR_Methods/crisprpred_seq.pkl', 'rb')
+    model_name = 'crisprpred_seq'
+else:
+    f = open(project_directory + 'project_' + str(project_id) + '/' + model_name + '.pkl', 'rb')
 model = pkl.load(f)
 
 

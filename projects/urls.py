@@ -10,9 +10,9 @@ urlpatterns = [
     path('create_project/', views.ProjectCreate.as_view(), name='create_project'),
     re_path(r'^(?P<project_id>[0-9]+)/$', views.ShowProjectView.as_view(), name='show_project'),
     re_path(r'^(?P<project_id>[0-9]+)/create_model/$', views.PredictionModelCreate.as_view(), name='create_model'),
-    re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[0-9]+)/predict/$', views.PredictView.as_view(),
+    re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/predict/$', views.PredictView.as_view(),
             name='predict_model'),
-    re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[0-9]+)/download/$', views.DownloadView.as_view(),
+    re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/download/$', views.DownloadView.as_view(),
             name='download_prediction')
 ]
 
