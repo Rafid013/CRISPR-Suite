@@ -191,26 +191,29 @@ class PredictionModelCreate(generic.View):
         return render(request, self.template_name, {'form': form})
 
 
-def download_prediction_file(request, project_id, model_id):
-    if request.user.is_authenticated:
-        projects = Project.objects.filter(pk=project_id, user=request.user)
-        if projects:
-            project = projects[0]
-            models = PredictionModel.objects.filter(project=project, pk=model_id)
-            if models:
-                model = models[0]
-                try:
-                    file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
-                except FileNotFoundError:
-                    models = PredictionModel.objects.filter(project=project)
-                    return render(request, 'projects/project_detail.html',
-                                  {'all_models': models,
-                                   'error': 'No prediction available',
-                                   'error_model': model})
+class DownloadView(generic.View):
+    def get(self, request, **kwargs):
+        project_id = kwargs.get('project_id')
+        model_id = kwargs.get('model_id')
+        if self.request.user.is_authenticated:
+            projects = Project.objects.filter(pk=project_id, user=request.user)
+            if projects:
+                project = projects[0]
+                models = PredictionModel.objects.filter(project=project, pk=model_id)
+                if models:
+                    model = models[0]
+                    try:
+                        file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
+                    except FileNotFoundError:
+                        models = PredictionModel.objects.filter(project=project)
+                        return render(request, 'projects/project_detail.html',
+                                      {'all_models': models,
+                                       'error': 'No prediction available',
+                                       'error_model': model})
 
-                response = HttpResponse(file, content_type='text/csv')
-                response['Content-Disposition'] = 'attachment; filename=' + model.model_name + '_prediction.csv'
-                return response
-        return render(request, 'error404.html', {})
-    else:
-        return render(request, 'login_warning.html', {})
+                    response = HttpResponse(file, content_type='text/csv')
+                    response['Content-Disposition'] = 'attachment; filename=' + model.model_name + '_prediction.csv'
+                    return response
+            return render(request, 'error404.html', {})
+        else:
+            return render(request, 'login_warning.html', {})
