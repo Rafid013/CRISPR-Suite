@@ -5,6 +5,11 @@
         <h3>{{ model.model_name }}</h3>
         <a href="{% url 'projects:predict_model' project_id=model.project.pk model_id=model.id %}">(Predict)</a>
         <a href="{% url 'projects:download_prediction' project_id=model.project.pk model_id=model.id %}">(Download Prediction)</a>
+        {% if model.pk == error_model.pk%}
+        <div class="form-group">
+            <span style="color: #9c0900" class="text-danger small">{{ error }}</span>
+        </div>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

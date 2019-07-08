@@ -73,10 +73,13 @@ class PredictView(generic.View):
                     model = models[0]
 
                     try:
-                        f = open('media/project_' + project_id + '/' + model.model_name + '.pkl', 'rb')
+                        open('media/project_' + project_id + '/' + model.model_name + '.pkl', 'rb')
                     except FileNotFoundError:
-                        return render(request, 'training_not_finished.html', {})
-
+                        models = PredictionModel.objects.filter(project=project)
+                        return render(request, 'projects/project_detail.html',
+                                      {'all_models': models,
+                                       'error': "Training haven't finished yet",
+                                       'error_model': model})
                     return render(request, self.template_name, {'model': model})
             return render(request, 'error404.html', {})
         else:
@@ -199,7 +202,11 @@ def download_prediction_file(request, project_id, model_id):
                 try:
                     file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
                 except FileNotFoundError:
-                    return render(request, 'prediction_not_finished.html', {})
+                    models = PredictionModel.objects.filter(project=project)
+                    return render(request, 'projects/project_detail.html',
+                                  {'all_models': models,
+                                   'error': 'No prediction available',
+                                   'error_model': model})
 
                 response = HttpResponse(file, content_type='text/csv')
                 response['Content-Disposition'] = 'attachment; filename=' + model.model_name + '_prediction.csv'
