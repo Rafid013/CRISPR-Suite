@@ -18,6 +18,7 @@ prediction_file = sys.argv[6]
 email = sys.argv[7]
 
 project_directory = 'media/'
+print("predicting....")
 
 if model_id == 'cp':
     f = open('CRISPR_Methods/crisprpred.pkl', 'rb')
@@ -25,7 +26,7 @@ if model_id == 'cp':
 elif model_id == 'cpp':
     f = open('CRISPR_Methods/crisprpred_plus.pkl', 'rb')
     model_name = 'crisprpred_plus'
-elif model_id == 'cp':
+elif model_id == 'cps':
     f = open('CRISPR_Methods/crisprpred_seq.pkl', 'rb')
     model_name = 'crisprpred_seq'
 else:

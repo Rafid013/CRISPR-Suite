@@ -8,6 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .forms import UserLogInForm, UserSignUpForm
 from .token import activation_token
+from django.contrib import messages
 
 
 # Create your views here.
@@ -108,6 +109,7 @@ class UserLogInView(View):
                     return redirect('home')
                 else:
                     return redirect('user:account_activation_sent')
+        messages.warning(request, "Username and Password does not match or Account has not been verified yet")
         return render(request, self.template_name, {'form': form})
 
 

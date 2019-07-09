@@ -1,36 +1,69 @@
-{% if all_models %}
-<ul>
-    <li>
-        <h3>CRISPRpred</h3>
-        <a href="{% url 'projects:predict_model' project_id=project_id model_id='cp'%}">(Predict)</a>
-        <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cp'%}">(Download Prediction)</a>
-        <div class="form-group">
-            <span style="color: #9c0900" class="text-danger small">{{ cp_error }}</span>
-        </div>
-        <h3>CRISPRpred++</h3>
-        <a href="{% url 'projects:predict_model' project_id=project_id model_id='cpp'%}">(Predict)</a>
-        <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cpp'%}">(Download Prediction)</a>
-        <div class="form-group">
-            <span style="color: #9c0900" class="text-danger small">{{ cpp_error }}</span>
-        </div>
-        <h3>CRISPRpred(SEQ)</h3>
-        <a href="{% url 'projects:predict_model' project_id=project_id model_id='cps'%}">(Predict)</a>
-        <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cps'%}">(Download Prediction)</a>
-        <div class="form-group">
-            <span style="color: #9c0900" class="text-danger small">{{ cps_error }}</span>
-        </div>
-        {% for model in all_models %}
-        <h3>{{ model.model_name }}</h3>
-        <a href="{% url 'projects:predict_model' project_id=model.project.pk model_id=model.id %}">(Predict)</a>
-        <a href="{% url 'projects:download_prediction' project_id=model.project.pk model_id=model.id %}">(Download Prediction)</a>
-        {% if model.pk == error_model.pk%}
-        <div class="form-group">
-            <span style="color: #9c0900" class="text-danger small">{{ error }}</span>
-        </div>
-        {% endif %}
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Project List{% endblock %}
+{% block navbar-left %}
+    {% include "_navbar.html"%}
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+    <div class="starter-template">
+    <br><br>
+
+
+    <h1><a data-toggle="collapse" href="#pre_trained">Pre-trained Models</a></h1>
+
+
+    <div id="pre_trained" class="collapse in">
+    <h3>CRISPRpred</h3>
+    <a href="{% url 'projects:predict_model' project_id=project_id model_id='cp'%}">(Predict)</a>
+    <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cp'%}">(Download Prediction)</a>
+    <div class="form-group">
+        <span style="color: #9c0900" class="text-danger small">{{ cp_error }}</span>
+    </div>
+
+    <h3>CRISPRpred++</h3>
+    <a href="{% url 'projects:predict_model' project_id=project_id model_id='cpp'%}">(Predict)</a>
+    <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cpp'%}">(Download Prediction)</a>
+    <div class="form-group">
+        <span style="color: #9c0900" class="text-danger small">{{ cpp_error }}</span>
+    </div>
+
+    <h3>CRISPRpred(SEQ)</h3>
+    <a href="{% url 'projects:predict_model' project_id=project_id model_id='cps'%}">(Predict)</a>
+    <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cps'%}">(Download Prediction)</a>
+    <div class="form-group">
+        <span style="color: #9c0900" class="text-danger small">{{ cps_error }}</span>
+    </div>
+    </div>
+
+
+    <br><br>
+    {% if all_models %}
+    <h1>Prediction models created by you</h1>
+    <ul class="list-group">
+    {% for model in all_models %}
+    <li class="list-group-item">
+    <h3>{{ model.model_name }}</h3>
+    <a href="{% url 'projects:predict_model' project_id=model.project.pk model_id=model.id %}">(Predict)</a>
+    <a href="{% url 'projects:download_prediction' project_id=model.project.pk model_id=model.id %}">(Download Prediction)</a>
+    {% if model.pk == error_model.pk%}
+    <div class="form-group">
+        <span style="color: #9c0900" class="text-danger small">{{ error }}</span>
+    </div>
+    {% endif %}
     </li>
     {% endfor %}
-</ul>
+
+
+    </ul>
 {% else %}
-    <h3>You don't have any prediction models in this project</h3>
+    <h1>You have not created any prediction model in this project</h1>
 {% endif %}
+    <div class="form-message"><a href="{% url 'projects:create_model' project_id=project_id %}">Create New Model</a></div>
+    </div>
+    </div>
+{% endblock %}

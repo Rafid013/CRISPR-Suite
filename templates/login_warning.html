@@ -1,1 +1,14 @@
-<h1>Log In First</h1>
+{% extends "user/form_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Log In Warning{% endblock %}
+
+{% block form_heading %}You are not Logged in{% endblock %}
+
+{% block form %}
+<div class="form-message" style="text-align:center;">
+  <p>
+    Please <a href="{% url 'user:login' %}">Log in</a> first.
+  </p>
+</div>
+{% endblock form %}

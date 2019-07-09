@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from subprocess import Popen
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+from django.contrib import messages
 
 
 class ProjectListView(generic.View):
@@ -192,6 +193,7 @@ class PredictionModelCreate(generic.View):
 
             models = PredictionModel.objects.filter(model_name=model_name)
             if models:
+                messages.warning(request, "A model with this name already exists")
                 return render(request, self.template_name, {'form': form, 'project_name': project.project_name,
                                                             'error': 'A model with this name already exists'})
 

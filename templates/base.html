@@ -72,7 +72,7 @@
     {% block messages %}
       {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+          <div style="width:40%;text-align: center; margin:30px auto;" class="alert alert-{{ message.tags }}">  <!-- singular -->
             <a class="close" data-dismiss="alert">×</a>
             {{ message|safe }}
           </div>
@@ -96,19 +96,20 @@
 
     <!-- Site footer -->
     {% block footer %}
-      <!-- Some social button for contact will do -->
-      <a id="contact"></a>
-      <div class="container">
+        <!-- Some social button for contact will do -->
+        <div class="container" style="margin: auto">
             <div class="footer">
-        <div class="row">
-          <div class="col-lg-6 text-right">
-            Connect with us on
-            <a href="#"><i class="fa fa-facebook"></i> Facebook</a> or
-            <a href="#"><i class="fa fa-twitter"></i> Twitter</a>
-          </div>
-        </div>
+            <div class="row">
+            <div class="text-center">
+                Connect with us on
+                <a href="mailto:crisprsuite@gmail.com" target="_top">
+                    <i class="fa fa-google"></i> crisprsuite@gmail.com</a>
+            </div>
+            </div>
             </div>
       </div>
+
+
     {% endblock %}
 
     <!-- Bootstrap core JavaScript

@@ -1,11 +1,27 @@
-<form action="" method="post" enctype="multipart/form-data">
+{% extends "projects/project_form_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}New Model{% endblock %}
+
+{% block form_heading %}Create a new model for project {{ project_name }}{% endblock %}
+
+{% block form %}
+
+    <form  method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <h3>Create model for project {{ project_name }}</h3>
-    {% include 'form_template.html' %}
-    <div class="form-group">
-        <button type="submit">Train</button>
+    {{ form|crispy }}
+    <div class="form-row text-center">
+    <div class="col-12">
+    <button  type="submit"  class="btn btn-success">Train</button>
     </div>
+    </div>
+    <!--
     <div style="color: #9c0900" class="alert alert-danger">
             <strong>{{ error|escape }}</strong>
     </div>
-</form>
+    -->
+    </form>
+
+{% endblock %}
+
