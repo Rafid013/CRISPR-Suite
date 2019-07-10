@@ -8,6 +8,7 @@ app_name = 'projects'
 urlpatterns = [
     path('', views.ProjectListView.as_view(), name='show_project_list'),
     path('create_project/', views.ProjectCreate.as_view(), name='create_project'),
+    path('instructions/',views.InstructionView.as_view(), name='instructions'),
     re_path(r'^(?P<project_id>[0-9]+)/$', views.ShowProjectView.as_view(), name='show_project'),
     re_path(r'^(?P<project_id>[0-9]+)/create_model/$', views.PredictionModelCreate.as_view(), name='create_model'),
     re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/predict/$', views.PredictView.as_view(),

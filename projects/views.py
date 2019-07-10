@@ -280,3 +280,9 @@ class DownloadView(generic.View):
             return render(request, 'error404.html', {})
         else:
             return render(request, 'login_warning.html', {})
+
+
+class InstructionView(generic.View):
+    @staticmethod
+    def get(request):
+        return render(request, 'projects/instructions.html', {})

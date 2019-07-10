@@ -1,0 +1,18 @@
+{% extends "projects/project_form_base.html" %}
+
+{% block title %}{{ block.super }}New Project{% endblock %}
+
+{% block form_heading %}<strong>Instructions for uploading data file</strong>{% endblock %}
+
+{% block form %}
+    <br><br><br>
+    <div>
+    <h3>1. Data file must be a csv file.</h3>
+    <h3>2. For training, data file must have two columns. One column for 23-mer sgRNA sequence
+    and the other for label(1/0). Check this sample <a href="{{ static }}" download="/files/sample_training_file.csv">file</a>.
+    </h3>
+    <h3>2. For prediction, data file should have one column for 23-mer sgRNA sequence.
+        Check this sample <a href="{{ static }}" download="/files/sample_prediction_file.csv">file</a>.
+    </h3>
+    </div>
+{% endblock %}
