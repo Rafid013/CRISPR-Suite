@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from .forms import UserLogInForm, UserSignUpForm
+from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
 from .token import activation_token
 from django.contrib import messages
 
@@ -31,6 +31,15 @@ class UserSignUpView(View):
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            confirm_password = form.cleaned_data['confirm_password']
+
+            if password != confirm_password:
+                messages.warning(request, "Password and Confirm Password does not match")
+                return render(request, self.template_name, {'form': form})
+
+            if email and User.objects.filter(email=email).exclude(username=username).exists():
+                messages.warning(request, "An account already exists with this email")
+                return render(request, self.template_name, {'form': form})
 
             # finally save
             user.email = email
@@ -52,16 +61,6 @@ class UserSignUpView(View):
             email_from = settings.EMAIL_HOST_USER
             send_mail(subject, message, email_from, to_list, fail_silently=False)
             return redirect('user:account_activation_sent')
-
-            '''
-            # authenticate
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:  # goes to this condition only if authentication works
-                if user.is_active:
-                    login(request, user)
-                    return redirect('projects:index')
-            '''
 
         return render(request, self.template_name, {'form': form})
 
@@ -118,3 +117,88 @@ class LogoutView(View):
     def get(request):
         logout(request)
         return redirect('home')
+
+
+class PasswordResetView(View):
+    form_class = PasswordResetForm
+    template_name = "user/password-reset.html"
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            # clean data
+            email = form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                site_name = get_current_site(request)
+                message = render_to_string('user/password-reset-email.html', {
+                    "user": user,
+                    "domain": site_name.domain,
+                    "uid": user.pk,
+                    "token": activation_token.make_token(user)
+                })
+                subject = "Reset your password"
+                email_to = email
+                to_list = [email_to]
+                email_from = settings.EMAIL_HOST_USER
+                send_mail(subject, message, email_from, to_list, fail_silently=False)
+                return redirect('user:password-reset-done')
+
+            except User.DoesNotExist:
+                messages.warning(request, "No account with this email exists!")
+                return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form})
+
+
+class PasswordResetDoneView(View):
+    @staticmethod
+    def get(request):
+        return render(request,'user/password-reset-done.html')
+
+
+class PasswordResetConfirmView(View):
+    template_name = "user/password-reset-confirm.html"
+    form_class = SetPasswordForm
+
+    def get(self, request,**kwargs):
+        form = self.form_class(None)
+        uid = kwargs.get('uid')
+        token = kwargs.get('token')
+        try:
+            user = get_object_or_404(User, pk=uid)
+        except:
+            raise Http404("No user found")
+        if user is not None and activation_token.check_token(user, token):
+            return render(request, self.template_name, {'form': form})
+        else:
+            return render(request, 'user/password-reset-invalid.html')
+
+    def post(self,request,**kwargs):
+        uid = kwargs.get('uid')
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # clean data
+            new_password = form.cleaned_data['new_password']
+            confirm_new_password = form.cleaned_data['confirm_new_password']
+
+            if new_password != confirm_new_password:
+                messages.warning(request, "New password and confirm new password does not match")
+                return render(request, self.template_name, {'form': form})
+
+            try:
+                user = get_object_or_404(User, pk=uid)
+            except:
+                raise Http404("No user found")
+            if user is not None:
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+                messages.success(request,"Successfully changed password")
+                return redirect('home')
+
+        return render(request, self.template_name, {'form': form})
