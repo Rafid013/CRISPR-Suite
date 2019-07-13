@@ -4,3 +4,4 @@ db.sqlite3
 *.pkl
 *.h5
 *.csv
+*/migrations/*

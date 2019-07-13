@@ -1,6 +1,6 @@
 <li {% if active_link == "home" %}class="active"{% endif %}><a href="{% url 'home' %}">Home</a></li>
-<li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>
 {% if user.is_authenticated %}
     <li {% if active_link == "project" %}class="active"{% endif %}><a href="{% url 'projects:show_project_list' %}">Projects</a></li>
     <li {% if active_link == "new_project" %}class="active"{% endif %}><a href="{% url 'projects:create_project' %}">New Project</a></li>
 {% endif %}
+<li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>

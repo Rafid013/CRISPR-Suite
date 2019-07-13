@@ -9,6 +9,10 @@ from django.template.loader import render_to_string
 from .forms import UserLogInForm, UserSignUpForm
 from .token import activation_token
 from django.contrib import messages
+from rest_framework.views import APIView
+from .serializer import UserSerializer
+from rest_framework.response import Response
+from rest_framework import status
 
 
 # Create your views here.
@@ -52,18 +56,25 @@ class UserSignUpView(View):
             email_from = settings.EMAIL_HOST_USER
             send_mail(subject, message, email_from, to_list, fail_silently=False)
             return redirect('user:account_activation_sent')
-
-            '''
-            # authenticate
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:  # goes to this condition only if authentication works
-                if user.is_active:
-                    login(request, user)
-                    return redirect('projects:index')
-            '''
-
         return render(request, self.template_name, {'form': form})
+
+
+class UserSignUpRestView(APIView):
+    @staticmethod
+    def get(request):
+        user = User(username="", email="")
+        user.set_password("")
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    @staticmethod
+    def post(request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 def account_activation_sent(request):
@@ -73,7 +84,7 @@ def account_activation_sent(request):
 def activate(request, uid, token):
     try:
         user = get_object_or_404(User, pk=uid)
-    except:
+    except Exception:
         raise Http404("No user found")
     if user is not None and activation_token.check_token(user, token):
         user.is_active = True
@@ -99,6 +110,7 @@ class UserLogInView(View):
             # clean data
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            print(password)
 
             # authenticate
             user = authenticate(request, username=username, password=password)
