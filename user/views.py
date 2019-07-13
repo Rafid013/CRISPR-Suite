@@ -68,7 +68,7 @@ class UserSignUpView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class UserSignUpRestView(APIView):
+class UserSignUpAPIView(APIView):
     @staticmethod
     def get(request):
         user = User(username="", email="")
@@ -119,7 +119,6 @@ class UserLogInView(View):
             # clean data
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            print(password)
 
             # authenticate
             user = authenticate(request, username=username, password=password)
@@ -180,27 +179,27 @@ class PasswordResetView(View):
 class PasswordResetDoneView(View):
     @staticmethod
     def get(request):
-        return render(request,'user/password-reset-done.html')
+        return render(request, 'user/password-reset-done.html')
 
 
 class PasswordResetConfirmView(View):
     template_name = "user/password-reset-confirm.html"
     form_class = SetPasswordForm
 
-    def get(self, request,**kwargs):
+    def get(self, request, **kwargs):
         form = self.form_class(None)
         uid = kwargs.get('uid')
         token = kwargs.get('token')
         try:
             user = get_object_or_404(User, pk=uid)
-        except:
+        except Exception:
             raise Http404("No user found")
         if user is not None and activation_token.check_token(user, token):
             return render(request, self.template_name, {'form': form})
         else:
             return render(request, 'user/password-reset-invalid.html')
 
-    def post(self,request,**kwargs):
+    def post(self, request, **kwargs):
         uid = kwargs.get('uid')
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -214,13 +213,13 @@ class PasswordResetConfirmView(View):
 
             try:
                 user = get_object_or_404(User, pk=uid)
-            except:
+            except Exception:
                 raise Http404("No user found")
             if user is not None:
                 user.set_password(new_password)
                 user.save()
                 login(request, user)
-                messages.success(request,"Successfully changed password")
+                messages.success(request, "Successfully changed password")
                 return redirect('home')
 
         return render(request, self.template_name, {'form': form})
