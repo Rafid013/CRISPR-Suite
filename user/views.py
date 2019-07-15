@@ -6,6 +6,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
+from rest_framework.decorators import permission_classes
+
 from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
 from .token import activation_token
 from django.contrib import messages
@@ -13,6 +15,7 @@ from rest_framework.views import APIView
 from .serializer import UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 
 # Create your views here.
@@ -69,19 +72,30 @@ class UserSignUpView(View):
 
 
 class UserSignUpAPIView(APIView):
-    @staticmethod
-    def get(request):
-        user = User(username="", email="")
-        user.set_password("")
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-
+    permission_classes = [AllowAny, ]
     @staticmethod
     def post(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            username = serializer.validated_data['username']
+            email = serializer.validated_data['email']
+            if email and User.objects.filter(email=email).exclude(username=username).exists():
+                messages.warning(request, "An account already exists with this email")
+                return Response(status=status.HTTP_403_FORBIDDEN)
             user = serializer.save()
             if user:
+                site_name = get_current_site(request)
+                message = render_to_string('user/account_activation_email.html', {
+                    "user": user,
+                    "domain": site_name.domain,
+                    "uid": user.pk,
+                    "token": activation_token.make_token(user)
+                })
+                subject = "Confirmation Email for CRISPR Suite Account"
+                email_to = email
+                to_list = [email_to]
+                email_from = settings.EMAIL_HOST_USER
+                send_mail(subject, message, email_from, to_list, fail_silently=False)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 

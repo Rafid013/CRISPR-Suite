@@ -23,4 +23,4 @@ class PredictionModelGetSerializer(serializers.ModelSerializer):
 class PredictionModelPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PredictionModel
-        fields = ['model_type', 'model_name', 'training_file', 'consent_for_file']
+        fields = ['model_type', 'model_name', 'consent_for_file']
