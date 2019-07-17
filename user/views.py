@@ -1,21 +1,20 @@
-from django.shortcuts import render, redirect, Http404, get_object_or_404
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.views.generic import View
-from django.conf import settings
-from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect, Http404, get_object_or_404
 from django.template.loader import render_to_string
-from rest_framework.decorators import permission_classes
-
-from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
-from .token import activation_token
-from django.contrib import messages
-from rest_framework.views import APIView
-from .serializer import UserSerializer
-from rest_framework.response import Response
+from django.views.generic import View
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
+from .serializer import UserSerializer
+from .token import activation_token
 
 
 # Create your views here.

@@ -463,3 +463,92 @@ class InstructionView(generic.View):
     @staticmethod
     def get(request):
         return render(request, 'projects/instructions.html', {})
+
+
+class ResultView(generic.View):
+    model = PredictionModel
+    template_name = 'projects/prediction_results.html'
+
+    def get(self, request, **kwargs):
+        project_id = kwargs.get('project_id')
+        model_id = kwargs.get('model_id')
+        if self.request.user.is_authenticated:
+            projects = Project.objects.filter(pk=project_id, user=request.user)
+            if projects:
+                project = projects[0]
+                if model_id == 'cp':
+                    try:
+                        open('media/project_' + project_id + '/crisprpred_metrics.html', 'r')
+                    except FileNotFoundError:
+                        models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, 'No results were created for this model')
+                        return render(request, 'projects/project_detail.html',
+                                      {'all_models': models,
+                                       'project_id': project_id})
+                    path_table = 'media/project_' + project_id + '/crisprpred_metrics.html'
+                    path_roc = 'media/project_' + project_id + '/crisprpred_roc_curve.png'
+                    path_pr = 'media/project_' + project_id + '/crisprpred_pr_curve.png'
+                    return render(request, self.template_name,
+                                  {'path_table': path_table,
+                                   'path_roc': path_roc,
+                                   'path_pr': path_pr})
+                elif model_id == 'cpp':
+                    try:
+                        open('media/project_' + project_id + '/crisprpred_plus_metrics.html', 'r')
+                    except FileNotFoundError:
+                        models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, 'No results were created for this model')
+                        return render(request, 'projects/project_detail.html',
+                                      {'all_models': models,
+                                       'project_id': project_id})
+                    path_table = 'media/project_' + project_id + '/crisprpred_plus_metrics.html'
+                    path_roc = 'media/project_' + project_id + '/crisprpred_plus_roc_curve.png'
+                    path_pr = 'media/project_' + project_id + '/crisprpred_plus_pr_curve.png'
+                    return render(request, self.template_name,
+                                  {'path_table': path_table,
+                                   'path_roc': path_roc,
+                                   'path_pr': path_pr})
+                elif model_id == 'cps':
+                    try:
+                        open('media/project_' + project_id + '/crisprpred_seq_metrics.html', 'r')
+                    except FileNotFoundError:
+                        models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, 'No results were created for this model')
+                        return render(request, 'projects/project_detail.html',
+                                      {'all_models': models,
+                                       'project_id': project_id})
+                    path_table = 'media/project_' + project_id + '/crisprpred_seq_metrics.html'
+                    path_roc = 'media/project_' + project_id + '/crisprpred_seq_roc_curve.png'
+                    path_pr = 'media/project_' + project_id + '/crisprpred_seq_pr_curve.png'
+                    return render(request, self.template_name,
+                                  {'path_table': path_table,
+                                   'path_roc': path_roc,
+                                   'path_pr': path_pr})
+                else:
+                    models = PredictionModel.objects.filter(project=project, pk=model_id)
+                    if models:
+                        model = models[0]
+                        try:
+                            open('media/project_' + project_id + '/' + model.model_name + '_metrics.html', 'r')
+                        except FileNotFoundError:
+                            models = PredictionModel.objects.filter(project=project)
+                            messages.warning(request, 'No results were created for this model')
+                            return render(request, 'projects/project_detail.html',
+                                          {'all_models': models,
+                                           'project_id': project_id,
+                                           'error_model': model})
+                        path_table = 'media/project_' + project_id + '/' + model.model_name + '_metrics.html'
+                        path_roc = 'media/project_' + project_id + '/' + model.model_name + '_roc_curve.png'
+                        path_pr = 'media/project_' + project_id + '/' + model.model_name + '_pr_curve.png'
+                        return render(request, self.template_name,
+                                      {'path_table': path_table,
+                                       'path_roc': path_roc,
+                                       'path_pr': path_pr})
+            return render(request, 'error.html', {'status_code': 403})
+        else:
+            return render(request, 'login_warning.html', {})
+
+
+class ResultAPIView(generic.View):
+    def get(self):
+        pass

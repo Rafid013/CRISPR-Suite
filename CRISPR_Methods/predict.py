@@ -6,7 +6,9 @@ import numpy as np
 import os
 import smtplib
 import ssl
-
+from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
+from pr_curve import draw_pr_curve
+from roc_curve import draw_roc_curve
 
 # get project_id, project_name, model_id, model_type, model_name, prediction_file, email in command line input
 project_id = sys.argv[1]
@@ -35,6 +37,14 @@ model = pkl.load(f)
 
 
 test_file = pd.read_csv(project_directory + prediction_file, delimiter=',')
+
+
+test_file_x = test_file['sgRNA']
+test_file_y = pd.DataFrame(data=[])
+if test_file.shape[1] == 2:
+    test_file_y = test_file['label']
+
+
 pos_ind = position_independent(test_file, 4).astype(np.int8)
 pos_spe = position_specific(test_file, 4).astype(np.int8)
 if str(model_type) == '1':
@@ -44,14 +54,36 @@ else:
     test_x = pd.concat([pos_ind, pos_spe, gap], axis=1, sort=False)
 
 prediction_y = model.predict(test_x)
+prediction_y_proba = model.predict_proba(test_x)
 
 to_save = pd.DataFrame()
-to_save['sgRNA'] = test_file['sgRNA']
-to_save['label'] = pd.Series(prediction_y)
+to_save['sgRNA'] = test_file_x
+to_save['true label'] = pd.Series(test_file_y)
+to_save['predicted label'] = pd.Series(prediction_y)
+to_save['prediction probability'] = pd.Series(prediction_y_proba[:, 1])
 to_save.to_csv(project_directory + 'project_' + str(project_id) + '/' + model_name + '_prediction.csv', sep=',',
                index=False)
 
 os.remove(project_directory + prediction_file)
+
+if not test_file_y.empty:
+    acc = accuracy_score(test_file_y, prediction_y)
+    roc = roc_auc_score(test_file_y, prediction_y_proba[:, 1])
+    pre = precision_score(test_file_y, prediction_y)
+    rec = recall_score(test_file_y, prediction_y)
+    f1 = f1_score(test_file_y, prediction_y)
+    mcc = matthews_corrcoef(test_file_y, prediction_y)
+
+    metrics = pd.DataFrame()
+    metrics['Metrics'] = pd.Series(['Accuracy', 'ROC AUC', 'Precision', 'Recall', 'F1 Score', 'MCC'])
+    metrics['Values'] = pd.Series([acc, roc, pre, rec, f1, mcc])
+    metrics.to_html(project_directory + 'project_' + str(project_id) + '/' + model_name + '_metrics.html')
+
+    pr_curve_plt = draw_pr_curve(test_file_y, prediction_y)
+    pr_curve_plt.savefig(project_directory + 'project_' + str(project_id) + '/' + model_name + '_pr_curve.png')
+
+    roc_curve_plt = draw_roc_curve(test_file_y, prediction_y_proba[:, 1])
+    roc_curve_plt.savefig(project_directory + 'project_' + str(project_id) + '/' + model_name + '_roc_curve.png')
 
 port = 465  # For SSL
 password = "crisprsuite123"

@@ -1,7 +1,8 @@
 .idea/*
 venv/*
 db.sqlite3
-*.pkl
-*.h5
-*.csv
 */migrations/*
+Logs/*
+media/project*/*
+CRISPR_Methods/*.pkl
+CRISPR_Methods/*.h5

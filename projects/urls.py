@@ -29,7 +29,12 @@ urlpatterns = [
     re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/download/$', views.DownloadView.as_view(),
             name='download_prediction'),
     re_path(r'^api/(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/download/$', views.DownloadAPIView.as_view(),
-            name='api_download_prediction')
+            name='api_download_prediction'),
+
+    re_path(r'^(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/results/$', views.ResultView.as_view(),
+            name='results'),
+    re_path(r'^api/(?P<project_id>[0-9]+)/(?P<model_id>[a-z0-9]+)/results/$', views.ResultAPIView.as_view(),
+            name='api_results')
 ]
 
 if settings.DEBUG:

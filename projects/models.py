@@ -28,6 +28,7 @@ class PredictionModel(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     training_file = models.FileField(upload_to=get_upload_path)
     consent_for_file = models.BooleanField(verbose_name="Can we use the file for research purposes?")
+    isPublic = models.BooleanField(verbose_name="Make the model public?", default=False)
 
     def __str__(self):
         return self.model_name + ' ' + str(self.get_model_type_display())
