@@ -92,7 +92,7 @@ class PredictView(generic.View):
                         model = models[0]
                         model_name = model.model_name
                         try:
-                            open('media/project_' + project_id + '/' + model_name + '.pkl', 'rb')
+                            open('saved_models/project_' + project_id + '/' + model_name + '.pkl', 'rb')
                         except FileNotFoundError:
                             models = PredictionModel.objects.filter(project=project)
                             return render(request, 'projects/project_detail.html',
@@ -354,7 +354,7 @@ class DownloadView(generic.View):
                 project = projects[0]
                 if model_id == 'cp':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         return render(request, 'projects/project_detail.html',
@@ -366,7 +366,7 @@ class DownloadView(generic.View):
                     return response
                 elif model_id == 'cpp':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_plus_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_plus_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         return render(request, 'projects/project_detail.html',
@@ -378,7 +378,7 @@ class DownloadView(generic.View):
                     return response
                 elif model_id == 'cps':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_seq_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_seq_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         return render(request, 'projects/project_detail.html',
@@ -393,7 +393,8 @@ class DownloadView(generic.View):
                     if models:
                         model = models[0]
                         try:
-                            file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
+                            file = open('predictions/project_' + project_id + '/' + model.model_name +
+                                        '_prediction.csv', 'r')
                         except FileNotFoundError:
                             models = PredictionModel.objects.filter(project=project)
                             return render(request, 'projects/project_detail.html',
@@ -420,7 +421,7 @@ class DownloadAPIView(APIView):
                 project = projects[0]
                 if model_id == 'cp':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_prediction.csv', 'r')
                     except FileNotFoundError:
                         return Response(status=status.HTTP_404_NOT_FOUND)
                     response = HttpResponse(file, content_type='text/csv')
@@ -428,7 +429,7 @@ class DownloadAPIView(APIView):
                     return response
                 elif model_id == 'cpp':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_plus_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_plus_prediction.csv', 'r')
                     except FileNotFoundError:
                         return Response(status=status.HTTP_404_NOT_FOUND)
                     response = HttpResponse(file, content_type='text/csv')
@@ -436,7 +437,7 @@ class DownloadAPIView(APIView):
                     return response
                 elif model_id == 'cps':
                     try:
-                        file = open('media/project_' + project_id + '/crisprpred_seq_prediction.csv', 'r')
+                        file = open('predictions/project_' + project_id + '/crisprpred_seq_prediction.csv', 'r')
                     except FileNotFoundError:
                         return Response(status=status.HTTP_404_NOT_FOUND)
                     response = HttpResponse(file, content_type='text/csv')
@@ -447,7 +448,8 @@ class DownloadAPIView(APIView):
                     if models:
                         model = models[0]
                         try:
-                            file = open('media/project_' + project_id + '/' + model.model_name + '_prediction.csv', 'r')
+                            file = open('predictions/project_' + project_id + '/' + model.model_name +
+                                        '_prediction.csv', 'r')
                         except FileNotFoundError:
                             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -472,54 +474,56 @@ class ResultView(generic.View):
     def get(self, request, **kwargs):
         project_id = kwargs.get('project_id')
         model_id = kwargs.get('model_id')
+        directory = 'static/project_' + project_id + '/'
+        get_directory = '/' + directory
         if self.request.user.is_authenticated:
             projects = Project.objects.filter(pk=project_id, user=request.user)
             if projects:
                 project = projects[0]
                 if model_id == 'cp':
                     try:
-                        open('media/project_' + project_id + '/crisprpred_metrics.html', 'r')
+                        open(directory + 'crisprpred_metrics.png', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         messages.warning(request, 'No results were created for this model')
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
                                        'project_id': project_id})
-                    path_table = 'media/project_' + project_id + '/crisprpred_metrics.html'
-                    path_roc = 'media/project_' + project_id + '/crisprpred_roc_curve.png'
-                    path_pr = 'media/project_' + project_id + '/crisprpred_pr_curve.png'
+                    path_table = get_directory + 'crisprpred_metrics.png'
+                    path_roc = get_directory + 'crisprpred_roc_curve.png'
+                    path_pr = get_directory + 'crisprpred_pr_curve.png'
                     return render(request, self.template_name,
                                   {'path_table': path_table,
                                    'path_roc': path_roc,
                                    'path_pr': path_pr})
                 elif model_id == 'cpp':
                     try:
-                        open('media/project_' + project_id + '/crisprpred_plus_metrics.html', 'r')
+                        open(directory + 'crisprpred_plus_metrics.png', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         messages.warning(request, 'No results were created for this model')
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
                                        'project_id': project_id})
-                    path_table = 'media/project_' + project_id + '/crisprpred_plus_metrics.html'
-                    path_roc = 'media/project_' + project_id + '/crisprpred_plus_roc_curve.png'
-                    path_pr = 'media/project_' + project_id + '/crisprpred_plus_pr_curve.png'
+                    path_table = get_directory + 'crisprpred_plus_metrics.png'
+                    path_roc = get_directory + 'crisprpred_plus_roc_curve.png'
+                    path_pr = get_directory + 'crisprpred_plus_pr_curve.png'
                     return render(request, self.template_name,
                                   {'path_table': path_table,
                                    'path_roc': path_roc,
                                    'path_pr': path_pr})
                 elif model_id == 'cps':
                     try:
-                        open('media/project_' + project_id + '/crisprpred_seq_metrics.html', 'r')
+                        open(directory + 'crisprpred_seq_metrics.png', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
                         messages.warning(request, 'No results were created for this model')
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
                                        'project_id': project_id})
-                    path_table = 'media/project_' + project_id + '/crisprpred_seq_metrics.html'
-                    path_roc = 'media/project_' + project_id + '/crisprpred_seq_roc_curve.png'
-                    path_pr = 'media/project_' + project_id + '/crisprpred_seq_pr_curve.png'
+                    path_table = get_directory + 'crisprpred_seq_metrics.png'
+                    path_roc = get_directory + 'crisprpred_seq_roc_curve.png'
+                    path_pr = get_directory + 'crisprpred_seq_pr_curve.png'
                     return render(request, self.template_name,
                                   {'path_table': path_table,
                                    'path_roc': path_roc,
@@ -529,7 +533,7 @@ class ResultView(generic.View):
                     if models:
                         model = models[0]
                         try:
-                            open('media/project_' + project_id + '/' + model.model_name + '_metrics.html', 'r')
+                            open(directory + model.model_name + '_metrics.png', 'r')
                         except FileNotFoundError:
                             models = PredictionModel.objects.filter(project=project)
                             messages.warning(request, 'No results were created for this model')
@@ -537,9 +541,9 @@ class ResultView(generic.View):
                                           {'all_models': models,
                                            'project_id': project_id,
                                            'error_model': model})
-                        path_table = 'media/project_' + project_id + '/' + model.model_name + '_metrics.html'
-                        path_roc = 'media/project_' + project_id + '/' + model.model_name + '_roc_curve.png'
-                        path_pr = 'media/project_' + project_id + '/' + model.model_name + '_pr_curve.png'
+                        path_table = get_directory + model.model_name + "_metrics.png"
+                        path_roc = get_directory + model.model_name + "_roc_curve.png"
+                        path_pr = get_directory + model.model_name + "_pr_curve.png"
                         return render(request, self.template_name,
                                       {'path_table': path_table,
                                        'path_roc': path_roc,

@@ -10,7 +10,7 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-
+import os
 from generate_features import position_independent, position_specific, gap_features
 
 
@@ -23,9 +23,10 @@ email = sys.argv[5]
 
 print(email)
 
-project_directory = 'media/'
+media_directory = 'media/'
+model_directory = 'saved_models/'
 
-training_file = pd.read_csv(project_directory + filename, delimiter=',')
+training_file = pd.read_csv(media_directory + filename, delimiter=',')
 train_y = pd.DataFrame(training_file['label'].astype(np.int8), columns=['label'])
 pos_ind = position_independent(training_file, 4).astype(np.int8)
 pos_spe = position_specific(training_file, 4).astype(np.int8)
@@ -43,7 +44,10 @@ pipeline = Pipeline(steps)
 
 pipeline.fit(train_x, train_y)
 
-f = open(project_directory + 'project_' + str(project_id) + '/' + model_name + '.pkl', 'wb')
+if not os.path.exists(model_directory + 'project_' + str(project_id)):
+    os.makedirs(model_directory + 'project_' + str(project_id))
+
+f = open(model_directory + 'project_' + str(project_id) + '/' + model_name + '.pkl', 'wb')
 pkl.dump(pipeline, f)
 
 port = 465  # For SSL
