@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
-from .serializer import UserSerializer
+from .serializer import UserSignUpSerializer
 from .token import activation_token
 
 
@@ -74,7 +74,7 @@ class UserSignUpAPIView(APIView):
     permission_classes = [AllowAny, ]
     @staticmethod
     def post(request):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSignUpSerializer(data=request.data)
         if serializer.is_valid():
             username = serializer.validated_data['username']
             email = serializer.validated_data['email']
