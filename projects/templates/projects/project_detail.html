@@ -22,25 +22,16 @@
     <a href="{% url 'projects:predict_model' project_id=project_id model_id='cp'%}">(Predict)</a>
     <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cp'%}">(Download Prediction)</a>
     <a href="{% url 'projects:results' project_id=project_id model_id='cp'%}">(Results)</a>
-    <div class="form-group">
-        <span style="color: #9c0900" class="text-danger small">{{ cp_error }}</span>
-    </div>
 
     <h3>CRISPRpred++</h3>
     <a href="{% url 'projects:predict_model' project_id=project_id model_id='cpp'%}">(Predict)</a>
     <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cpp'%}">(Download Prediction)</a>
     <a href="{% url 'projects:results' project_id=project_id model_id='cpp'%}">(Results)</a>
-    <div class="form-group">
-        <span style="color: #9c0900" class="text-danger small">{{ cpp_error }}</span>
-    </div>
 
     <h3>CRISPRpred(SEQ)</h3>
     <a href="{% url 'projects:predict_model' project_id=project_id model_id='cps'%}">(Predict)</a>
     <a href="{% url 'projects:download_prediction' project_id=project_id model_id='cps'%}">(Download Prediction)</a>
     <a href="{% url 'projects:results' project_id=project_id model_id='cps'%}">(Results)</a>
-    <div class="form-group">
-        <span style="color: #9c0900" class="text-danger small">{{ cps_error }}</span>
-    </div>
     </div>
 
 
@@ -55,11 +46,6 @@
         <a href="{% url 'projects:predict_model' project_id=model.project.pk model_id=model.id %}">(Predict)</a>
         <a href="{% url 'projects:download_prediction' project_id=model.project.pk model_id=model.id %}">(Download Prediction)</a>
         <a href="{% url 'projects:results' project_id=model.project.pk model_id=model.id%}">(Results)</a>
-        {% if model.pk == error_model.pk%}
-        <div class="form-group">
-            <span style="color: #9c0900" class="text-danger small">{{ error }}</span>
-        </div>
-        {% endif %}
         </li>
         {% endfor %}
         </ul>

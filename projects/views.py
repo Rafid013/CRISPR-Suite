@@ -96,11 +96,10 @@ class PredictView(generic.View):
                             open('saved_models/project_' + project_id + '/' + model_name + '.pkl', 'rb')
                         except FileNotFoundError:
                             models = PredictionModel.objects.filter(project=project)
+                            messages.warning(request, "Training haven\'t finished yet")
                             return render(request, 'projects/project_detail.html',
                                           {'all_models': models,
-                                           'project_id': project_id,
-                                           'error': "Training haven't finished yet",
-                                           'error_model': model})
+                                           'project_id': project_id})
                         return render(request, self.template_name, {'model': model_name})
             return render(request, 'error.html', {'status_code': 403})
         else:
@@ -276,7 +275,7 @@ class PredictionModelCreateView(generic.View):
                     project = projects[0]
                     models = PredictionModel.objects.filter(project=project, model_name=model_name)
                     if models:
-                        messages.warning(request, "A model with this name already exists")
+                        messages.warning(request, "A model with this name already exists in this project")
                         return render(request, self.template_name, {'form': form, 'project_name': project.project_name})
 
                     prediction_model.project = project
@@ -362,10 +361,10 @@ class DownloadView(generic.View):
                         file = open(prediction_directory + 'crisprpred_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, "No prediction is available for this model")
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
-                                       'project_id': project_id,
-                                       'cp_error': 'No prediction available'})
+                                       'project_id': project_id})
                     response = HttpResponse(file, content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=crisprpred_prediction.csv'
                     return response
@@ -374,10 +373,10 @@ class DownloadView(generic.View):
                         file = open(prediction_directory + 'crisprpred_plus_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, "No prediction is available for this model")
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
-                                       'project_id': project_id,
-                                       'cpp_error': 'No prediction available'})
+                                       'project_id': project_id})
                     response = HttpResponse(file, content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=crisprpred_plus_prediction.csv'
                     return response
@@ -386,10 +385,10 @@ class DownloadView(generic.View):
                         file = open(prediction_directory + 'crisprpred_seq_prediction.csv', 'r')
                     except FileNotFoundError:
                         models = PredictionModel.objects.filter(project=project)
+                        messages.warning(request, "No prediction is available for this model")
                         return render(request, 'projects/project_detail.html',
                                       {'all_models': models,
-                                       'project_id': project_id,
-                                       'cps_error': 'No prediction available'})
+                                       'project_id': project_id})
                     response = HttpResponse(file, content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=crisprpred_seq_prediction.csv'
                     return response
@@ -402,11 +401,10 @@ class DownloadView(generic.View):
                                         '_prediction.csv', 'r')
                         except FileNotFoundError:
                             models = PredictionModel.objects.filter(project=project)
+                            messages.warning(request, "No prediction is available for this model")
                             return render(request, 'projects/project_detail.html',
                                           {'all_models': models,
-                                           'project_id': project_id,
-                                           'error': 'No prediction available',
-                                           'error_model': model})
+                                           'project_id': project_id})
 
                         response = HttpResponse(file, content_type='text/csv')
                         response['Content-Disposition'] = 'attachment; filename=' + model.model_name + '_prediction.csv'
@@ -545,8 +543,7 @@ class ResultView(generic.View):
                             messages.warning(request, 'No results were created for this model')
                             return render(request, 'projects/project_detail.html',
                                           {'all_models': models,
-                                           'project_id': project_id,
-                                           'error_model': model})
+                                           'project_id': project_id})
                         path_table = get_directory + model.model_name + "_metrics.png"
                         path_roc = get_directory + model.model_name + "_roc_curve.png"
                         path_pr = get_directory + model.model_name + "_pr_curve.png"
@@ -592,7 +589,6 @@ class ResultAPIView(APIView):
                 try:
                     open(result_directory + 'crisprpred_plus_metrics.png', 'r')
                 except FileNotFoundError:
-                    messages.warning(request, 'No results were created for this model')
                     return Response(status=status.HTTP_404_NOT_FOUND)
 
                 path_table = get_directory + 'crisprpred_plus_metrics.png'
