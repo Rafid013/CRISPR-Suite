@@ -24,5 +24,5 @@ pipeline = Pipeline(steps)
 
 pipeline.fit(train_x, train_y)
 
-f = open('crisprpred.pkl', 'wb')
+f = open('cp.pkl', 'wb')
 pkl.dump(pipeline, f)

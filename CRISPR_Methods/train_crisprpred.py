@@ -10,18 +10,14 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-import os
 from generate_features import position_independent, position_specific, gap_features
 
 
-# get project_id, project_name, model_name, filename, email in command line input
-project_id = sys.argv[1]
-project_name = sys.argv[2]
-model_name = sys.argv[3]
-filename = sys.argv[4]
-email = sys.argv[5]
-
-print(email)
+# get model_id, model_name, filename, email in command line input
+model_id = sys.argv[1]
+model_name = sys.argv[2]
+filename = sys.argv[3]
+email = sys.argv[4]
 
 media_directory = 'media/'
 model_directory = 'saved_models/'
@@ -43,10 +39,7 @@ pipeline = Pipeline(steps)
 
 pipeline.fit(train_x, train_y)
 
-if not os.path.exists(model_directory + 'project_' + str(project_id)):
-    os.makedirs(model_directory + 'project_' + str(project_id))
-
-f = open(model_directory + 'project_' + str(project_id) + '/' + model_name + '.pkl', 'wb')
+f = open(model_directory + model_id + '.pkl', 'wb')
 pkl.dump(pipeline, f)
 
 port = 465  # For SSL
@@ -57,8 +50,7 @@ context = ssl.create_default_context()
 
 sender_email = "crisprsuite@gmail.com"
 receiver_email = email
-message = "Subject: Training Finished\n\nThe training of the model " + model_name + " in project " +\
-          project_name + " has finished training."
+message = "Subject: Training Finished\n\nThe training of the model " + model_name + " has finished."
 
 with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
     server.login(sender_email, password)

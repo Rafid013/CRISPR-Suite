@@ -1,4 +1,3 @@
-admin@gmail.com
 Generating Feature A
 Generating Feature C
 Generating Feature T
@@ -932,41 +931,7 @@ Generating Feature GAP_T_16_C
 Generating Feature GAP_T_16_T
 Generating Feature GAP_T_16_G
 Generating Feature GAP_G_16_A
-Generating Feature GAP_G_16_C.*
-optimization finished, #iter = 1247
-obj = -358.223195, rho = 2.586472
-nSV = 957, nBSV = 283
-Total nSV = 957
-.*
-optimization finished, #iter = 1230
-obj = -358.537694, rho = 2.550315
-nSV = 946, nBSV = 279
-Total nSV = 946
-.*
-optimization finished, #iter = 1258
-obj = -360.528089, rho = 2.576342
-nSV = 961, nBSV = 282
-Total nSV = 961
-.*
-optimization finished, #iter = 1227
-obj = -354.563514, rho = 2.659695
-nSV = 949, nBSV = 286
-Total nSV = 949
-.*
-optimization finished, #iter = 1221
-obj = -347.659920, rho = 2.630200
-nSV = 931, nBSV = 265
-Total nSV = 931
-.*
-optimization finished, #iter = 1496
-obj = -432.084825, rho = -2.756562
-nSV = 1136, nBSV = 337
-Total nSV = 1136
-/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/feature_selection/from_model.py:196: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-  self.estimator_.fit(X, y, **fit_params)
-/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/utils/validation.py:724: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
-  y = column_or_1d(y, warn=True)
-
+Generating Feature GAP_G_16_C
 Generating Feature GAP_G_16_T
 Generating Feature GAP_G_16_G
 Generating Feature GAP_A_17_A
@@ -1049,8 +1014,8 @@ Generating Feature GAP_G_21_A
 Generating Feature GAP_G_21_C
 Generating Feature GAP_G_21_T
 Generating Feature GAP_G_21_G
-[LibSVM]Traceback (most recent call last):
-  File "CRISPR_Methods/train_crisprpred_plus.py", line 64, in <module>
+Traceback (most recent call last):
+  File "CRISPR_Methods/predict.py", line 97, in <module>
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
   File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1031, in __init__
     source_address)
@@ -1060,8 +1025,6 @@ Generating Feature GAP_G_21_G
     self.sock = self._get_socket(host, port, self.timeout)
   File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1037, in _get_socket
     self.source_address)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 727, in create_connection
-    raise err
   File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 716, in create_connection
     sock.connect(sa)
-OSError: [Errno 101] Network is unreachable
+KeyboardInterrupt
