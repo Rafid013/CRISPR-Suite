@@ -7,6 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
@@ -165,7 +166,8 @@ class PredictView(generic.View):
                 model_name = 'CRISPRpred(SEQ)'
                 return render(request, self.template_name, {'model': model_name})
             else:
-                models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+                models = PredictionModel.objects.filter(
+                    Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
                 if models:
                     model_name = models[0].model_name
                     try:
@@ -192,7 +194,8 @@ class PredictView(generic.View):
                 model_type = 3
                 model_name = "CRISPRpred(SEQ)"
             else:
-                prediction_models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+                prediction_models = PredictionModel.objects.filter(
+                    Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
                 if prediction_models:
                     prediction_model = prediction_models[0]
                     prediction_model.used_for_prediction_count += 1
@@ -233,7 +236,8 @@ class PredictAPIView(APIView):
             model_type = 3
             model_name = "CRISPRpred(SEQ)"
         else:
-            prediction_models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+            prediction_models = PredictionModel.objects.filter(
+                Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
             if prediction_models:
                 prediction_model = prediction_models[0]
                 prediction_model.used_for_prediction_count += 1
@@ -261,7 +265,7 @@ class DownloadView(generic.View):
         if self.request.user.is_authenticated:
             prediction_directory = 'predictions/user_' + str(user_id) + '/'
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-                models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+                models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
             else:
                 models = None
             if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
@@ -287,7 +291,7 @@ class DownloadAPIView(APIView):
         user_id = request.user.pk
         prediction_directory = 'predictions/user_' + str(user_id) + '/'
         if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-            models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+            models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
         else:
             models = None
         if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
@@ -320,7 +324,7 @@ class ResultView(generic.View):
         get_directory = '/' + result_directory
         if self.request.user.is_authenticated:
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-                models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+                models = PredictionModel.objects.filter(Q(pk=model_id,is_public=True)|Q(user=request.user, pk=model_id))
             else:
                 models = None
             if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
@@ -332,10 +336,25 @@ class ResultView(generic.View):
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
                 path_pr = get_directory + str(model_id) + "_pr_curve.png"
+
+                model_info = 'Results for '
+                if model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
+                    model_info += 'Pretrained Model: '
+                    model_info += models[0].model_name
+                elif models[0].user == request.user :
+                    model_info += 'Your Model: '
+                    model_info += models[0].model_name
+                else:
+                    model_info += 'Public Model: '
+                    model_info += models[0].model_name
+                    model_info += ' Owned by '
+                    model_info += models[0].user.username
+
                 return render(request, self.template_name,
                               {'path_table': path_table,
                                'path_roc': path_roc,
-                               'path_pr': path_pr})
+                               'path_pr': path_pr,
+                               'model_info':model_info})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})
@@ -352,7 +371,7 @@ class ResultAPIView(APIView):
         site_domain = get_current_site(request).domain
 
         if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-            models = PredictionModel.objects.filter(user=request.user, pk=model_id)
+            models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
         else:
             models = None
         if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
