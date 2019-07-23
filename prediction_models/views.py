@@ -37,6 +37,18 @@ class PredictionModelListAPIView(APIView):
         return Response(serializer.data)
 
 
+class PublicModelListView(generic.View):
+    model = PredictionModel
+    template_name = 'prediction_models/public_models_list.html'
+
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            models = PredictionModel.objects.filter(is_public=True)
+            return render(request, self.template_name, {'all_models': models})
+        else:
+            return render(request, 'login_warning.html', {})
+
+
 class PredictionModelCreateView(generic.View):
     form_class = PredictionModelForm
     template_name = 'prediction_models/prediction_model_form.html'
@@ -138,6 +150,7 @@ class PredictionModelCreateAPIView(APIView):
 class PredictView(generic.View):
     model = PredictionModel
     template_name = 'prediction_models/prediction.html'
+    prev_url = None
 
     def get(self, request, **kwargs):
         if self.request.user.is_authenticated:
@@ -159,7 +172,7 @@ class PredictView(generic.View):
                         open('saved_models/' + str(model_id) + '.pkl', 'rb')
                     except FileNotFoundError:
                         messages.warning(request, "Training haven\'t finished yet")
-                        return redirect(reverse('prediction_models:models_list'))
+                        return redirect(request.META.get('HTTP_REFERER'))
                     return render(request, self.template_name, {'model': model_name})
                 return render(request, 'error.html', {'status_code': 403})
         else:
@@ -257,7 +270,7 @@ class DownloadView(generic.View):
                                 '_prediction.csv', 'r')
                 except FileNotFoundError:
                     messages.warning(request, "No prediction is available for this model")
-                    return redirect(reverse('prediction_models:models_list'))
+                    return redirect(request.META.get('HTTP_REFERER'))
 
                 response = HttpResponse(file, content_type='text/csv')
                 response['Content-Disposition'] = 'attachment; filename=' + str(model_id) + '_prediction.csv'
@@ -315,7 +328,7 @@ class ResultView(generic.View):
                     open(result_directory + str(model_id) + '_metrics.png', 'r')
                 except FileNotFoundError:
                     messages.warning(request, 'No results were created for this model')
-                    return redirect(reverse('prediction_models:models_list'))
+                    return redirect(request.META.get('HTTP_REFERER'))
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
                 path_pr = get_directory + str(model_id) + "_pr_curve.png"

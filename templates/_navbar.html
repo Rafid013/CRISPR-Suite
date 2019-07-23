@@ -2,5 +2,6 @@
 {% if user.is_authenticated %}
     <li {% if active_link == "model" %}class="active"{% endif %}><a href="{% url 'prediction_models:models_list' %}">Models</a></li>
     <li {% if active_link == "new_model" %}class="active"{% endif %}><a href="{% url 'prediction_models:create_model' %}">New Model</a></li>
+    <li {% if active_link == "public_models" %}class="active"{% endif %}><a href="{% url 'prediction_models:public_models' %}">Public Models</a></li>
 {% endif %}
 <li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>

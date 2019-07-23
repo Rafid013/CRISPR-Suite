@@ -1,3 +1,57 @@
-<img src="{{ path_roc }}" alt="ROC Curve"><br>
-<img src="{{ path_pr }}" alt="PR Curve"><br>
-<img src="{{ path_table }}" alt="Metrics Table"><br>
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Results{% endblock %}
+{% block navbar-left %}
+    {% include "_navbar.html" %}
+{% endblock %}
+
+{% block container %}
+    <div class="well text-center">
+        <br><h3><div class="col-md-12">Generated Graphs</div></h3><br><br><br>
+        <div class="row">
+      		<div class="col-md-6">
+            	<a href="#" class="pop"><img src="{{ path_roc }}" alt="ROC Curve"></a>
+        	</div>
+        	<div class="col-md-6">
+          		<a href="#" class="pop"><img src="{{ path_pr }}" alt="PR Curve"></a>
+        	</div>
+      	</div>
+    </div>
+    <br>
+    <br>
+
+    <div class="well text-center">
+        <br><h3><div class="col-md-12">Generated Table</div></h3><br><br><br>
+        <div class="row">
+      		<a href="#" class="pop">
+                <img class="img-responsive" src="{{ path_table }}" alt="Metrics Table" style="margin: 0 auto;"><br>
+            </a>
+      	</div>
+    </div>
+
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+    </div>
+</div>
+
+{% endblock container %}
+
+{% block scripts %}
+    <script>
+    $(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');
+		});
+    });
+    </script>
+{% endblock scripts %}

@@ -70,6 +70,7 @@
     {% endblock navbar %}
 
     {% block messages %}
+        <br><br>
       {% if messages %}
         {% for message in messages %}
           <div style="width:40%;text-align: center; margin:30px auto;" class="alert alert-{{ message.tags }}">  <!-- singular -->
