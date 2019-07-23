@@ -16,6 +16,12 @@ urlpatterns = [
     path('api/create_model/', views.PredictionModelCreateAPIView.as_view(),
          name='api_create_model'),
 
+    path('compare/', views.CompareView.as_view(), name='compare'),
+    path('api/compare/', views.CompareAPIView.as_view(), name='api_compare'),
+
+    path('compare_results/', views.CompareResultView.as_view(), name='compare_results'),
+    path('api/compare_results/', views.CompareResultAPIView.as_view(), name='api_compare_results'),
+
     re_path(r'^(?P<model_id>[a-z0-9]+)/predict/$', views.PredictView.as_view(),
             name='predict_model'),
     re_path(r'^api/(?P<model_id>[a-z0-9]+)/predict/$', views.PredictAPIView.as_view(),

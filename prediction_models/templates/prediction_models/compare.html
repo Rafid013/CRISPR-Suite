@@ -1,0 +1,20 @@
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{% if user_models %}
+    <h1>Your Models</h1><br>
+    {% for user_model in user_models %}
+        <label for="user_model">{{ user_model.model_name }}</label>
+        <input type="checkbox" id="user_model" name="user_model" value="{{ user_model.pk }}"><br>
+    {% endfor %}
+{% endif %}
+
+{% if public_models %}
+    <h1>Public Models</h1>
+    {% for public_model in public_models %}
+        <label for="public_model">{{ public_model.model_name }} by {{public_model.user.username }}</label>
+        <input type="checkbox" id="public_model" name="public_model" value="{{ public_model.pk }}"><br>
+    {% endfor %}
+{% endif %}
+<input type="file" id="prediction_file" name="prediction_file" accept=".csv"><br>
+<button type="submit" class="btn btn-success">Compare</button>
+</form>
