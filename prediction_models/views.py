@@ -565,3 +565,28 @@ class ResultAPIView(APIView):
 
             return JsonResponse(response_urls)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class DeleteView(generic.View):
+    @staticmethod
+    def post(request, **kwargs):
+        if request.user.is_authenticated:
+            model_id = kwargs.get('model_id')
+            model = PredictionModel.objects.filter(pk=model_id, user=request.user)
+            if model:
+                model[0].delete()
+                return redirect(reverse('prediction_models:models_list'))
+            return render(request, 'error.html', {'status_code': 403})
+        else:
+            return render(request, 'login_warning.html', {})
+
+
+class DeleteAPIView(APIView):
+    @staticmethod
+    def post(request, **kwargs):
+        model_id = kwargs.get('model_id')
+        model = PredictionModel.objects.filter(pk=model_id, user=request.user)
+        if model:
+            model[0].delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)

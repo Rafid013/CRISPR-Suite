@@ -37,7 +37,12 @@ urlpatterns = [
     re_path(r'^(?P<model_id>[a-z0-9]+)/results/$', views.ResultView.as_view(),
             name='results'),
     re_path(r'^api/(?P<model_id>[a-z0-9]+)/results/$', views.ResultAPIView.as_view(),
-            name='api_results')
+            name='api_results'),
+
+    re_path(r'^(?P<model_id>[a-z0-9]+)/delete/$', views.DeleteView.as_view(),
+            name='delete'),
+    re_path(r'^api/(?P<model_id>[a-z0-9]+)/delete/$', views.DeleteAPIView.as_view(),
+            name='api_delete'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
