@@ -15,6 +15,7 @@ from generate_features import position_independent, position_specific, gap_featu
 
 # get model_id, model_name, filename, email in command line input
 model_id = sys.argv[1]
+print(model_id)
 model_name = sys.argv[2]
 filename = sys.argv[3]
 email = sys.argv[4]

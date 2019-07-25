@@ -1,0 +1,1066 @@
+Generating Feature A
+Generating Feature C
+Generating Feature T
+Generating Feature G
+Generating Feature AA
+Generating Feature AC
+Generating Feature AT
+Generating Feature AG
+Generating Feature CA
+Generating Feature CC
+Generating Feature CT
+Generating Feature CG
+Generating Feature TA
+Generating Feature TC
+Generating Feature TT
+Generating Feature TG
+Generating Feature GA
+Generating Feature GC
+Generating Feature GT
+Generating Feature GG
+Generating Feature AAA
+Generating Feature AAC
+Generating Feature AAT
+Generating Feature AAG
+Generating Feature ACA
+Generating Feature ACC
+Generating Feature ACT
+Generating Feature ACG
+Generating Feature ATA
+Generating Feature ATC
+Generating Feature ATT
+Generating Feature ATG
+Generating Feature AGA
+Generating Feature AGC
+Generating Feature AGT
+Generating Feature AGG
+Generating Feature CAA
+Generating Feature CAC
+Generating Feature CAT
+Generating Feature CAG
+Generating Feature CCA
+Generating Feature CCC
+Generating Feature CCT
+Generating Feature CCG
+Generating Feature CTA
+Generating Feature CTC
+Generating Feature CTT
+Generating Feature CTG
+Generating Feature CGA
+Generating Feature CGC
+Generating Feature CGT
+Generating Feature CGG
+Generating Feature TAA
+Generating Feature TAC
+Generating Feature TAT
+Generating Feature TAG
+Generating Feature TCA
+Generating Feature TCC
+Generating Feature TCT
+Generating Feature TCG
+Generating Feature TTA
+Generating Feature TTC
+Generating Feature TTT
+Generating Feature TTG
+Generating Feature TGA
+Generating Feature TGC
+Generating Feature TGT
+Generating Feature TGG
+Generating Feature GAA
+Generating Feature GAC
+Generating Feature GAT
+Generating Feature GAG
+Generating Feature GCA
+Generating Feature GCC
+Generating Feature GCT
+Generating Feature GCG
+Generating Feature GTA
+Generating Feature GTC
+Generating Feature GTT
+Generating Feature GTG
+Generating Feature GGA
+Generating Feature GGC
+Generating Feature GGT
+Generating Feature GGG
+Generating Feature AAAA
+Generating Feature AAAC
+Generating Feature AAAT
+Generating Feature AAAG
+Generating Feature AACA
+Generating Feature AACC
+Generating Feature AACT
+Generating Feature AACG
+Generating Feature AATA
+Generating Feature AATC
+Generating Feature AATT
+Generating Feature AATG
+Generating Feature AAGA
+Generating Feature AAGC
+Generating Feature AAGT
+Generating Feature AAGG
+Generating Feature ACAA
+Generating Feature ACAC
+Generating Feature ACAT
+Generating Feature ACAG
+Generating Feature ACCA
+Generating Feature ACCC
+Generating Feature ACCT
+Generating Feature ACCG
+Generating Feature ACTA
+Generating Feature ACTC
+Generating Feature ACTT
+Generating Feature ACTG
+Generating Feature ACGA
+Generating Feature ACGC
+Generating Feature ACGT
+Generating Feature ACGG
+Generating Feature ATAA
+Generating Feature ATAC
+Generating Feature ATAT
+Generating Feature ATAG
+Generating Feature ATCA
+Generating Feature ATCC
+Generating Feature ATCT
+Generating Feature ATCG
+Generating Feature ATTA
+Generating Feature ATTC
+Generating Feature ATTT
+Generating Feature ATTG
+Generating Feature ATGA
+Generating Feature ATGC
+Generating Feature ATGT
+Generating Feature ATGG
+Generating Feature AGAA
+Generating Feature AGAC
+Generating Feature AGAT
+Generating Feature AGAG
+Generating Feature AGCA
+Generating Feature AGCC
+Generating Feature AGCT
+Generating Feature AGCG
+Generating Feature AGTA
+Generating Feature AGTC
+Generating Feature AGTT
+Generating Feature AGTG
+Generating Feature AGGA
+Generating Feature AGGC
+Generating Feature AGGT
+Generating Feature AGGG
+Generating Feature CAAA
+Generating Feature CAAC
+Generating Feature CAAT
+Generating Feature CAAG
+Generating Feature CACA
+Generating Feature CACC
+Generating Feature CACT
+Generating Feature CACG
+Generating Feature CATA
+Generating Feature CATC
+Generating Feature CATT
+Generating Feature CATG
+Generating Feature CAGA
+Generating Feature CAGC
+Generating Feature CAGT
+Generating Feature CAGG
+Generating Feature CCAA
+Generating Feature CCAC
+Generating Feature CCAT
+Generating Feature CCAG
+Generating Feature CCCA
+Generating Feature CCCC
+Generating Feature CCCT
+Generating Feature CCCG
+Generating Feature CCTA
+Generating Feature CCTC
+Generating Feature CCTT
+Generating Feature CCTG
+Generating Feature CCGA
+Generating Feature CCGC
+Generating Feature CCGT
+Generating Feature CCGG
+Generating Feature CTAA
+Generating Feature CTAC
+Generating Feature CTAT
+Generating Feature CTAG
+Generating Feature CTCA
+Generating Feature CTCC
+Generating Feature CTCT
+Generating Feature CTCG
+Generating Feature CTTA
+Generating Feature CTTC
+Generating Feature CTTT
+Generating Feature CTTG
+Generating Feature CTGA
+Generating Feature CTGC
+Generating Feature CTGT
+Generating Feature CTGG
+Generating Feature CGAA
+Generating Feature CGAC
+Generating Feature CGAT
+Generating Feature CGAG
+Generating Feature CGCA
+Generating Feature CGCC
+Generating Feature CGCT
+Generating Feature CGCG
+Generating Feature CGTA
+Generating Feature CGTC
+Generating Feature CGTT
+Generating Feature CGTG
+Generating Feature CGGA
+Generating Feature CGGC
+Generating Feature CGGT
+Generating Feature CGGG
+Generating Feature TAAA
+Generating Feature TAAC
+Generating Feature TAAT
+Generating Feature TAAG
+Generating Feature TACA
+Generating Feature TACC
+Generating Feature TACT
+Generating Feature TACG
+Generating Feature TATA
+Generating Feature TATC
+Generating Feature TATT
+Generating Feature TATG
+Generating Feature TAGA
+Generating Feature TAGC
+Generating Feature TAGT
+Generating Feature TAGG
+Generating Feature TCAA
+Generating Feature TCAC
+Generating Feature TCAT
+Generating Feature TCAG
+Generating Feature TCCA
+Generating Feature TCCC
+Generating Feature TCCT
+Generating Feature TCCG
+Generating Feature TCTA
+Generating Feature TCTC
+Generating Feature TCTT
+Generating Feature TCTG
+Generating Feature TCGA
+Generating Feature TCGC
+Generating Feature TCGT
+Generating Feature TCGG
+Generating Feature TTAA
+Generating Feature TTAC
+Generating Feature TTAT
+Generating Feature TTAG
+Generating Feature TTCA
+Generating Feature TTCC
+Generating Feature TTCT
+Generating Feature TTCG
+Generating Feature TTTA
+Generating Feature TTTC
+Generating Feature TTTT
+Generating Feature TTTG
+Generating Feature TTGA
+Generating Feature TTGC
+Generating Feature TTGT
+Generating Feature TTGG
+Generating Feature TGAA
+Generating Feature TGAC
+Generating Feature TGAT
+Generating Feature TGAG
+Generating Feature TGCA
+Generating Feature TGCC
+Generating Feature TGCT
+Generating Feature TGCG
+Generating Feature TGTA
+Generating Feature TGTC
+Generating Feature TGTT
+Generating Feature TGTG
+Generating Feature TGGA
+Generating Feature TGGC
+Generating Feature TGGT
+Generating Feature TGGG
+Generating Feature GAAA
+Generating Feature GAAC
+Generating Feature GAAT
+Generating Feature GAAG
+Generating Feature GACA
+Generating Feature GACC
+Generating Feature GACT
+Generating Feature GACG
+Generating Feature GATA
+Generating Feature GATC
+Generating Feature GATT
+Generating Feature GATG
+Generating Feature GAGA
+Generating Feature GAGC
+Generating Feature GAGT
+Generating Feature GAGG
+Generating Feature GCAA
+Generating Feature GCAC
+Generating Feature GCAT
+Generating Feature GCAG
+Generating Feature GCCA
+Generating Feature GCCC
+Generating Feature GCCT
+Generating Feature GCCG
+Generating Feature GCTA
+Generating Feature GCTC
+Generating Feature GCTT
+Generating Feature GCTG
+Generating Feature GCGA
+Generating Feature GCGC
+Generating Feature GCGT
+Generating Feature GCGG
+Generating Feature GTAA
+Generating Feature GTAC
+Generating Feature GTAT
+Generating Feature GTAG
+Generating Feature GTCA
+Generating Feature GTCC
+Generating Feature GTCT
+Generating Feature GTCG
+Generating Feature GTTA
+Generating Feature GTTC
+Generating Feature GTTT
+Generating Feature GTTG
+Generating Feature GTGA
+Generating Feature GTGC
+Generating Feature GTGT
+Generating Feature GTGG
+Generating Feature GGAA
+Generating Feature GGAC
+Generating Feature GGAT
+Generating Feature GGAG
+Generating Feature GGCA
+Generating Feature GGCC
+Generating Feature GGCT
+Generating Feature GGCG
+Generating Feature GGTA
+Generating Feature GGTC
+Generating Feature GGTT
+Generating Feature GGTG
+Generating Feature GGGA
+Generating Feature GGGC
+Generating Feature GGGT
+Generating Feature GGGG
+Finding positions for A
+Finding positions for C
+Finding positions for T
+Finding positions for G
+Finding positions for AA
+Finding positions for AC
+Finding positions for AT
+Finding positions for AG
+Finding positions for CA
+Finding positions for CC
+Finding positions for CT
+Finding positions for CG
+Finding positions for TA
+Finding positions for TC
+Finding positions for TT
+Finding positions for TG
+Finding positions for GA
+Finding positions for GC
+Finding positions for GT
+Finding positions for GG
+Finding positions for AAA
+Finding positions for AAC
+Finding positions for AAT
+Finding positions for AAG
+Finding positions for ACA
+Finding positions for ACC
+Finding positions for ACT
+Finding positions for ACG
+Finding positions for ATA
+Finding positions for ATC
+Finding positions for ATT
+Finding positions for ATG
+Finding positions for AGA
+Finding positions for AGC
+Finding positions for AGT
+Finding positions for AGG
+Finding positions for CAA
+Finding positions for CAC
+Finding positions for CAT
+Finding positions for CAG
+Finding positions for CCA
+Finding positions for CCC
+Finding positions for CCT
+Finding positions for CCG
+Finding positions for CTA
+Finding positions for CTC
+Finding positions for CTT
+Finding positions for CTG
+Finding positions for CGA
+Finding positions for CGC
+Finding positions for CGT
+Finding positions for CGG
+Finding positions for TAA
+Finding positions for TAC
+Finding positions for TAT
+Finding positions for TAG
+Finding positions for TCA
+Finding positions for TCC
+Finding positions for TCT
+Finding positions for TCG
+Finding positions for TTA
+Finding positions for TTC
+Finding positions for TTT
+Finding positions for TTG
+Finding positions for TGA
+Finding positions for TGC
+Finding positions for TGT
+Finding positions for TGG
+Finding positions for GAA
+Finding positions for GAC
+Finding positions for GAT
+Finding positions for GAG
+Finding positions for GCA
+Finding positions for GCC
+Finding positions for GCT
+Finding positions for GCG
+Finding positions for GTA
+Finding positions for GTC
+Finding positions for GTT
+Finding positions for GTG
+Finding positions for GGA
+Finding positions for GGC
+Finding positions for GGT
+Finding positions for GGG
+Finding positions for AAAA
+Finding positions for AAAC
+Finding positions for AAAT
+Finding positions for AAAG
+Finding positions for AACA
+Finding positions for AACC
+Finding positions for AACT
+Finding positions for AACG
+Finding positions for AATA
+Finding positions for AATC
+Finding positions for AATT
+Finding positions for AATG
+Finding positions for AAGA
+Finding positions for AAGC
+Finding positions for AAGT
+Finding positions for AAGG
+Finding positions for ACAA
+Finding positions for ACAC
+Finding positions for ACAT
+Finding positions for ACAG
+Finding positions for ACCA
+Finding positions for ACCC
+Finding positions for ACCT
+Finding positions for ACCG
+Finding positions for ACTA
+Finding positions for ACTC
+Finding positions for ACTT
+Finding positions for ACTG
+Finding positions for ACGA
+Finding positions for ACGC
+Finding positions for ACGT
+Finding positions for ACGG
+Finding positions for ATAA
+Finding positions for ATAC
+Finding positions for ATAT
+Finding positions for ATAG
+Finding positions for ATCA
+Finding positions for ATCC
+Finding positions for ATCT
+Finding positions for ATCG
+Finding positions for ATTA
+Finding positions for ATTC
+Finding positions for ATTT
+Finding positions for ATTG
+Finding positions for ATGA
+Finding positions for ATGC
+Finding positions for ATGT
+Finding positions for ATGG
+Finding positions for AGAA
+Finding positions for AGAC
+Finding positions for AGAT
+Finding positions for AGAG
+Finding positions for AGCA
+Finding positions for AGCC
+Finding positions for AGCT
+Finding positions for AGCG
+Finding positions for AGTA
+Finding positions for AGTC
+Finding positions for AGTT
+Finding positions for AGTG
+Finding positions for AGGA
+Finding positions for AGGC
+Finding positions for AGGT
+Finding positions for AGGG
+Finding positions for CAAA
+Finding positions for CAAC
+Finding positions for CAAT
+Finding positions for CAAG
+Finding positions for CACA
+Finding positions for CACC
+Finding positions for CACT
+Finding positions for CACG
+Finding positions for CATA
+Finding positions for CATC
+Finding positions for CATT
+Finding positions for CATG
+Finding positions for CAGA
+Finding positions for CAGC
+Finding positions for CAGT
+Finding positions for CAGG
+Finding positions for CCAA
+Finding positions for CCAC
+Finding positions for CCAT
+Finding positions for CCAG
+Finding positions for CCCA
+Finding positions for CCCC
+Finding positions for CCCT
+Finding positions for CCCG
+Finding positions for CCTA
+Finding positions for CCTC
+Finding positions for CCTT
+Finding positions for CCTG
+Finding positions for CCGA
+Finding positions for CCGC
+Finding positions for CCGT
+Finding positions for CCGG
+Finding positions for CTAA
+Finding positions for CTAC
+Finding positions for CTAT
+Finding positions for CTAG
+Finding positions for CTCA
+Finding positions for CTCC
+Finding positions for CTCT
+Finding positions for CTCG
+Finding positions for CTTA
+Finding positions for CTTC
+Finding positions for CTTT
+Finding positions for CTTG
+Finding positions for CTGA
+Finding positions for CTGC
+Finding positions for CTGT
+Finding positions for CTGG
+Finding positions for CGAA
+Finding positions for CGAC
+Finding positions for CGAT
+Finding positions for CGAG
+Finding positions for CGCA
+Finding positions for CGCC
+Finding positions for CGCT
+Finding positions for CGCG
+Finding positions for CGTA
+Finding positions for CGTC
+Finding positions for CGTT
+Finding positions for CGTG
+Finding positions for CGGA
+Finding positions for CGGC
+Finding positions for CGGT
+Finding positions for CGGG
+Finding positions for TAAA
+Finding positions for TAAC
+Finding positions for TAAT
+Finding positions for TAAG
+Finding positions for TACA
+Finding positions for TACC
+Finding positions for TACT
+Finding positions for TACG
+Finding positions for TATA
+Finding positions for TATC
+Finding positions for TATT
+Finding positions for TATG
+Finding positions for TAGA
+Finding positions for TAGC
+Finding positions for TAGT
+Finding positions for TAGG
+Finding positions for TCAA
+Finding positions for TCAC
+Finding positions for TCAT
+Finding positions for TCAG
+Finding positions for TCCA
+Finding positions for TCCC
+Finding positions for TCCT
+Finding positions for TCCG
+Finding positions for TCTA
+Finding positions for TCTC
+Finding positions for TCTT
+Finding positions for TCTG
+Finding positions for TCGA
+Finding positions for TCGC
+Finding positions for TCGT
+Finding positions for TCGG
+Finding positions for TTAA
+Finding positions for TTAC
+Finding positions for TTAT
+Finding positions for TTAG
+Finding positions for TTCA
+Finding positions for TTCC
+Finding positions for TTCT
+Finding positions for TTCG
+Finding positions for TTTA
+Finding positions for TTTC
+Finding positions for TTTT
+Finding positions for TTTG
+Finding positions for TTGA
+Finding positions for TTGC
+Finding positions for TTGT
+Finding positions for TTGG
+Finding positions for TGAA
+Finding positions for TGAC
+Finding positions for TGAT
+Finding positions for TGAG
+Finding positions for TGCA
+Finding positions for TGCC
+Finding positions for TGCT
+Finding positions for TGCG
+Finding positions for TGTA
+Finding positions for TGTC
+Finding positions for TGTT
+Finding positions for TGTG
+Finding positions for TGGA
+Finding positions for TGGC
+Finding positions for TGGT
+Finding positions for TGGG
+Finding positions for GAAA
+Finding positions for GAAC
+Finding positions for GAAT
+Finding positions for GAAG
+Finding positions for GACA
+Finding positions for GACC
+Finding positions for GACT
+Finding positions for GACG
+Finding positions for GATA
+Finding positions for GATC
+Finding positions for GATT
+Finding positions for GATG
+Finding positions for GAGA
+Finding positions for GAGC
+Finding positions for GAGT
+Finding positions for GAGG
+Finding positions for GCAA
+Finding positions for GCAC
+Finding positions for GCAT
+Finding positions for GCAG
+Finding positions for GCCA
+Finding positions for GCCC
+Finding positions for GCCT
+Finding positions for GCCG
+Finding positions for GCTA
+Finding positions for GCTC
+Finding positions for GCTT
+Finding positions for GCTG
+Finding positions for GCGA
+Finding positions for GCGC
+Finding positions for GCGT
+Finding positions for GCGG
+Finding positions for GTAA
+Finding positions for GTAC
+Finding positions for GTAT
+Finding positions for GTAG
+Finding positions for GTCA
+Finding positions for GTCC
+Finding positions for GTCT
+Finding positions for GTCG
+Finding positions for GTTA
+Finding positions for GTTC
+Finding positions for GTTT
+Finding positions for GTTG
+Finding positions for GTGA
+Finding positions for GTGC
+Finding positions for GTGT
+Finding positions for GTGG
+Finding positions for GGAA
+Finding positions for GGAC
+Finding positions for GGAT
+Finding positions for GGAG
+Finding positions for GGCA
+Finding positions for GGCC
+Finding positions for GGCT
+Finding positions for GGCG
+Finding positions for GGTA
+Finding positions for GGTC
+Finding positions for GGTT
+Finding positions for GGTG
+Finding positions for GGGA
+Finding positions for GGGC
+Finding positions for GGGT
+Finding positions for GGGG
+Generating Feature GAP_A_1_A
+Generating Feature GAP_A_1_C
+Generating Feature GAP_A_1_T
+Generating Feature GAP_A_1_G
+Generating Feature GAP_C_1_A
+Generating Feature GAP_C_1_C
+Generating Feature GAP_C_1_T
+Generating Feature GAP_C_1_G
+Generating Feature GAP_T_1_A
+Generating Feature GAP_T_1_C
+Generating Feature GAP_T_1_T
+Generating Feature GAP_T_1_G
+Generating Feature GAP_G_1_A
+Generating Feature GAP_G_1_C
+Generating Feature GAP_G_1_T
+Generating Feature GAP_G_1_G
+Generating Feature GAP_A_2_A
+Generating Feature GAP_A_2_C
+Generating Feature GAP_A_2_T
+Generating Feature GAP_A_2_G
+Generating Feature GAP_C_2_A
+Generating Feature GAP_C_2_C
+Generating Feature GAP_C_2_T
+Generating Feature GAP_C_2_G
+Generating Feature GAP_T_2_A
+Generating Feature GAP_T_2_C
+Generating Feature GAP_T_2_T
+Generating Feature GAP_T_2_G
+Generating Feature GAP_G_2_A
+Generating Feature GAP_G_2_C
+Generating Feature GAP_G_2_T
+Generating Feature GAP_G_2_G
+Generating Feature GAP_A_3_A
+Generating Feature GAP_A_3_C
+Generating Feature GAP_A_3_T
+Generating Feature GAP_A_3_G
+Generating Feature GAP_C_3_A
+Generating Feature GAP_C_3_C
+Generating Feature GAP_C_3_T
+Generating Feature GAP_C_3_G
+Generating Feature GAP_T_3_A
+Generating Feature GAP_T_3_C
+Generating Feature GAP_T_3_T
+Generating Feature GAP_T_3_G
+Generating Feature GAP_G_3_A
+Generating Feature GAP_G_3_C
+Generating Feature GAP_G_3_T
+Generating Feature GAP_G_3_G
+Generating Feature GAP_A_4_A
+Generating Feature GAP_A_4_C
+Generating Feature GAP_A_4_T
+Generating Feature GAP_A_4_G
+Generating Feature GAP_C_4_A
+Generating Feature GAP_C_4_C
+Generating Feature GAP_C_4_T
+Generating Feature GAP_C_4_G
+Generating Feature GAP_T_4_A
+Generating Feature GAP_T_4_C
+Generating Feature GAP_T_4_T
+Generating Feature GAP_T_4_G
+Generating Feature GAP_G_4_A
+Generating Feature GAP_G_4_C
+Generating Feature GAP_G_4_T
+Generating Feature GAP_G_4_G
+Generating Feature GAP_A_5_A
+Generating Feature GAP_A_5_C
+Generating Feature GAP_A_5_T
+Generating Feature GAP_A_5_G
+Generating Feature GAP_C_5_A
+Generating Feature GAP_C_5_C
+Generating Feature GAP_C_5_T
+Generating Feature GAP_C_5_G
+Generating Feature GAP_T_5_A
+Generating Feature GAP_T_5_C
+Generating Feature GAP_T_5_T
+Generating Feature GAP_T_5_G
+Generating Feature GAP_G_5_A
+Generating Feature GAP_G_5_C
+Generating Feature GAP_G_5_T
+Generating Feature GAP_G_5_G
+Generating Feature GAP_A_6_A
+Generating Feature GAP_A_6_C
+Generating Feature GAP_A_6_T
+Generating Feature GAP_A_6_G
+Generating Feature GAP_C_6_A
+Generating Feature GAP_C_6_C
+Generating Feature GAP_C_6_T
+Generating Feature GAP_C_6_G
+Generating Feature GAP_T_6_A
+Generating Feature GAP_T_6_C
+Generating Feature GAP_T_6_T
+Generating Feature GAP_T_6_G
+Generating Feature GAP_G_6_A
+Generating Feature GAP_G_6_C
+Generating Feature GAP_G_6_T
+Generating Feature GAP_G_6_G
+Generating Feature GAP_A_7_A
+Generating Feature GAP_A_7_C
+Generating Feature GAP_A_7_T
+Generating Feature GAP_A_7_G
+Generating Feature GAP_C_7_A
+Generating Feature GAP_C_7_C
+Generating Feature GAP_C_7_T
+Generating Feature GAP_C_7_G
+Generating Feature GAP_T_7_A
+Generating Feature GAP_T_7_C
+Generating Feature GAP_T_7_T
+Generating Feature GAP_T_7_G
+Generating Feature GAP_G_7_A
+Generating Feature GAP_G_7_C
+Generating Feature GAP_G_7_T
+Generating Feature GAP_G_7_G
+Generating Feature GAP_A_8_A
+Generating Feature GAP_A_8_C
+Generating Feature GAP_A_8_T
+Generating Feature GAP_A_8_G
+Generating Feature GAP_C_8_A
+Generating Feature GAP_C_8_C
+Generating Feature GAP_C_8_T
+Generating Feature GAP_C_8_G
+Generating Feature GAP_T_8_A
+Generating Feature GAP_T_8_C
+Generating Feature GAP_T_8_T
+Generating Feature GAP_T_8_G
+Generating Feature GAP_G_8_A
+Generating Feature GAP_G_8_C
+Generating Feature GAP_G_8_T
+Generating Feature GAP_G_8_G
+Generating Feature GAP_A_9_A
+Generating Feature GAP_A_9_C
+Generating Feature GAP_A_9_T
+Generating Feature GAP_A_9_G
+Generating Feature GAP_C_9_A
+Generating Feature GAP_C_9_C
+Generating Feature GAP_C_9_T
+Generating Feature GAP_C_9_G
+Generating Feature GAP_T_9_A
+Generating Feature GAP_T_9_C
+Generating Feature GAP_T_9_T
+Generating Feature GAP_T_9_G
+Generating Feature GAP_G_9_A
+Generating Feature GAP_G_9_C
+Generating Feature GAP_G_9_T
+Generating Feature GAP_G_9_G
+Generating Feature GAP_A_10_A
+Generating Feature GAP_A_10_C
+Generating Feature GAP_A_10_T
+Generating Feature GAP_A_10_G
+Generating Feature GAP_C_10_A
+Generating Feature GAP_C_10_C
+Generating Feature GAP_C_10_T
+Generating Feature GAP_C_10_G
+Generating Feature GAP_T_10_A
+Generating Feature GAP_T_10_C
+Generating Feature GAP_T_10_T
+Generating Feature GAP_T_10_G
+Generating Feature GAP_G_10_A
+Generating Feature GAP_G_10_C
+Generating Feature GAP_G_10_T
+Generating Feature GAP_G_10_G
+Generating Feature GAP_A_11_A
+Generating Feature GAP_A_11_C
+Generating Feature GAP_A_11_T
+Generating Feature GAP_A_11_G
+Generating Feature GAP_C_11_A
+Generating Feature GAP_C_11_C
+Generating Feature GAP_C_11_T
+Generating Feature GAP_C_11_G
+Generating Feature GAP_T_11_A
+Generating Feature GAP_T_11_C
+Generating Feature GAP_T_11_T
+Generating Feature GAP_T_11_G
+Generating Feature GAP_G_11_A
+Generating Feature GAP_G_11_C
+Generating Feature GAP_G_11_T
+Generating Feature GAP_G_11_G
+Generating Feature GAP_A_12_A
+Generating Feature GAP_A_12_C
+Generating Feature GAP_A_12_T
+Generating Feature GAP_A_12_G
+Generating Feature GAP_C_12_A
+Generating Feature GAP_C_12_C
+Generating Feature GAP_C_12_T
+Generating Feature GAP_C_12_G
+Generating Feature GAP_T_12_A
+Generating Feature GAP_T_12_C
+Generating Feature GAP_T_12_T
+Generating Feature GAP_T_12_G
+Generating Feature GAP_G_12_A
+Generating Feature GAP_G_12_C
+Generating Feature GAP_G_12_T
+Generating Feature GAP_G_12_G
+Generating Feature GAP_A_13_A
+Generating Feature GAP_A_13_C
+Generating Feature GAP_A_13_T
+Generating Feature GAP_A_13_G
+Generating Feature GAP_C_13_A
+Generating Feature GAP_C_13_C
+Generating Feature GAP_C_13_T
+Generating Feature GAP_C_13_G
+Generating Feature GAP_T_13_A
+Generating Feature GAP_T_13_C
+Generating Feature GAP_T_13_T
+Generating Feature GAP_T_13_G
+Generating Feature GAP_G_13_A
+Generating Feature GAP_G_13_C
+Generating Feature GAP_G_13_T
+Generating Feature GAP_G_13_G
+Generating Feature GAP_A_14_A
+Generating Feature GAP_A_14_C
+Generating Feature GAP_A_14_T
+Generating Feature GAP_A_14_G
+Generating Feature GAP_C_14_A
+Generating Feature GAP_C_14_C
+Generating Feature GAP_C_14_T
+Generating Feature GAP_C_14_G
+Generating Feature GAP_T_14_A
+Generating Feature GAP_T_14_C
+Generating Feature GAP_T_14_T
+Generating Feature GAP_T_14_G
+Generating Feature GAP_G_14_A
+Generating Feature GAP_G_14_C
+Generating Feature GAP_G_14_T
+Generating Feature GAP_G_14_G
+Generating Feature GAP_A_15_A
+Generating Feature GAP_A_15_C
+Generating Feature GAP_A_15_T
+Generating Feature GAP_A_15_G
+Generating Feature GAP_C_15_A
+Generating Feature GAP_C_15_C
+Generating Feature GAP_C_15_T
+Generating Feature GAP_C_15_G
+Generating Feature GAP_T_15_A
+Generating Feature GAP_T_15_C
+Generating Feature GAP_T_15_T
+Generating Feature GAP_T_15_G
+Generating Feature GAP_G_15_A
+Generating Feature GAP_G_15_C
+Generating Feature GAP_G_15_T
+Generating Feature GAP_G_15_G
+Generating Feature GAP_A_16_A
+Generating Feature GAP_A_16_C
+Generating Feature GAP_A_16_T
+Generating Feature GAP_A_16_G
+Generating Feature GAP_C_16_A
+Generating Feature GAP_C_16_C
+Generating Feature GAP_C_16_T
+Generating Feature GAP_C_16_G
+Generating Feature GAP_T_16_A
+Generating Feature GAP_T_16_C
+Generating Feature GAP_T_16_T
+Generating Feature GAP_T_16_G
+Generating Feature GAP_G_16_A
+Generating Feature GAP_G_16_C.*
+optimization finished, #iter = 1831
+obj = -794.836951, rho = 3.411129
+nSV = 1625, nBSV = 803
+Total nSV = 1625
+.*
+optimization finished, #iter = 1821
+obj = -810.140269, rho = 3.425955
+nSV = 1630, nBSV = 814
+Total nSV = 1630
+.*
+optimization finished, #iter = 1873
+obj = -805.576984, rho = 3.409305
+nSV = 1645, nBSV = 786
+Total nSV = 1645
+.*
+optimization finished, #iter = 1851
+obj = -807.028288, rho = 3.472447
+nSV = 1650, nBSV = 808
+Total nSV = 1650
+.*
+optimization finished, #iter = 1851
+obj = -819.997744, rho = 3.430130
+nSV = 1648, nBSV = 825
+Total nSV = 1648
+..*
+optimization finished, #iter = 2275
+obj = -1005.500648, rho = -3.670659
+nSV = 2011, nBSV = 1005
+Total nSV = 2011
+/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/feature_selection/from_model.py:196: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
+  self.estimator_.fit(X, y, **fit_params)
+/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/utils/validation.py:724: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)
+
+Generating Feature GAP_G_16_T
+Generating Feature GAP_G_16_G
+Generating Feature GAP_A_17_A
+Generating Feature GAP_A_17_C
+Generating Feature GAP_A_17_T
+Generating Feature GAP_A_17_G
+Generating Feature GAP_C_17_A
+Generating Feature GAP_C_17_C
+Generating Feature GAP_C_17_T
+Generating Feature GAP_C_17_G
+Generating Feature GAP_T_17_A
+Generating Feature GAP_T_17_C
+Generating Feature GAP_T_17_T
+Generating Feature GAP_T_17_G
+Generating Feature GAP_G_17_A
+Generating Feature GAP_G_17_C
+Generating Feature GAP_G_17_T
+Generating Feature GAP_G_17_G
+Generating Feature GAP_A_18_A
+Generating Feature GAP_A_18_C
+Generating Feature GAP_A_18_T
+Generating Feature GAP_A_18_G
+Generating Feature GAP_C_18_A
+Generating Feature GAP_C_18_C
+Generating Feature GAP_C_18_T
+Generating Feature GAP_C_18_G
+Generating Feature GAP_T_18_A
+Generating Feature GAP_T_18_C
+Generating Feature GAP_T_18_T
+Generating Feature GAP_T_18_G
+Generating Feature GAP_G_18_A
+Generating Feature GAP_G_18_C
+Generating Feature GAP_G_18_T
+Generating Feature GAP_G_18_G
+Generating Feature GAP_A_19_A
+Generating Feature GAP_A_19_C
+Generating Feature GAP_A_19_T
+Generating Feature GAP_A_19_G
+Generating Feature GAP_C_19_A
+Generating Feature GAP_C_19_C
+Generating Feature GAP_C_19_T
+Generating Feature GAP_C_19_G
+Generating Feature GAP_T_19_A
+Generating Feature GAP_T_19_C
+Generating Feature GAP_T_19_T
+Generating Feature GAP_T_19_G
+Generating Feature GAP_G_19_A
+Generating Feature GAP_G_19_C
+Generating Feature GAP_G_19_T
+Generating Feature GAP_G_19_G
+Generating Feature GAP_A_20_A
+Generating Feature GAP_A_20_C
+Generating Feature GAP_A_20_T
+Generating Feature GAP_A_20_G
+Generating Feature GAP_C_20_A
+Generating Feature GAP_C_20_C
+Generating Feature GAP_C_20_T
+Generating Feature GAP_C_20_G
+Generating Feature GAP_T_20_A
+Generating Feature GAP_T_20_C
+Generating Feature GAP_T_20_T
+Generating Feature GAP_T_20_G
+Generating Feature GAP_G_20_A
+Generating Feature GAP_G_20_C
+Generating Feature GAP_G_20_T
+Generating Feature GAP_G_20_G
+Generating Feature GAP_A_21_A
+Generating Feature GAP_A_21_C
+Generating Feature GAP_A_21_T
+Generating Feature GAP_A_21_G
+Generating Feature GAP_C_21_A
+Generating Feature GAP_C_21_C
+Generating Feature GAP_C_21_T
+Generating Feature GAP_C_21_G
+Generating Feature GAP_T_21_A
+Generating Feature GAP_T_21_C
+Generating Feature GAP_T_21_T
+Generating Feature GAP_T_21_G
+Generating Feature GAP_G_21_A
+Generating Feature GAP_G_21_C
+Generating Feature GAP_G_21_T
+Generating Feature GAP_G_21_G
+[LibSVM]Traceback (most recent call last):
+  File "CRISPR_Methods/train_crisprpred_plus.py", line 56, in <module>
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1031, in __init__
+    source_address)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 251, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 336, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1037, in _get_socket
+    self.source_address)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 727, in create_connection
+    raise err
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 716, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable

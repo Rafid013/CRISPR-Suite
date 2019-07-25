@@ -10,7 +10,9 @@ urlpatterns = [
 
     path('', views.PredictionModelListView.as_view(), name='models_list'),
     path('api/', views.PredictionModelListAPIView.as_view(), name='api_models_list'),
-    path('public_models/',views.PublicModelListView.as_view(), name='public_models'),
+
+    path('public_models/', views.PublicModelListView.as_view(), name='public_models'),
+    path('api/public_models/', views.PublicModelListAPIView.as_view(), name='api_public_models'),
 
     path('create_model/', views.PredictionModelCreateView.as_view(), name='create_model'),
     path('api/create_model/', views.PredictionModelCreateAPIView.as_view(),

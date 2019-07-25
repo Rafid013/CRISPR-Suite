@@ -2,7 +2,9 @@
 venv/*
 db.sqlite3
 */migrations/*
-media/user_*/*
+media/comparisons/*
+media/trainings/*
+media/predictions/*
 CRISPR_Methods/*.pkl
 CRISPR_Methods/*.h5
 saved_models/*

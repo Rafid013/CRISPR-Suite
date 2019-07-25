@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 def get_upload_path(instance, filename):
-    return 'model_{0}/{1}'.format(instance.pk, filename)
+    return 'trainings/user_{0}/model_{1}_{2}'.format(instance.user.pk, instance.model_name, filename)
 
 
 class PredictionModel(models.Model):

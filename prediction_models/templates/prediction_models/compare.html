@@ -1,5 +1,16 @@
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
+
+<h1>Pretrained Models</h1>
+<label for="cp">CRISPRpred</label>
+<input type="checkbox" id="cp" name="pretrained_model" value="cp"><br>
+
+<label for="cpp">CRISPRpred++</label>
+<input type="checkbox" id="cpp" name="pretrained_model" value="cpp"><br>
+
+<label for="cps">CRISPRpred(SEQ)</label>
+<input type="checkbox" id="cps" name="pretrained_model" value="cps"><br>
+
 {% if user_models %}
     <h1>Your Models</h1><br>
     {% for user_model in user_models %}
@@ -15,6 +26,7 @@
         <input type="checkbox" id="public_model" name="public_model" value="{{ public_model.pk }}"><br>
     {% endfor %}
 {% endif %}
+
 <input type="file" id="prediction_file" name="prediction_file" accept=".csv"><br>
 <button type="submit" class="btn btn-success">Compare</button>
 </form>

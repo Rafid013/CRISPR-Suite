@@ -59,8 +59,6 @@ if not os.path.exists(prediction_directory + 'user_' + str(user_id)):
 to_save.to_csv(prediction_directory + 'user_' + str(user_id) + '/' + model_id + '_prediction.csv', sep=',',
                index=False)
 
-os.remove(media_directory + prediction_file)
-
 if not test_file_y.empty:
     acc = accuracy_score(test_file_y, prediction_y)
     roc = roc_auc_score(test_file_y, prediction_y_proba[:, 1])

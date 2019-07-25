@@ -45,10 +45,18 @@ class PublicModelListView(generic.View):
 
     def get(self, request):
         if self.request.user.is_authenticated:
-            models = PredictionModel.objects.filter(is_public=True)
+            models = PredictionModel.objects.filter(is_public=True).exclude(user=request.user)
             return render(request, self.template_name, {'all_models': models})
         else:
             return render(request, 'login_warning.html', {})
+
+
+class PublicModelListAPIView(APIView):
+    @staticmethod
+    def get(request):
+        models = PredictionModel.objects.filter(is_public=True).exclude(user=request.user)
+        serializer = PredictionModelGetSerializer(models, many=True)
+        return Response(serializer.data)
 
 
 class PredictionModelCreateView(generic.View):
@@ -164,15 +172,17 @@ class CompareView(generic.View):
         if self.request.user.is_authenticated:
             selected_user_model_ids = request.POST.getlist('user_model')
             selected_public_model_ids = request.POST.getlist('public_model')
+            selected_pretrained_model_ids = request.POST.getlist('pretrained_model')
+
+            if len(selected_user_model_ids) + len(selected_public_model_ids) + len(selected_pretrained_model_ids) > 5:
+                public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
+                user_models = PredictionModel.objects.filter(user=self.request.user)
+                messages.warning(request, 'Maximum 5 models can be selected for comparison')
+                return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
+
             prediction_file = request.FILES.get('prediction_file')
 
             selected_models = PredictionModel.objects.filter(pk__in=selected_public_model_ids + selected_user_model_ids)
-
-            if len(selected_models) > 5:
-                messages.warning(request, 'Maximum 5 models can be selected for comparison')
-                public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
-                user_models = PredictionModel.objects.filter(user=self.request.user)
-                return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
             selected_model_ids = ''
             selected_model_types = ''
@@ -183,14 +193,26 @@ class CompareView(generic.View):
                 selected_model_types += str(selected_model.model_type) + '_'
                 selected_model_names += selected_model.model_name + '_'
 
+            if 'cp' in selected_pretrained_model_ids:
+                selected_model_ids += 'cp_'
+                selected_model_types += '1_'
+                selected_model_names += 'CRISPRpred_'
+
+            if 'cpp' in selected_pretrained_model_ids:
+                selected_model_ids += 'cpp_'
+                selected_model_types += '2_'
+                selected_model_names += 'CRISPRpred++_'
+
+            if 'cps' in selected_pretrained_model_ids:
+                selected_model_ids += 'cps_'
+                selected_model_types += '3_'
+                selected_model_names += 'CRISPRpred(SEQ)_'
+
             selected_model_ids = selected_model_ids[:len(selected_model_ids) - 1]
             selected_model_types = selected_model_types[:len(selected_model_types) - 1]
             selected_model_names = selected_model_names[:len(selected_model_names) - 1]
 
             comparison_directory = 'comparisons/user_' + str(request.user.pk) + '/'
-
-            if not os.path.exists(comparison_directory):
-                os.makedirs(comparison_directory)
 
             fs = FileSystemStorage()
             filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
@@ -355,7 +377,7 @@ class PredictView(generic.View):
                     return render(request, 'error.html', {'status_code': 404})
 
             fs = FileSystemStorage()
-            filename = fs.save('model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
+            filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
 
             log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
             Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
@@ -413,7 +435,8 @@ class DownloadView(generic.View):
         if self.request.user.is_authenticated:
             prediction_directory = 'predictions/user_' + str(user_id) + '/'
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-                models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
+                models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user,
+                                                                                           pk=model_id))
             else:
                 models = None
             if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
@@ -472,7 +495,8 @@ class ResultView(generic.View):
         get_directory = '/' + result_directory
         if self.request.user.is_authenticated:
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
-                models = PredictionModel.objects.filter(Q(pk=model_id,is_public=True)|Q(user=request.user, pk=model_id))
+                models = PredictionModel.objects.filter(
+                    Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
             else:
                 models = None
             if models or model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
@@ -486,10 +510,16 @@ class ResultView(generic.View):
                 path_pr = get_directory + str(model_id) + "_pr_curve.png"
 
                 model_info = 'Results for '
-                if model_id == 'cp' or model_id == 'cpp' or model_id == 'cps':
+                if model_id == 'cp':
                     model_info += 'Pretrained Model: '
-                    model_info += models[0].model_name
-                elif models[0].user == request.user :
+                    model_info += 'CRISPRpred'
+                elif model_id == 'cpp':
+                    model_info += 'Pretrained Model: '
+                    model_info += 'CRISPRpred++'
+                elif model_id == 'cps':
+                    model_info += 'Pretrained Model: '
+                    model_info += 'CRISPRpred(SEQ)'
+                elif models[0].user == request.user:
                     model_info += 'Your Model: '
                     model_info += models[0].model_name
                 else:
@@ -502,7 +532,7 @@ class ResultView(generic.View):
                               {'path_table': path_table,
                                'path_roc': path_roc,
                                'path_pr': path_pr,
-                               'model_info':model_info})
+                               'model_info': model_info})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})
