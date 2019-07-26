@@ -20,7 +20,7 @@
     <div class="container">
     <div class="starter-template">
 
-        <label for="pretrained_models">Pre-trained Models</label>
+        <label for="pretrained_models"><h3>Pre-trained Models</h3>></label>
         <div id="pretrained_models">
             <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                   <thead>
@@ -57,7 +57,7 @@
             </table>
         </div>
 
-        <label for="prediction_models">Prediction Models</label>
+        <label for="prediction_models"><h3>Prediction Models</h3></label>
         <div id="prediction_models" >
             {% if all_models %}
                 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -69,6 +69,7 @@
                       <th class="th-sm">View Results</th>
                       <th class="th-sm">Last Used</th>
                       <th class="th-sm">Total Prediction</th>
+                      <th class="th-sm">Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -80,6 +81,8 @@
                         <td><a href="{% url 'prediction_models:results' model_id=model.id%}">Results</a></td>
                         <td>{{ model.recent_running_time }}</td>
                         <td>{{ model.used_for_prediction_count }}</td>
+                        <td><a href="{% url 'prediction_models:delete' model_id=model.id %}">
+                            <i class="fas fa-window-close"></i></a></td>>
                     </tr>
                     {% endfor %}
                   </tbody>

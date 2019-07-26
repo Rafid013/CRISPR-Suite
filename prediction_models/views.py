@@ -285,14 +285,16 @@ class CompareResultView(generic.View):
                 open(result_directory + 'comparison_metrics.png', 'rb')
             except FileNotFoundError:
                 messages.warning(request, "No comparisons available")
-                return redirect(reverse('prediction_models:models_list'))
+                return redirect(reverse('prediction_models:compare'))
+            model_info = "Comparison Result"
             path_table = get_directory + "comparison_metrics.png"
             path_roc = get_directory + "comparison_roc_curve.png"
             path_pr = get_directory + "comparison_pr_curve.png"
             return render(request, self.template_name,
                           {'path_table': path_table,
                            'path_roc': path_roc,
-                           'path_pr': path_pr})
+                           'path_pr': path_pr,
+                           'model_info': model_info})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -569,7 +571,7 @@ class ResultAPIView(APIView):
 
 class DeleteView(generic.View):
     @staticmethod
-    def post(request, **kwargs):
+    def get(request, **kwargs):
         if request.user.is_authenticated:
             model_id = kwargs.get('model_id')
             model = PredictionModel.objects.filter(pk=model_id, user=request.user)
@@ -583,7 +585,7 @@ class DeleteView(generic.View):
 
 class DeleteAPIView(APIView):
     @staticmethod
-    def post(request, **kwargs):
+    def get(request, **kwargs):
         model_id = kwargs.get('model_id')
         model = PredictionModel.objects.filter(pk=model_id, user=request.user)
         if model:

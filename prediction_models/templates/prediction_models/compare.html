@@ -1,32 +1,142 @@
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
+{% extends "base.html" %}
 
-<h1>Pretrained Models</h1>
-<label for="cp">CRISPRpred</label>
-<input type="checkbox" id="cp" name="pretrained_model" value="cp"><br>
+{% load staticfiles %}
+{% load crispy_forms_tags %}
 
-<label for="cpp">CRISPRpred++</label>
-<input type="checkbox" id="cpp" name="pretrained_model" value="cpp"><br>
+{% block title %}{{ block.super }}Compare Models{% endblock %}
+{% block navbar-left %}
+    {% include "_navbar.html" with active_link="compare" %}
+{% endblock %}
 
-<label for="cps">CRISPRpred(SEQ)</label>
-<input type="checkbox" id="cps" name="pretrained_model" value="cps"><br>
+{% block styles %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="{% static 'MDB/css/addons/datatables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
+{% endblock styles %}
 
-{% if user_models %}
-    <h1>Your Models</h1><br>
-    {% for user_model in user_models %}
-        <label for="user_model">{{ user_model.model_name }}</label>
-        <input type="checkbox" id="user_model" name="user_model" value="{{ user_model.pk }}"><br>
-    {% endfor %}
-{% endif %}
+{% block container %}
+    <div class="container">
+    <div class="starter-template">
 
-{% if public_models %}
-    <h1>Public Models</h1>
-    {% for public_model in public_models %}
-        <label for="public_model">{{ public_model.model_name }} by {{public_model.user.username }}</label>
-        <input type="checkbox" id="public_model" name="public_model" value="{{ public_model.pk }}"><br>
-    {% endfor %}
-{% endif %}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-<input type="file" id="prediction_file" name="prediction_file" accept=".csv"><br>
-<button type="submit" class="btn btn-success">Compare</button>
-</form>
+    <div>
+    <div id="pretrained_models" class="col-md-6">
+        <label for="pretrained_models"><h3>Pre-trained Models</h3></label>
+        <table id="pretrained_models_table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                  <th class="th-sm" style="text-align: center">Model Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="cp">CRISPRpred</label>
+                        <input type="checkbox" id="cp" name="pretrained_model" value="cp">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="cpp">CRISPRpred++</label>
+                        <input type="checkbox" id="cpp" name="pretrained_model" value="cpp">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="cps">CRISPRpred(SEQ)</label>
+                        <input type="checkbox" id="cps" name="pretrained_model" value="cps">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div id="user_models" class="col-md-6">
+        <label for="user_models"><h3>Your Models</h3></label>
+        {% if user_models %}
+        <table id="user_models_table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                  <th class="th-sm" style="text-align: center">Model Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user_model in user_models %}
+                <tr>
+                    <td>
+                        <label for="user_model">{{ user_model.model_name }}</label>
+                        <input type="checkbox" id="user_model" name="user_model" value="{{ user_model.pk }}">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <h4>You do not have any prediction model</h4>
+        {% endif %}
+    </div>
+    </div>
+    <br>
+
+    <div id="public_models" class="col-md-12">
+    <label for="public_models"><h3>Public Models</h3></label>
+    {% if public_models %}
+        <table id="public_models_table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th class="th-sm">Model Name</th>
+              <th class="th-sm">Owner</th>
+              <th class="th-sm">Last Used</th>
+              <th class="th-sm">Total Prediction</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for public_model in public_models %}
+            <tr>
+                <td>
+                    <label for="public_model">{{ public_model.model_name }}</label>
+                    <input type="checkbox" id="public_model" name="public_model" value="{{ public_model.pk }}">
+                </td>
+                <td>{{ public_model.user.username }}
+                <td>{{ public_model.recent_running_time }}</td>
+                <td>{{ public_model.used_for_prediction_count }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% else %}
+    <h4>No Public Models Available</h4>
+
+    {% endif %}
+
+
+    <input type="file" id="prediction_file" name="prediction_file" accept=".csv" style="margin: auto"><br>
+    <button type="submit" class="btn btn-success">Compare</button>
+    </form>
+    </div>
+
+    </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'MDB/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'MDB/js/popper.min.js'%}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'MDB/js/bootstrap.min.js'%}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'MDB/js/mdb.min.js'%}"></script>
+  <!-- MDBootstrap Datatables  -->
+  <script type="text/javascript" src="{% static 'MDB/js/addons/datatables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'MDB/js/comp_table.js' %}"></script>
+{% endblock scripts %}
