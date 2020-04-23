@@ -51,27 +51,30 @@ class UserSignUpView(View):
             user.email = email
             user.username = username
             user.set_password(password)
-            user.is_active = False
+            user.is_active = True
             user.save()
 
-            site_name = get_current_site(request)
-            message = render_to_string('user/account_activation_email.html', {
-                "user": user,
-                "domain": site_name.domain,
-                "uid": user.pk,
-                "token": activation_token.make_token(user)
-            })
-            subject = "Confirmation Email for CRISPR Suite Account"
-            email_to = email
-            to_list = [email_to]
-            email_from = settings.EMAIL_HOST_USER
-            send_mail(subject, message, email_from, to_list, fail_silently=False)
-            return redirect('user:account_activation_sent')
+            # site_name = get_current_site(request)
+            # message = render_to_string('user/account_activation_email.html', {
+            #     "user": user,
+            #     "domain": site_name.domain,
+            #     "uid": user.pk,
+            #     "token": activation_token.make_token(user)
+            # })
+
+            # subject = "Confirmation Email for CRISPR Suite Account"
+            # email_to = email
+            # to_list = [email_to]
+            # email_from = settings.EMAIL_HOST_USER
+            # send_mail(subject, message, email_from, to_list, fail_silently=False)
+            login(request, user)
+            return redirect('home')
         return render(request, self.template_name, {'form': form})
 
 
 class UserSignUpAPIView(APIView):
     permission_classes = [AllowAny, ]
+
     @staticmethod
     def post(request):
         serializer = UserSignUpSerializer(data=request.data)
@@ -83,18 +86,19 @@ class UserSignUpAPIView(APIView):
                 return Response(status=status.HTTP_403_FORBIDDEN)
             user = serializer.save()
             if user:
-                site_name = get_current_site(request)
-                message = render_to_string('user/account_activation_email.html', {
-                    "user": user,
-                    "domain": site_name.domain,
-                    "uid": user.pk,
-                    "token": activation_token.make_token(user)
-                })
-                subject = "Confirmation Email for CRISPR Suite Account"
-                email_to = email
-                to_list = [email_to]
-                email_from = settings.EMAIL_HOST_USER
-                send_mail(subject, message, email_from, to_list, fail_silently=False)
+                # site_name = get_current_site(request)
+                # message = render_to_string('user/account_activation_email.html', {
+                #     "user": user,
+                #     "domain": site_name.domain,
+                #     "uid": user.pk,
+                #     "token": activation_token.make_token(user)
+                # })
+                # subject = "Confirmation Email for CRISPR Suite Account"
+                # email_to = email
+                # to_list = [email_to]
+                # email_from = settings.EMAIL_HOST_USER
+                # send_mail(subject, message, email_from, to_list, fail_silently=False)
+                login(request, user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -142,15 +146,22 @@ class UserLogInView(View):
                     return redirect('home')
                 else:
                     return redirect('user:account_activation_sent')
-        messages.warning(request, "Username and Password does not match or Account has not been verified yet")
+        messages.warning(request, "Username and Password does not match")
         return render(request, self.template_name, {'form': form})
 
 
-class LogoutView(View):
+class LogOutView(View):
     @staticmethod
     def get(request):
         logout(request)
         return redirect('home')
+
+
+class LogOutAPIView(APIView):
+
+    def post(self, request):
+        self.request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 class PasswordResetView(View):
@@ -188,6 +199,8 @@ class PasswordResetView(View):
                 return render(request, self.template_name, {'form': form})
         return render(request, self.template_name, {'form': form})
 
+
+# class PasswordResetAPIView(APIView):
 
 class PasswordResetDoneView(View):
     @staticmethod

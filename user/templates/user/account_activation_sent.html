@@ -1,5 +1,7 @@
 {% extends "user/form_base.html" %}
 
+{% csrf_token %}
+
 {% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }}Account Verification{% endblock %}

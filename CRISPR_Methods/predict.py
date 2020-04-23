@@ -25,6 +25,18 @@ media_directory = 'media/'
 prediction_directory = 'predictions/'
 static_directory = 'static/'
 
+if os.path.exists(prediction_directory + 'user_' + str(user_id) + '/' + model_id + '_prediction.csv'):
+    os.remove(prediction_directory + 'user_' + str(user_id) + '/' + model_id + '_prediction.csv')
+
+if os.path.exists(static_directory + 'user_' + str(user_id) + '/' + model_id + '_metrics.png'):
+    os.remove(static_directory + 'user_' + str(user_id) + '/' + model_id + '_metrics.png')
+
+if os.path.exists(static_directory + 'user_' + str(user_id) + '/' + model_id + '_pr_curve.png'):
+    os.remove(static_directory + 'user_' + str(user_id) + '/' + model_id + '_pr_curve.png')
+
+if os.path.exists(static_directory + 'user_' + str(user_id) + '/' + model_id + '_roc_curve.png'):
+    os.remove(static_directory + 'user_' + str(user_id) + '/' + model_id + '_roc_curve.png')
+
 f = open(model_directory + model_id + '.pkl', 'rb')
 model = pkl.load(f)
 

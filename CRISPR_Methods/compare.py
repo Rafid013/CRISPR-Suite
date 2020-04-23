@@ -12,8 +12,6 @@ from roc_curve import draw_multiple_roc_curve
 from metrics_table import plot_metrics_table
 
 
-
-
 # get user_id, model_ids, model_types, model_names, prediction_file, email in command line input
 user_id = sys.argv[1]
 model_ids = sys.argv[2]

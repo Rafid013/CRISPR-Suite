@@ -7,6 +7,10 @@ app_name = 'prediction_models'
 
 urlpatterns = [
     path('instructions/', views.InstructionView.as_view(), name='instructions'),
+    path('instructions/download_training_example/', views.DownloadTrainingExampleView.as_view(),
+         name='download_training_example'),
+    path('instructions/download_prediction_example/', views.DownloadPredictionExampleView.as_view(),
+         name='download_prediction_example'),
 
     path('', views.PredictionModelListView.as_view(), name='models_list'),
     path('api/', views.PredictionModelListAPIView.as_view(), name='api_models_list'),

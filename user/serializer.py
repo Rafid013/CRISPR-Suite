@@ -10,10 +10,14 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user = User(username=validated_data['username'],
                     email=validated_data['email'])
         user.set_password(validated_data['password'])
-        user.is_active = False
+        user.is_active = True
         user.save()
         return user
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+
+# class PasswordResetSerializer(serializers.ModelSerializer):
+
+

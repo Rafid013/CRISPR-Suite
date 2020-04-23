@@ -3,6 +3,8 @@ import smtplib
 import ssl
 import sys
 
+from django.conf import settings
+
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -43,12 +45,12 @@ f = open(model_directory + model_id + '.pkl', 'wb')
 pkl.dump(pipeline, f)
 
 port = 465  # For SSL
-password = "crisprsuite123"
+password = settings.EMAIL_HOST_PASSWORD
 
 # Create a secure SSL context
 context = ssl.create_default_context()
 
-sender_email = "crisprsuite@gmail.com"
+sender_email = settings.EMAIL_HOST_USER
 receiver_email = email
 message = "Subject: Training Finished\n\nThe training of the model " + model_name + " has finished."
 

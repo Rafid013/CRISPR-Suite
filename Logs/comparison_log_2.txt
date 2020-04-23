@@ -1014,3 +1014,20 @@ Generating Feature GAP_G_21_A
 Generating Feature GAP_G_21_C
 Generating Feature GAP_G_21_T
 Generating Feature GAP_G_21_G
+['steelheart', "'gunsnroses'", 'CRISPRpred']
+Traceback (most recent call last):
+  File "CRISPR_Methods/compare.py", line 95, in <module>
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1031, in __init__
+    source_address)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 251, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 336, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1037, in _get_socket
+    self.source_address)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 727, in create_connection
+    raise err
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 716, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable

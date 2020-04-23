@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 from subprocess import Popen
 
@@ -17,6 +18,24 @@ from rest_framework.views import APIView
 from .forms import PredictionModelForm
 from .models import PredictionModel
 from .serializer import PredictionModelGetSerializer, PredictionModelPostSerializer
+
+
+class DownloadTrainingExampleView(generic.View):
+    @staticmethod
+    def get(request):
+        file = open('static/files/sample_training_file.csv', 'r')
+        response = HttpResponse(file, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=sample_training_file.csv'
+        return response
+
+
+class DownloadPredictionExampleView(generic.View):
+    @staticmethod
+    def get(request):
+        file = open('static/files/sample_prediction_file.csv', 'r')
+        response = HttpResponse(file, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=sample_prediction_file.csv'
+        return response
 
 
 class PredictionModelListView(generic.View):
@@ -45,7 +64,7 @@ class PublicModelListView(generic.View):
 
     def get(self, request):
         if self.request.user.is_authenticated:
-            models = PredictionModel.objects.filter(is_public=True).exclude(user=request.user)
+            models = PredictionModel.objects.filter(is_public=True)
             return render(request, self.template_name, {'all_models': models})
         else:
             return render(request, 'login_warning.html', {})
@@ -54,7 +73,7 @@ class PublicModelListView(generic.View):
 class PublicModelListAPIView(APIView):
     @staticmethod
     def get(request):
-        models = PredictionModel.objects.filter(is_public=True).exclude(user=request.user)
+        models = PredictionModel.objects.filter(is_public=True)
         serializer = PredictionModelGetSerializer(models, many=True)
         return Response(serializer.data)
 
@@ -123,7 +142,6 @@ class PredictionModelCreateAPIView(APIView):
     @staticmethod
     def post(request):
         serializer = PredictionModelPostSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             model_name = serializer.validated_data['model_name']
             model_type = serializer.validated_data['model_type']
@@ -181,6 +199,11 @@ class CompareView(generic.View):
                 return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
             prediction_file = request.FILES.get('prediction_file')
+            if not prediction_file:
+                public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
+                user_models = PredictionModel.objects.filter(user=self.request.user)
+                messages.warning(request, 'Choose a file')
+                return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
             selected_models = PredictionModel.objects.filter(pk__in=selected_public_model_ids + selected_user_model_ids)
 
@@ -211,7 +234,6 @@ class CompareView(generic.View):
             selected_model_ids = selected_model_ids[:len(selected_model_ids) - 1]
             selected_model_types = selected_model_types[:len(selected_model_types) - 1]
             selected_model_names = selected_model_names[:len(selected_model_names) - 1]
-
             comparison_directory = 'comparisons/user_' + str(request.user.pk) + '/'
 
             fs = FileSystemStorage()
@@ -221,7 +243,7 @@ class CompareView(generic.View):
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
                    str(selected_model_types), str(selected_model_names), str(filename), request.user.email],
                   stdout=log, stderr=log)
-            return redirect(reverse('home'))
+            return redirect(reverse('prediction_models:compare_results'))
         else:
             return render(request, 'login_warning.html', {})
 
@@ -290,11 +312,13 @@ class CompareResultView(generic.View):
             path_table = get_directory + "comparison_metrics.png"
             path_roc = get_directory + "comparison_roc_curve.png"
             path_pr = get_directory + "comparison_pr_curve.png"
+            last_modified = time.ctime(os.path.getmtime(result_directory + "comparison_metrics.png"))
             return render(request, self.template_name,
                           {'path_table': path_table,
                            'path_roc': path_roc,
                            'path_pr': path_pr,
-                           'model_info': model_info})
+                           'model_info': model_info,
+                           'last_modified': last_modified})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -471,8 +495,7 @@ class DownloadAPIView(APIView):
             try:
                 file = open(prediction_directory + str(model_id) + '_prediction.csv', 'r')
             except FileNotFoundError:
-                messages.warning(request, "No prediction is available for this model")
-                return redirect(reverse('prediction_models:models_list'))
+                return Response(status=status.HTTP_404_NOT_FOUND)
 
             response = HttpResponse(file, content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename=' + str(model_id) + '_prediction.csv'
@@ -510,7 +533,7 @@ class ResultView(generic.View):
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
                 path_pr = get_directory + str(model_id) + "_pr_curve.png"
-
+                last_modified = time.ctime(os.path.getmtime(result_directory + str(model_id) + "_metrics.png"))
                 model_info = 'Results for '
                 if model_id == 'cp':
                     model_info += 'Pretrained Model: '
@@ -534,7 +557,8 @@ class ResultView(generic.View):
                               {'path_table': path_table,
                                'path_roc': path_roc,
                                'path_pr': path_pr,
-                               'model_info': model_info})
+                               'model_info': model_info,
+                               'last_modified': last_modified})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})
@@ -585,7 +609,7 @@ class DeleteView(generic.View):
 
 class DeleteAPIView(APIView):
     @staticmethod
-    def get(request, **kwargs):
+    def post(request, **kwargs):
         model_id = kwargs.get('model_id')
         model = PredictionModel.objects.filter(pk=model_id, user=request.user)
         if model:
