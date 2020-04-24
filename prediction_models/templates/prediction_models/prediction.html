@@ -4,22 +4,39 @@
 
 {% block title %}{{ block.super }}Predict with model{% endblock %}
 
-{% block form_heading %}Upload file for predicting with model {{ model }}{% endblock %}
+{% block form_heading %}Input data for predicting with model {{ model }}{% endblock %}
 
 {% block form %}
 
     <form  method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <div class="form-row text-center">
-    <div class="col-12">
-        <input type="file" id="prediction_file" name="prediction_file" accept=".csv"><br>
-        <button  type="submit"  class="btn btn-success">Predict</button>
-    </div>
-    </div>
+    <label for="input_type">Input Data</label>
+    <select id="input_type" class="form-control input-sm"
+            style="display: inline-block;width: unset;" onchange="handleSelection($(this).val())">
+        <option value="" selected disabled>Choose One</option>
+        <option value="file">Upload a File</option>
+        <option value="text">Input Sequence</option>
+    </select>
+    <fieldset class="form-wrapper">
+        <div class="form-row text-center">
+        <div class="col-12" id="file" style="display: none;">
+            <input type="file" id="prediction_file" name="prediction_file" accept=".csv"><br>
+            <button type="submit" class="btn btn-success">Predict</button>
+        </div>
+        <div style="margin: 5px 0; display: none;" id="example">
+            <button type="button" class="btn-4 button small whitish uppercase" onclick="exampleOne()">Example 1</button>
+            <button type="button" class="btn-4 button small whitish uppercase" onclick="exampleTwo()">Example 2</button>
+        </div>
+        <div id="text" style="display: none;">
+            <textarea id="textarea" rows="10" cols="50" name="input_sequence"></textarea>
+            <button type="submit"  class="btn btn-success">Predict</button>
+        </div>
+        </div>
+    </fieldset>
     <div class="form-message" style="text-align: center">
         <p>
-            See file upload instructions <a href="{% url 'prediction_models:instructions' %}">here</a>.
+            See file upload instructions <a href="{% url 'prediction_models:instructions' %}" target="_blank">here</a>.
         </p>
     </div>
     <!--
@@ -28,6 +45,35 @@
     </div>
     -->
     </form>
+
+    <script type="text/javascript">
+        function handleSelection(choice) {
+            if(choice === 'file')
+                {
+                  document.getElementById(choice).style.display = "block";
+                  document.getElementById('text').style.display = "none";
+                  document.getElementById('example').style.display = "none";
+                }
+                else
+                {
+                  document.getElementById(choice).style.display = "block";
+                  document.getElementById('example').style.display = "block";
+                  document.getElementById('file').style.display = "none";
+                }
+            }
+
+        function exampleOne() {
+            document.getElementById('textarea').value =
+                "GAAGGGCGGCGAGAAGGAGAAGG\nGGCCGCGCTGAGCTCACTCCGGG\n" +
+                "CCAAGATGGCGATGGAGATGAGG\nCAAGATATGCTCACCAGAGTGGG\nGTTGGCAGGACGAGCAGCTGAGG\n";
+        }
+
+        function exampleTwo() {
+            document.getElementById('textarea').value =
+                "GAGGCTGTGCTGAACGGGAAGGG,1\nGGAGGTCATACCCTCCACATCGG,0\n" +
+                "CTTTCGGTACCTTCGCCCTCGGG,0\nTACTCACCCTGAGCTCCTCCAGG,1\nAGACTTCCCGCTGCTGGTGTGGG,1\n"
+        }
+    </script>
 
 {% endblock %}
 

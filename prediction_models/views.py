@@ -199,10 +199,12 @@ class CompareView(generic.View):
                 return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
             prediction_file = request.FILES.get('prediction_file')
-            if not prediction_file:
+            input_sequence = request.POST.get('input_sequence')
+
+            if not prediction_file and not input_sequence:
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
-                messages.warning(request, 'Choose a file')
+                messages.warning(request, 'No input provided')
                 return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
             selected_models = PredictionModel.objects.filter(pk__in=selected_public_model_ids + selected_user_model_ids)
@@ -236,8 +238,15 @@ class CompareView(generic.View):
             selected_model_names = selected_model_names[:len(selected_model_names) - 1]
             comparison_directory = 'comparisons/user_' + str(request.user.pk) + '/'
 
-            fs = FileSystemStorage()
-            filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
+            if prediction_file:
+                fs = FileSystemStorage()
+                filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
+            else:
+                f = open('media/' + comparison_directory + '/user_' + str(request.user.pk) + '.csv', 'w')
+                f.write('sgRNA,label\n')
+                f.write(input_sequence)
+                f.close()
+                filename = comparison_directory + '/user_' + str(request.user.pk) + '.csv'
 
             log = open('Logs/comparison_log_' + str(request.user.pk) + '.txt', 'w')
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
@@ -379,6 +388,7 @@ class PredictView(generic.View):
     def post(self, request, **kwargs):
         if self.request.user.is_authenticated:
             prediction_file = request.FILES.get('prediction_file')
+            input_sequence = request.POST.get('input_sequence')
             model_id = kwargs.get('model_id')
             if model_id == 'cp':
                 model_type = 1
@@ -402,8 +412,22 @@ class PredictView(generic.View):
                 else:
                     return render(request, 'error.html', {'status_code': 404})
 
-            fs = FileSystemStorage()
-            filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
+            if not prediction_file and not input_sequence:
+                messages.warning(request, 'No input provided')
+                return render(request, self.template_name, {'model': model_name})
+
+            if prediction_file:
+                fs = FileSystemStorage()
+                filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
+            else:
+                f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv', 'w')
+                if ',' in input_sequence:
+                    f.write('sgRNA,label\n')
+                else:
+                    f.write('sgRNA\n')
+                f.write(input_sequence)
+                f.close()
+                filename = 'predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv'
 
             log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
             Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),

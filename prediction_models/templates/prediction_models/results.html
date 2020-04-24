@@ -15,10 +15,10 @@
         <br><h3><div class="col-md-12">Generated Graphs</div></h3><br><br><br>
         <div class="row">
       		<div class="col-md-6">
-            	<a href="#" class="pop"><img src="{{ path_roc }}" alt="ROC Curve"></a>
+            	<a href="#" class="pop"><img src="{{ path_roc }}?t=<?php echo time();?" alt="ROC Curve"></a>
         	</div>
         	<div class="col-md-6">
-          		<a href="#" class="pop"><img src="{{ path_pr }}" alt="PR Curve"></a>
+          		<a href="#" class="pop"><img src="{{ path_pr }}?t=<?php echo time();?" alt="PR Curve"></a>
         	</div>
       	</div>
     </div>
@@ -29,7 +29,7 @@
         <br><h3><div class="col-md-12">Generated Table</div></h3><br><br><br>
         <div class="row">
       		<a href="#" class="pop">
-                <img class="img-responsive" src="{{ path_table }}" alt="Metrics Table" style="margin: 0 auto;"><br>
+                <img class="img-responsive" src="{{ path_table }}?t=<?php echo time();?" alt="Metrics Table" style="margin: 0 auto;"><br>
             </a>
       	</div>
     </div>

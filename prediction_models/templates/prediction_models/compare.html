@@ -22,7 +22,7 @@
 
     <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
+    <h2>Select no more than 5 models for comparison</h2>
     <div>
     <div id="pretrained_models" class="col-md-6">
         <label for="pretrained_models"><h3>Pre-trained Models</h3></label>
@@ -117,8 +117,33 @@
     {% endif %}
 
 
-    <input type="file" id="prediction_file" name="prediction_file" accept=".csv" style="margin: auto"><br>
-    <button type="submit" class="btn btn-success">Compare</button>
+    <label for="input_type">Input Data</label>
+    <select id="input_type" class="form-control input-sm"
+            style="display: inline-block;width: unset;" onchange="handleSelection($(this).val())">
+        <option value="" selected disabled>Choose One</option>
+        <option value="file">Upload a File</option>
+        <option value="text">Input Sequence</option>
+    </select>
+    <fieldset class="form-wrapper">
+        <div class="form-row text-center">
+        <div class="col-12" id="file" style="display: none; margin: auto; text-align: center" >
+            <input type="file" id="prediction_file" name="prediction_file" accept=".csv" style="margin: auto"><br>
+            <button type="submit" class="btn btn-success">Compare</button>
+        </div>
+        <div style="margin: 5px 0; display: none;" id="example">
+            <button type="button" class="btn-4 button small whitish uppercase" onclick="example()">Example</button>
+        </div>
+        <div id="text" style="display: none;">
+            <textarea id="textarea" rows="10" cols="50" name="input_sequence"></textarea><br>
+            <button type="submit"  class="btn btn-success" style="margin: auto">Compare</button>
+        </div>
+        </div>
+    </fieldset>
+    <div class="form-message" style="text-align: center">
+        <p>
+            See file upload instructions <a href="{% url 'prediction_models:instructions' %}" target="_blank">here</a>.
+        </p>
+    </div>
     </form>
     </div>
 
@@ -139,4 +164,26 @@
   <!-- MDBootstrap Datatables  -->
   <script type="text/javascript" src="{% static 'MDB/js/addons/datatables.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'MDB/js/comp_table.js' %}"></script>
+    <script type="text/javascript">
+        function handleSelection(choice) {
+            if(choice === 'file')
+                {
+                  document.getElementById(choice).style.display = "block";
+                  document.getElementById('text').style.display = "none";
+                  document.getElementById('example').style.display = "none";
+                }
+                else
+                {
+                  document.getElementById(choice).style.display = "block";
+                  document.getElementById('example').style.display = "block";
+                  document.getElementById('file').style.display = "none";
+                }
+            }
+
+        function example() {
+            document.getElementById('textarea').value =
+                "GAGGCTGTGCTGAACGGGAAGGG,1\nGGAGGTCATACCCTCCACATCGG,0\n" +
+                "CTTTCGGTACCTTCGCCCTCGGG,0\nTACTCACCCTGAGCTCCTCCAGG,1\nAGACTTCCCGCTGCTGGTGTGGG,1\n"
+        }
+    </script>
 {% endblock scripts %}

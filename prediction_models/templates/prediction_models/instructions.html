@@ -7,8 +7,9 @@
 {% block form %}
     <br><br><br>
     <div>
-    <h3>1. Data file must be a csv file.</h3>
-    <h3>2. For training, data file must have two columns. One column for 23-mer sgRNA sequence
+    <h3>1. Data file must be a csv file. The column with the sgRNA sequences must be named 'sgRNA' and the column with the
+    labels must be named 'label'.</h3>
+    <h3>2. For training and comparison, data file must have two columns. One column for 23-mer sgRNA sequence
     and the other for label (1/0). Check this sample <a href="{% url 'prediction_models:download_training_example' %}">file</a>.
     </h3>
     <h3>3. For prediction, data file should have one column for 23-mer sgRNA sequence.
