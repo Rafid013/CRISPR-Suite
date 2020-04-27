@@ -1015,16 +1015,12 @@ Generating Feature GAP_G_21_C
 Generating Feature GAP_G_21_T
 Generating Feature GAP_G_21_G
 Traceback (most recent call last):
-  File "CRISPR_Methods/compare.py", line 95, in <module>
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1031, in __init__
-    source_address)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 251, in __init__
-    (code, msg) = self.connect(host, port)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 336, in connect
-    self.sock = self._get_socket(host, port, self.timeout)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1037, in _get_socket
-    self.source_address)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 716, in create_connection
-    sock.connect(sa)
-KeyboardInterrupt
+  File "CRISPR_Methods/compare.py", line 68, in <module>
+    roc = roc_auc_score(test_file_y, prediction_proba)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/metrics/ranking.py", line 355, in roc_auc_score
+    sample_weight=sample_weight)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/metrics/base.py", line 76, in _average_binary_score
+    return binary_metric(y_true, y_score, sample_weight=sample_weight)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/metrics/ranking.py", line 323, in _binary_roc_auc_score
+    raise ValueError("Only one class present in y_true. ROC AUC score "
+ValueError: Only one class present in y_true. ROC AUC score is not defined in that case.

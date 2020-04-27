@@ -32,6 +32,9 @@
             <textarea id="textarea" rows="10" cols="50" name="input_sequence"></textarea>
             <button type="submit"  class="btn btn-success">Predict</button>
         </div>
+        <div>
+            <input type="hidden" name="request_time" id="request_time">
+        </div>
         </div>
     </fieldset>
     <div class="form-message" style="text-align: center">
@@ -48,7 +51,7 @@
 
     <script type="text/javascript">
         function handleSelection(choice) {
-            if(choice === 'file')
+                if(choice === 'file')
                 {
                   document.getElementById(choice).style.display = "block";
                   document.getElementById('text').style.display = "none";
@@ -60,6 +63,9 @@
                   document.getElementById('example').style.display = "block";
                   document.getElementById('file').style.display = "none";
                 }
+
+                document.getElementById('request_time').value =  new Date().toString();
+
             }
 
         function exampleOne() {

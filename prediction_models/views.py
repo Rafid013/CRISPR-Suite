@@ -1,5 +1,4 @@
 import os
-import time
 from datetime import datetime
 from subprocess import Popen
 
@@ -200,7 +199,7 @@ class CompareView(generic.View):
 
             prediction_file = request.FILES.get('prediction_file')
             input_sequence = request.POST.get('input_sequence')
-
+            request_time = request.POST.get('request_time')
             if not prediction_file and not input_sequence:
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
@@ -242,11 +241,15 @@ class CompareView(generic.View):
                 fs = FileSystemStorage()
                 filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
             else:
-                f = open('media/' + comparison_directory + '/user_' + str(request.user.pk) + '.csv', 'w')
+                f = open('media/' + comparison_directory + 'user_' + str(request.user.pk) + '.csv', 'w')
                 f.write('sgRNA,label\n')
                 f.write(input_sequence)
                 f.close()
-                filename = comparison_directory + '/user_' + str(request.user.pk) + '.csv'
+                filename = comparison_directory + 'user_' + str(request.user.pk) + '.csv'
+
+            f = open('media/' + comparison_directory + 'compare_time.txt', 'w')
+            f.write(request_time)
+            f.close()
 
             log = open('Logs/comparison_log_' + str(request.user.pk) + '.txt', 'w')
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
@@ -321,13 +324,16 @@ class CompareResultView(generic.View):
             path_table = get_directory + "comparison_metrics.png"
             path_roc = get_directory + "comparison_roc_curve.png"
             path_pr = get_directory + "comparison_pr_curve.png"
-            last_modified = time.ctime(os.path.getmtime(result_directory + "comparison_metrics.png"))
+
+            f = open('media/comparisons/user_' + str(request.user.pk) + '/compare_time.txt', 'r')
+            request_time = f.readline()
+
             return render(request, self.template_name,
                           {'path_table': path_table,
                            'path_roc': path_roc,
                            'path_pr': path_pr,
                            'model_info': model_info,
-                           'last_modified': last_modified})
+                           'request_time': request_time})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -389,6 +395,7 @@ class PredictView(generic.View):
         if self.request.user.is_authenticated:
             prediction_file = request.FILES.get('prediction_file')
             input_sequence = request.POST.get('input_sequence')
+            request_time = request.POST.get('request_time')
             model_id = kwargs.get('model_id')
             if model_id == 'cp':
                 model_type = 1
@@ -420,6 +427,8 @@ class PredictView(generic.View):
                 fs = FileSystemStorage()
                 filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
             else:
+                if not os.path.isdir('media/predictions/model_' + str(model_id)):
+                    os.mkdir('media/predictions/model_' + str(model_id))
                 f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv', 'w')
                 if ',' in input_sequence:
                     f.write('sgRNA,label\n')
@@ -428,6 +437,10 @@ class PredictView(generic.View):
                 f.write(input_sequence)
                 f.close()
                 filename = 'predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv'
+
+            f = open('predictions/user_' + str(request.user.pk) + '/' + str(model_id) + '_predict_time.txt', 'w')
+            f.write(request_time)
+            f.close()
 
             log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
             Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
@@ -557,7 +570,7 @@ class ResultView(generic.View):
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
                 path_pr = get_directory + str(model_id) + "_pr_curve.png"
-                last_modified = time.ctime(os.path.getmtime(result_directory + str(model_id) + "_metrics.png"))
+
                 model_info = 'Results for '
                 if model_id == 'cp':
                     model_info += 'Pretrained Model: '
@@ -577,12 +590,15 @@ class ResultView(generic.View):
                     model_info += ' Owned by '
                     model_info += models[0].user.username
 
+                f = open('predictions/user_' + str(request.user.pk) + '/' + str(model_id) + '_predict_time.txt', 'r')
+                request_time = f.readline()
+
                 return render(request, self.template_name,
                               {'path_table': path_table,
                                'path_roc': path_roc,
                                'path_pr': path_pr,
                                'model_info': model_info,
-                               'last_modified': last_modified})
+                               'request_time': request_time})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})

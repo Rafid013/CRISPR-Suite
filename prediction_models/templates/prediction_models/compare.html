@@ -144,10 +144,12 @@
             See file upload instructions <a href="{% url 'prediction_models:instructions' %}" target="_blank">here</a>.
         </p>
     </div>
+    <div>
+        <input type="hidden" name="request_time" id="request_time">
+    </div>
     </form>
     </div>
 
-    </div>
     </div>
 {% endblock %}
 
@@ -178,6 +180,7 @@
                   document.getElementById('example').style.display = "block";
                   document.getElementById('file').style.display = "none";
                 }
+                document.getElementById('request_time').value =  new Date().toString();
             }
 
         function example() {

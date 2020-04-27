@@ -9,9 +9,12 @@
 {% endblock %}
 
 {% block container %}
-    <div class="well text-center">
+    <body onload="showTime()" class="well text-center">
         <h3>{{ model_info }}</h3>
-        <h3>Result of {{ last_modified }}</h3>
+        <h3 id="time_header"></h3>
+    </body>
+    <div class="well text-center">
+
         <br><h3><div class="col-md-12">Generated Graphs</div></h3><br><br><br>
         <div class="row">
       		<div class="col-md-6">
@@ -56,4 +59,11 @@
 		});
     });
     </script>
+    <script>
+        function showTime() {
+            let dateAndTime = new Date("{{ request_time }}");
+            document.getElementById('time_header').innerText = dateAndTime.toLocaleString();
+        }
+    </script>
+
 {% endblock scripts %}
