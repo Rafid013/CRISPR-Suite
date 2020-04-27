@@ -60,7 +60,7 @@
                 {% if user.is_staff %}
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
                 {% endif %}
-                <a class="btn btn-default" href="{% url 'user:logout' %}" role="button">Log Out</a>
+                <a class="btn btn-danger" href="{% url 'user:logout' %}" role="button">Log Out</a>
               {% endif %}
             {% endblock %}
           </ul>
@@ -83,7 +83,7 @@
 
     {% block splash %}
     {% endblock splash %}
-    
+
     {% block container %}
     <div class="container">
 

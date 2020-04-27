@@ -12,6 +12,10 @@ class UserSignUpForm(forms.ModelForm):
         fields = ['username', 'email', 'password', 'confirm_password']
 
 
+class GuestUserLogInForm(forms.Form):
+    username = forms.CharField()
+
+
 class UserLogInForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)

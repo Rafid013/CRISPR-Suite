@@ -12,6 +12,8 @@ urlpatterns = [
     path('login/', views.UserLogInView.as_view(), name='login'),
     path('api/login/', obtain_auth_token, name='api_login'),
 
+    path('guest_login/', views.GuestLogInView.as_view(), name='guest_login'),
+
     path("logout/", views.LogOutView.as_view(), name="logout"),
     path('api/logout/', views.LogOutAPIView.as_view(), name='api_logout'),
 

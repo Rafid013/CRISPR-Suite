@@ -12,7 +12,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm
+from .forms import UserLogInForm, UserSignUpForm, PasswordResetForm, SetPasswordForm, GuestUserLogInForm
 from .serializer import UserSignUpSerializer
 from .token import activation_token
 
@@ -162,6 +162,16 @@ class LogOutAPIView(APIView):
     def post(self, request):
         self.request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class GuestLogInView(View):
+    form_class = GuestUserLogInForm
+    template_name = "user/guest_login_form.html"
+
+    def get(self, request):
+        request.session.create()
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
 
 
 class PasswordResetView(View):
