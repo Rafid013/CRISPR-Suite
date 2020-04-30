@@ -154,7 +154,12 @@ class LogOutView(View):
     @staticmethod
     def get(request):
         logout(request)
-        return redirect('home')
+        try:
+            user = User.objects.get(username=request.session.session_key)
+            user.delete()
+            return redirect('home')
+        except User.DoesNotExist:
+            return redirect('home')
 
 
 class LogOutAPIView(APIView):
@@ -168,10 +173,16 @@ class GuestLogInView(View):
     form_class = GuestUserLogInForm
     template_name = "user/guest_login_form.html"
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         request.session.create()
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        user = User(username=request.session.session_key)
+        user.set_unusable_password()
+        user.save()
+        login(request, user)
+        user.username = request.session.session_key
+        user.save()
+        return redirect('home')
 
 
 class PasswordResetView(View):

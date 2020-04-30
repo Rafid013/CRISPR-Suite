@@ -1,9 +1,13 @@
 <li {% if active_link == "home" %}class="active"{% endif %}><a href="{% url 'home' %}">Home</a></li>
 {% if user.is_authenticated %}
     <li {% if active_link == "model" %}class="active"{% endif %}><a href="{% url 'prediction_models:models_list' %}">Models</a></li>
-    <li {% if active_link == "new_model" %}class="active"{% endif %}><a href="{% url 'prediction_models:create_model' %}">New Model</a></li>
+    {% if is_guest == "False" %}
+        <li {% if active_link == "new_model" %}class="active"{% endif %}><a href="{% url 'prediction_models:create_model' %}">New Model</a></li>
+    {% endif %}
     <li {% if active_link == "public_models" %}class="active"{% endif %}><a href="{% url 'prediction_models:public_models' %}">Public Models</a></li>
-    <li {% if active_link == "compare" %}class="active"{% endif %}><a href="{% url 'prediction_models:compare' %}">Compare</a></li>
-    <li {% if active_link == "compare_results" %}class="active"{% endif %}><a href="{% url 'prediction_models:compare_results' %}">Comparison Results</a></li>
+    {% if is_guest == "False" %}
+        <li {% if active_link == "compare" %}class="active"{% endif %}><a href="{% url 'prediction_models:compare' %}">Compare</a></li>
+        <li {% if active_link == "compare_results" %}class="active"{% endif %}><a href="{% url 'prediction_models:compare_results' %}">Comparison Results</a></li>
+    {% endif %}
 {% endif %}
 <li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>

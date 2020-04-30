@@ -6,7 +6,7 @@
 {% block title %}{{ block.super }}Home{% endblock %}
 
 {% block navbar-left %}
-  {% include "_navbar.html" with active_link="home" %}
+  {% include "_navbar.html" with active_link="home" is_guest=is_guest %}
 {% endblock %}
 
 {% block navbar-right %}

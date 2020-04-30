@@ -6,7 +6,11 @@ class HomePage(generic.TemplateView):
     template_name = "home.html"
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {'username': request.user.username})
+        if request.user.username != request.session.session_key:
+            return render(request, self.template_name, {'username': request.user.username,
+                                                        'is_guest': "False"})
+        return render(request, self.template_name, {'username': 'Guest',
+                                                    'is_guest': "True"})
 
 
 class AboutPage(generic.TemplateView):
