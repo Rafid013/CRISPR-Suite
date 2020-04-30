@@ -82,14 +82,14 @@ class PredictionModelCreateView(generic.View):
     template_name = 'prediction_models/prediction_model_form.html'
 
     def get(self, request):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             form = self.form_class(None)
             return render(request, self.template_name, {'form': form})
         else:
             return render(request, 'login_warning.html', {})
 
     def post(self, request):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             form = self.form_class(request.POST, request.FILES)
             if form.is_valid():
                 prediction_model = form.save(commit=False)
@@ -178,7 +178,7 @@ class CompareView(generic.View):
     template_name = 'prediction_models/compare.html'
 
     def get(self, request):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
             user_models = PredictionModel.objects.filter(user=self.request.user)
             return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
@@ -186,7 +186,7 @@ class CompareView(generic.View):
             return render(request, 'login_warning.html', {})
 
     def post(self, request):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             selected_user_model_ids = request.POST.getlist('user_model')
             selected_public_model_ids = request.POST.getlist('public_model')
             selected_pretrained_model_ids = request.POST.getlist('pretrained_model')
@@ -314,7 +314,7 @@ class CompareResultView(generic.View):
     def get(self, request):
         result_directory = 'static/user_' + str(request.user.pk) + '/'
         get_directory = '/' + result_directory
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             try:
                 open(result_directory + 'comparison_metrics.png', 'rb')
             except FileNotFoundError:
@@ -429,23 +429,44 @@ class PredictView(generic.View):
             else:
                 if not os.path.isdir('media/predictions/model_' + str(model_id)):
                     os.mkdir('media/predictions/model_' + str(model_id))
-                f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv', 'w')
+                if request.user.username != request.session.session_key:
+                    f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv', 'w')
+                else:
+                    f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.username) +
+                             '.csv', 'w')
                 if ',' in input_sequence:
                     f.write('sgRNA,label\n')
                 else:
                     f.write('sgRNA\n')
                 f.write(input_sequence)
                 f.close()
-                filename = 'predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv'
 
-            f = open('predictions/user_' + str(request.user.pk) + '/' + str(model_id) + '_predict_time.txt', 'w')
-            f.write(request_time)
-            f.close()
-
-            log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
-            Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
-                   str(model_type), model_name,
-                   str(filename), request.user.email], stdout=log, stderr=log)
+                if request.user.username != request.session.session_key:
+                    filename = 'predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv'
+                    if not os.path.isdir('predictions/user_' + str(request.user.pk)):
+                        os.mkdir('predictions/user_' + str(request.user.pk))
+                    f = open('predictions/user_' + str(request.user.pk) + '/' + str(model_id) + '_predict_time.txt',
+                             'w')
+                    f.write(request_time)
+                    f.close()
+                else:
+                    filename = 'predictions/model_' + str(model_id) + '/user_' + str(request.user.username) + '.csv'
+                    if not os.path.isdir('predictions/user_' + str(request.user.username)):
+                        os.mkdir('predictions/user_' + str(request.user.username))
+                    f = open('predictions/user_' + str(request.user.username) + '/' + str(model_id) +
+                             '_predict_time.txt', 'w')
+                    f.write(request_time)
+                    f.close()
+            if request.user.username != request.session.session_key:
+                log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
+                Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
+                       str(model_type), model_name,
+                       str(filename), request.user.email], stdout=log, stderr=log)
+            else:
+                log = open('Logs/prediction_log_' + str(request.user.username) + '_' + str(model_id) + '.txt', 'w')
+                Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.username), str(model_id),
+                       str(model_type), model_name,
+                       str(filename), request.user.email], stdout=log, stderr=log)
 
             return redirect(reverse('prediction_models:models_list'))
         else:
@@ -494,8 +515,11 @@ class PredictAPIView(APIView):
 class DownloadView(generic.View):
     def get(self, request, **kwargs):
         model_id = kwargs.get('model_id')
-        user_id = request.user.pk
         if self.request.user.is_authenticated:
+            if request.user.username == request.session.session_key:
+                user_id = request.user.username
+            else:
+                user_id = request.user.pk
             prediction_directory = 'predictions/user_' + str(user_id) + '/'
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
                 models = PredictionModel.objects.filter(Q(pk=model_id, is_public=True) | Q(user=request.user,
@@ -552,10 +576,15 @@ class ResultView(generic.View):
 
     def get(self, request, **kwargs):
         model_id = kwargs.get('model_id')
-        user_id = request.user.pk
-        result_directory = 'static/user_' + str(user_id) + '/'
-        get_directory = '/' + result_directory
         if self.request.user.is_authenticated:
+            if request.user.username != request.session.session_key:
+                user_id = request.user.pk
+            else:
+                user_id = request.user.username
+
+            result_directory = 'static/user_' + str(user_id) + '/'
+            get_directory = '/' + result_directory
+
             if model_id != 'cp' and model_id != 'cpp' and model_id != 'cps':
                 models = PredictionModel.objects.filter(
                     Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
@@ -590,7 +619,7 @@ class ResultView(generic.View):
                     model_info += ' Owned by '
                     model_info += models[0].user.username
 
-                f = open('predictions/user_' + str(request.user.pk) + '/' + str(model_id) + '_predict_time.txt', 'r')
+                f = open('predictions/user_' + str(user_id) + '/' + str(model_id) + '_predict_time.txt', 'r')
                 request_time = f.readline()
 
                 return render(request, self.template_name,
