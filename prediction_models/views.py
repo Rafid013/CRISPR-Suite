@@ -82,6 +82,7 @@ class PredictionModelCreateView(generic.View):
     template_name = 'prediction_models/prediction_model_form.html'
 
     def get(self, request):
+        # check if the user is logged in and if the user is not a guest
         if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             form = self.form_class(None)
             return render(request, self.template_name, {'form': form})
@@ -89,6 +90,7 @@ class PredictionModelCreateView(generic.View):
             return render(request, 'login_warning.html', {})
 
     def post(self, request):
+        # check if the user is logged in and if the user is not a guest
         if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             form = self.form_class(request.POST, request.FILES)
             if form.is_valid():
@@ -109,6 +111,7 @@ class PredictionModelCreateView(generic.View):
                 prediction_model.is_public = is_public
                 prediction_model.user = request.user
 
+                # check if the user has already created a model with the given name
                 models = PredictionModel.objects.filter(model_name=model_name, user=request.user)
                 if models:
                     messages.warning(request, "A model with this name already exists in this project")
@@ -117,6 +120,8 @@ class PredictionModelCreateView(generic.View):
                 prediction_model.save()
 
                 log = open('Logs/creation_log_' + str(prediction_model.pk) + '.txt', 'w')
+
+                # run the code for creating the model
                 if prediction_model.model_type == 1:
                     Popen(['python', 'CRISPR_Methods/train_crisprpred.py', str(prediction_model.pk),
                            prediction_model.model_name,
@@ -191,15 +196,23 @@ class CompareView(generic.View):
             selected_public_model_ids = request.POST.getlist('public_model')
             selected_pretrained_model_ids = request.POST.getlist('pretrained_model')
 
+            # check if the number of selected models is more than 5
             if len(selected_user_model_ids) + len(selected_public_model_ids) + len(selected_pretrained_model_ids) > 5:
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
                 messages.warning(request, 'Maximum 5 models can be selected for comparison')
                 return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
 
+            # prediction_file will be available if an input file is uploaded
             prediction_file = request.FILES.get('prediction_file')
+
+            # input_sequence will be available if input is provided in textbox
             input_sequence = request.POST.get('input_sequence')
+
+            # request_time is the time comparison is requested
             request_time = request.POST.get('request_time')
+
+            # check if input is provided
             if not prediction_file and not input_sequence:
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
@@ -237,21 +250,28 @@ class CompareView(generic.View):
             selected_model_names = selected_model_names[:len(selected_model_names) - 1]
             comparison_directory = 'comparisons/user_' + str(request.user.pk) + '/'
 
+            # if the prediction_file does not exist, save the input provided in textbox to a file
             if prediction_file:
                 fs = FileSystemStorage()
                 filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
             else:
+                # make directory if it does not exist
+                if not os.path.isdir('media/' + comparison_directory):
+                    os.mkdir('media/' + comparison_directory)
                 f = open('media/' + comparison_directory + 'user_' + str(request.user.pk) + '.csv', 'w')
                 f.write('sgRNA,label\n')
                 f.write(input_sequence)
                 f.close()
                 filename = comparison_directory + 'user_' + str(request.user.pk) + '.csv'
 
+            # save the time the comparison was requested to a file
             f = open('media/' + comparison_directory + 'compare_time.txt', 'w')
             f.write(request_time)
             f.close()
 
             log = open('Logs/comparison_log_' + str(request.user.pk) + '.txt', 'w')
+
+            # run the code for comparison
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
                    str(selected_model_types), str(selected_model_names), str(filename), request.user.email],
                   stdout=log, stderr=log)
@@ -275,6 +295,7 @@ class CompareAPIView(APIView):
     def post(request):
         model_ids = request.POST.getlist('model')
         prediction_file = request.FILES.get('prediction_file')
+        request_time = request.POST.get('request_time')
         selected_models = PredictionModel.objects.filter(pk__in=model_ids)
 
         if len(selected_models) > 5:
@@ -295,11 +316,13 @@ class CompareAPIView(APIView):
 
         comparison_directory = 'comparisons/user_' + str(request.user.pk) + '/'
 
-        if not os.path.exists(comparison_directory):
-            os.makedirs(comparison_directory)
-
         fs = FileSystemStorage()
         filename = fs.save(comparison_directory + prediction_file.name, prediction_file)
+
+        # save the time the comparison was requested to a file
+        f = open('media/' + comparison_directory + 'compare_time.txt', 'w')
+        f.write(request_time)
+        f.close()
 
         log = open('Logs/comparison_log_' + str(request.user.pk) + '.txt', 'w')
         Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
@@ -429,6 +452,8 @@ class PredictView(generic.View):
             else:
                 if not os.path.isdir('media/predictions/model_' + str(model_id)):
                     os.mkdir('media/predictions/model_' + str(model_id))
+
+                # check if the user is a guest or not
                 if request.user.username != request.session.session_key:
                     f = open('media/predictions/model_' + str(model_id) + '/user_' + str(request.user.pk) + '.csv', 'w')
                 else:

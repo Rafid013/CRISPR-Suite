@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, Http404, get_object_or_404
 from django.template.loader import render_to_string
@@ -39,10 +40,12 @@ class UserSignUpView(View):
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
 
+            # send warning if password does not match
             if password != confirm_password:
                 messages.warning(request, "Password and Confirm Password does not match")
                 return render(request, self.template_name, {'form': form})
 
+            # send warning if account already exists with the given email
             if email and User.objects.filter(email=email).exclude(username=username).exists():
                 messages.warning(request, "An account already exists with this email")
                 return render(request, self.template_name, {'form': form})
@@ -67,6 +70,8 @@ class UserSignUpView(View):
             # to_list = [email_to]
             # email_from = settings.EMAIL_HOST_USER
             # send_mail(subject, message, email_from, to_list, fail_silently=False)
+
+            # login the user
             login(request, user)
             return redirect('home')
         return render(request, self.template_name, {'form': form})
@@ -81,9 +86,12 @@ class UserSignUpAPIView(APIView):
         if serializer.is_valid():
             username = serializer.validated_data['username']
             email = serializer.validated_data['email']
+
+            # send forbidden if account with the given email already exists
             if email and User.objects.filter(email=email).exclude(username=username).exists():
-                messages.warning(request, "An account already exists with this email")
                 return Response(status=status.HTTP_403_FORBIDDEN)
+
+            # save user data
             user = serializer.save()
             if user:
                 # site_name = get_current_site(request)
@@ -98,6 +106,8 @@ class UserSignUpAPIView(APIView):
                 # to_list = [email_to]
                 # email_from = settings.EMAIL_HOST_USER
                 # send_mail(subject, message, email_from, to_list, fail_silently=False)
+
+                # login the user
                 login(request, user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -155,6 +165,7 @@ class LogOutView(View):
     def get(request):
         logout(request)
         try:
+            # try to delete the user if it's a guest
             user = User.objects.get(username=request.session.session_key)
             user.delete()
             return redirect('home')
@@ -165,8 +176,12 @@ class LogOutView(View):
 class LogOutAPIView(APIView):
 
     def post(self, request):
-        self.request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+        # delete the session token
+        try:
+            self.request.user.auth_token.delete()
+            return Response(status=status.HTTP_200_OK)
+        except (AttributeError, ObjectDoesNotExist):
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class GuestLogInView(View):
@@ -176,10 +191,15 @@ class GuestLogInView(View):
     @staticmethod
     def get(request):
         request.session.create()
+
+        # create a new temporary user
         user = User(username=request.session.session_key)
         user.set_unusable_password()
         user.save()
+
         login(request, user)
+
+        # logging in changes the session key, that is why a change of the username is required
         user.username = request.session.session_key
         user.save()
         return redirect('home')
