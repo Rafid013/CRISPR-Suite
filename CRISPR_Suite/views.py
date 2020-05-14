@@ -1,5 +1,6 @@
 from django.views import generic
 from django.shortcuts import render
+from django.contrib import messages
 
 
 class HomePage(generic.TemplateView):
@@ -8,10 +9,10 @@ class HomePage(generic.TemplateView):
     def get(self, request, *args, **kwargs):
         # check if the user is guest or not (the username is same as the session key for a guest)
         if request.user.username != request.session.session_key:
-            return render(request, self.template_name, {'username': request.user.username,
-                                                        'is_guest': "False"})
-        return render(request, self.template_name, {'username': 'Guest',
-                                                    'is_guest': "True"})
+            messages.success(request, 'Hello ' + request.user.username)
+        else:
+            messages.success(request, 'Hello Guest')
+        return render(request, self.template_name)
 
 
 class AboutPage(generic.TemplateView):
