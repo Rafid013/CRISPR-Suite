@@ -137,10 +137,27 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 THUMBNAIL_EXTENSION = "png"
 # EMAIL confirmation
+#Gmail Setup
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = False
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'crisprsuite@gmail.com'
+#EMAIL_HOST_PASSWORD = 'crisprsuite123'
+#EMAIL_PORT = 465
+
+#Console Setup
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'crisprsuite@gmail.com'
-EMAIL_HOST_PASSWORD = 'crisprsuite123'
-EMAIL_PORT = 465
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_USE_TLS = False
+# DEFAULT_FROM_EMAIL = 'testing@example.com'
+
+#SendGrid Setup
+# Install the following library with pip
+# pip install django-sendgrid-v5
+EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
+SENDGRID_API_KEY = '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'
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+EMAIL_HOST_USER = 'support@crisprsuite.org'
