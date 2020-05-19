@@ -4,7 +4,9 @@
 
 {% block title %}{{ block.super }}Predict with model{% endblock %}
 
-{% block form_heading %}Input data for predicting with model {{ model }}{% endblock %}
+{% block form_heading %}Input data for predicting with model {{ model }}<br>
+    {% if is_guest == True %}<a href="{% url 'user:signup'%}"> Create an account</a>
+        to predict for more than 50 sequences{% endif %}{% endblock %}
 
 {% block form %}
 

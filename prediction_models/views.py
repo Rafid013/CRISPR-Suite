@@ -140,6 +140,7 @@ class PredictionModelCreateView(generic.View):
                     Popen(['python', 'CRISPR_Methods/train_crisprpred_seq.py', str(prediction_model.pk),
                            prediction_model.model_name,
                            str(prediction_model.training_file), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'An email will be sent to you after model is created')
                 return redirect(reverse('prediction_models:models_list'))
             return render(request, self.template_name, {'form': form, 'is_guest': False})
         else:
@@ -285,7 +286,8 @@ class CompareView(generic.View):
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
                    str(selected_model_types), str(selected_model_names), str(filename), request.user.email],
                   stdout=log, stderr=log)
-            return redirect(reverse('prediction_models:compare_results'))
+            messages.success(request, 'An email will be sent to you after comparison is completed')
+            return redirect(reverse('prediction_models:compare'))
         else:
             return render(request, 'login_warning.html', {})
 
@@ -475,7 +477,21 @@ class PredictView(generic.View):
             if prediction_file:
                 fs = FileSystemStorage()
                 filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
+                f = open('media/predictions/model_' + str(model_id) + '/' + prediction_file.name, 'r')
+                if request.user.username == request.session.session_key:
+                    line_cnt = 0
+                    for _ in f:
+                        line_cnt += 1
+                    if line_cnt > 50:
+                        messages.warning(request, "You can't provide more than 50 sequences as input")
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': True})
             else:
+                if request.user.username == request.session.session_key:
+                    line_cnt = str(input_sequence).count('\n')
+                    if line_cnt > 50:
+                        messages.warning(request, "You can't provide more than 50 sequences as input")
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': True})
+
                 if not os.path.isdir('media/predictions/model_' + str(model_id)):
                     os.mkdir('media/predictions/model_' + str(model_id))
 
@@ -508,16 +524,19 @@ class PredictView(generic.View):
                              '_predict_time.txt', 'w')
                     f.write(request_time)
                     f.close()
+
             if request.user.username != request.session.session_key:
                 log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
                        str(model_type), model_name,
                        str(filename), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'A email will be sent to you after prediction is completed')
             else:
                 log = open('Logs/prediction_log_' + str(request.user.username) + '_' + str(model_id) + '.txt', 'w')
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.username), str(model_id),
                        str(model_type), model_name,
                        str(filename), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'The prediction results will be available soon, wait a few minutes')
 
             return redirect(reverse('prediction_models:models_list'))
         else:
@@ -582,7 +601,7 @@ class DownloadView(generic.View):
                     file = open(prediction_directory + str(model_id) +
                                 '_prediction.csv', 'r')
                 except FileNotFoundError:
-                    messages.warning(request, "No prediction is available for this model")
+                    messages.warning(request, "No prediction is available for this model yet")
                     return redirect(request.META.get('HTTP_REFERER'))
 
                 response = HttpResponse(file, content_type='text/csv')
@@ -648,7 +667,7 @@ class ResultView(generic.View):
                 try:
                     open(result_directory + str(model_id) + '_metrics.png', 'r')
                 except FileNotFoundError:
-                    messages.warning(request, 'No results were created for this model')
+                    messages.warning(request, 'No results were created for this model yet')
                     return redirect(request.META.get('HTTP_REFERER'))
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
