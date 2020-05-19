@@ -44,7 +44,10 @@ class PredictionModelListView(generic.View):
     def get(self, request):
         if self.request.user.is_authenticated:
             models = PredictionModel.objects.filter(user=self.request.user)
-            return render(request, self.template_name, {'all_models': models})
+            if request.user.username != request.session.session_key:
+                return render(request, self.template_name, {'all_models': models, 'is_guest': False})
+            else:
+                return render(request, self.template_name, {'all_models': models, 'is_guest': True})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -64,7 +67,10 @@ class PublicModelListView(generic.View):
     def get(self, request):
         if self.request.user.is_authenticated:
             models = PredictionModel.objects.filter(is_public=True)
-            return render(request, self.template_name, {'all_models': models})
+            if request.user.username != request.session.session_key:
+                return render(request, self.template_name, {'all_models': models, 'is_guest': False})
+            else:
+                return render(request, self.template_name, {'all_models': models, 'is_guest': True})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -85,7 +91,7 @@ class PredictionModelCreateView(generic.View):
         # check if the user is logged in and if the user is not a guest
         if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             form = self.form_class(None)
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'is_guest': False})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -115,7 +121,7 @@ class PredictionModelCreateView(generic.View):
                 models = PredictionModel.objects.filter(model_name=model_name, user=request.user)
                 if models:
                     messages.warning(request, "A model with this name already exists in this project")
-                    return render(request, self.template_name, {'form': form})
+                    return render(request, self.template_name, {'form': form, 'is_guest': False})
 
                 prediction_model.save()
 
@@ -134,8 +140,9 @@ class PredictionModelCreateView(generic.View):
                     Popen(['python', 'CRISPR_Methods/train_crisprpred_seq.py', str(prediction_model.pk),
                            prediction_model.model_name,
                            str(prediction_model.training_file), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'An email will be sent to you after model is created')
                 return redirect(reverse('prediction_models:models_list'))
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'is_guest': False})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -186,7 +193,8 @@ class CompareView(generic.View):
         if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
             user_models = PredictionModel.objects.filter(user=self.request.user)
-            return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
+            return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models,
+                                                        'is_guest': False})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -201,8 +209,9 @@ class CompareView(generic.View):
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
                 messages.warning(request, 'Maximum 5 models can be selected for comparison')
-                return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
-
+                return render(request, self.template_name,
+                              {'public_models': public_models, 'user_models': user_models,
+                               'is_guest': False})
             # prediction_file will be available if an input file is uploaded
             prediction_file = request.FILES.get('prediction_file')
 
@@ -217,7 +226,9 @@ class CompareView(generic.View):
                 public_models = PredictionModel.objects.filter(is_public=True).exclude(user=self.request.user)
                 user_models = PredictionModel.objects.filter(user=self.request.user)
                 messages.warning(request, 'No input provided')
-                return render(request, self.template_name, {'public_models': public_models, 'user_models': user_models})
+                return render(request, self.template_name,
+                              {'public_models': public_models, 'user_models': user_models,
+                               'is_guest': False})
 
             selected_models = PredictionModel.objects.filter(pk__in=selected_public_model_ids + selected_user_model_ids)
 
@@ -275,7 +286,8 @@ class CompareView(generic.View):
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
                    str(selected_model_types), str(selected_model_names), str(filename), request.user.email],
                   stdout=log, stderr=log)
-            return redirect(reverse('prediction_models:compare_results'))
+            messages.success(request, 'An email will be sent to you after comparison is completed')
+            return redirect(reverse('prediction_models:compare'))
         else:
             return render(request, 'login_warning.html', {})
 
@@ -356,7 +368,8 @@ class CompareResultView(generic.View):
                            'path_roc': path_roc,
                            'path_pr': path_pr,
                            'model_info': model_info,
-                           'request_time': request_time})
+                           'request_time': request_time,
+                           'is_guest': False})
         else:
             return render(request, 'login_warning.html', {})
 
@@ -392,13 +405,22 @@ class PredictView(generic.View):
             model_id = kwargs.get('model_id')
             if model_id == 'cp':
                 model_name = 'CRISPRpred'
-                return render(request, self.template_name, {'model': model_name})
+                if request.user.username != request.session.session_key:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': False})
+                else:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': True})
             elif model_id == 'cpp':
                 model_name = 'CRISPRpred++'
-                return render(request, self.template_name, {'model': model_name})
+                if request.user.username != request.session.session_key:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': False})
+                else:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': True})
             elif model_id == 'cps':
                 model_name = 'CRISPRpred(SEQ)'
-                return render(request, self.template_name, {'model': model_name})
+                if request.user.username != request.session.session_key:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': False})
+                else:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': True})
             else:
                 models = PredictionModel.objects.filter(
                     Q(pk=model_id, is_public=True) | Q(user=request.user, pk=model_id))
@@ -409,7 +431,10 @@ class PredictView(generic.View):
                     except FileNotFoundError:
                         messages.warning(request, "Training haven\'t finished yet")
                         return redirect(request.META.get('HTTP_REFERER'))
-                    return render(request, self.template_name, {'model': model_name})
+                    if request.user.username != request.session.session_key:
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': False})
+                    else:
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': True})
                 return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})
@@ -444,12 +469,29 @@ class PredictView(generic.View):
 
             if not prediction_file and not input_sequence:
                 messages.warning(request, 'No input provided')
-                return render(request, self.template_name, {'model': model_name})
+                if request.user.username != request.session.session_key:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': False})
+                else:
+                    return render(request, self.template_name, {'model': model_name, 'is_guest': True})
 
             if prediction_file:
                 fs = FileSystemStorage()
                 filename = fs.save('predictions/model_' + str(model_id) + '/' + prediction_file.name, prediction_file)
+                f = open('media/predictions/model_' + str(model_id) + '/' + prediction_file.name, 'r')
+                if request.user.username == request.session.session_key:
+                    line_cnt = 0
+                    for _ in f:
+                        line_cnt += 1
+                    if line_cnt > 50:
+                        messages.warning(request, "You can't provide more than 50 sequences as input")
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': True})
             else:
+                if request.user.username == request.session.session_key:
+                    line_cnt = str(input_sequence).count('\n')
+                    if line_cnt > 50:
+                        messages.warning(request, "You can't provide more than 50 sequences as input")
+                        return render(request, self.template_name, {'model': model_name, 'is_guest': True})
+
                 if not os.path.isdir('media/predictions/model_' + str(model_id)):
                     os.mkdir('media/predictions/model_' + str(model_id))
 
@@ -482,16 +524,19 @@ class PredictView(generic.View):
                              '_predict_time.txt', 'w')
                     f.write(request_time)
                     f.close()
+
             if request.user.username != request.session.session_key:
                 log = open('Logs/prediction_log_' + str(request.user.pk) + '_' + str(model_id) + '.txt', 'w')
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
                        str(model_type), model_name,
                        str(filename), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'A email will be sent to you after prediction is completed')
             else:
                 log = open('Logs/prediction_log_' + str(request.user.username) + '_' + str(model_id) + '.txt', 'w')
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.username), str(model_id),
                        str(model_type), model_name,
                        str(filename), request.user.email], stdout=log, stderr=log)
+                messages.success(request, 'The prediction results will be available soon, wait a few minutes')
 
             return redirect(reverse('prediction_models:models_list'))
         else:
@@ -556,7 +601,7 @@ class DownloadView(generic.View):
                     file = open(prediction_directory + str(model_id) +
                                 '_prediction.csv', 'r')
                 except FileNotFoundError:
-                    messages.warning(request, "No prediction is available for this model")
+                    messages.warning(request, "No prediction is available for this model yet")
                     return redirect(request.META.get('HTTP_REFERER'))
 
                 response = HttpResponse(file, content_type='text/csv')
@@ -592,7 +637,10 @@ class DownloadAPIView(APIView):
 class InstructionView(generic.View):
     @staticmethod
     def get(request):
-        return render(request, 'prediction_models/instructions.html', {})
+        if request.user.username != request.session.session_key:
+            return render(request, 'prediction_models/instructions.html', {'is_guest': False})
+        else:
+            return render(request, 'prediction_models/instructions.html', {'is_guest': True})
 
 
 class ResultView(generic.View):
@@ -619,7 +667,7 @@ class ResultView(generic.View):
                 try:
                     open(result_directory + str(model_id) + '_metrics.png', 'r')
                 except FileNotFoundError:
-                    messages.warning(request, 'No results were created for this model')
+                    messages.warning(request, 'No results were created for this model yet')
                     return redirect(request.META.get('HTTP_REFERER'))
                 path_table = get_directory + str(model_id) + "_metrics.png"
                 path_roc = get_directory + str(model_id) + "_roc_curve.png"
@@ -652,7 +700,8 @@ class ResultView(generic.View):
                                'path_roc': path_roc,
                                'path_pr': path_pr,
                                'model_info': model_info,
-                               'request_time': request_time})
+                               'request_time': request_time,
+                               'is_guest': False})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})

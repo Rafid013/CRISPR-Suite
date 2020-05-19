@@ -679,18 +679,16 @@ Finding positions for GGGC
 Finding positions for GGGT
 Finding positions for GGGG
 Traceback (most recent call last):
-  File "CRISPR_Methods/predict.py", line 107, in <module>
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1031, in __init__
-    source_address)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 251, in __init__
-    (code, msg) = self.connect(host, port)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 336, in connect
-    self.sock = self._get_socket(host, port, self.timeout)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/smtplib.py", line 1037, in _get_socket
-    self.source_address)
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 727, in create_connection
-    raise err
-  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/socket.py", line 716, in create_connection
-    sock.connect(sa)
-OSError: [Errno 101] Network is unreachable
+  File "CRISPR_Methods/predict.py", line 58, in <module>
+    prediction_y = model.predict(test_x)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/utils/metaestimators.py", line 116, in <lambda>
+    out = lambda *args, **kwargs: self.fn(obj, *args, **kwargs)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/pipeline.py", line 422, in predict
+    return self.steps[-1][-1].predict(Xt, **predict_params)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/svm/base.py", line 574, in predict
+    y = super().predict(X)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/svm/base.py", line 324, in predict
+    return predict(X)
+  File "/home/rafid/anaconda3/envs/CRISPR_Suite/lib/python3.7/site-packages/sklearn/svm/base.py", line 346, in _dense_predict
+    cache_size=self.cache_size)
+KeyboardInterrupt
