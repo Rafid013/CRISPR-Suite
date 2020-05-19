@@ -6,7 +6,7 @@
 {% block title %}{{ block.super }}About{% endblock %}
 
 {% block navbar-left %}
-  {% include "_navbar.html" with active_link="about" %}
+  {% include "_navbar.html" with active_link="about" is_guest=is_guest %}
 {% endblock %}
 
 <!-- Benefits of the Django application -->

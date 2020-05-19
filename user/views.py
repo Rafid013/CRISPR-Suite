@@ -18,7 +18,7 @@ from .serializer import UserSignUpSerializer
 from .token import activation_token
 
 
-# Create your views here.
+# Create your views here
 class UserSignUpView(View):
     form_class = UserSignUpForm
     template_name = 'user/signup_form.html'
@@ -54,7 +54,7 @@ class UserSignUpView(View):
             user.email = email
             user.username = username
             user.set_password(password)
-            user.is_active = True
+            user.is_active = False
             user.save()
 
             site_name = get_current_site(request)
@@ -71,9 +71,7 @@ class UserSignUpView(View):
             email_from = settings.EMAIL_HOST_USER
             send_mail(subject, message, email_from, to_list, fail_silently=False)
 
-            # login the user
-            login(request, user)
-            return redirect('home')
+            return redirect('user:account_activation_sent')
         return render(request, self.template_name, {'form': form})
 
 
