@@ -138,15 +138,15 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 THUMBNAIL_EXTENSION = "png"
 # EMAIL confirmation
-#Gmail Setup
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS = False
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'crisprsuite@gmail.com'
-#EMAIL_HOST_PASSWORD = 'crisprsuite123'
-#EMAIL_PORT = 465
+# Gmail Setup
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = False
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'crisprsuite@gmail.com'
+# EMAIL_HOST_PASSWORD = 'crisprsuite123'
+# EMAIL_PORT = 465
 
-#Console Setup
+# Console Setup
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
@@ -155,7 +155,7 @@ THUMBNAIL_EXTENSION = "png"
 # EMAIL_USE_TLS = False
 # DEFAULT_FROM_EMAIL = 'testing@example.com'
 
-#SendGrid Setup
+# SendGrid Setup
 # Install the following library with pip
 # pip install django-sendgrid-v5
 # EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
@@ -166,14 +166,14 @@ THUMBNAIL_EXTENSION = "png"
 # add "anymail" in installed apps
 ANYMAIL = {
     "SPARKPOST_API_KEY": "47c9d9f89cb79b9088289d65fa4fc6af908a6e13",
-    "SENDINBLUE_API_KEY" : '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'
+    "SENDINBLUE_API_KEY": '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'
 }
 
-#SendinBlue Setup
-#pip install django-anymail[sendinblue]
+# SendinBlue Setup
+# pip install django-anymail[sendinblue]
 
-#SparkPost Setup
-#pip install django-anymail[sparkpost]
+# SparkPost Setup
+# pip install django-anymail[sparkpost]
 EMAIL_HOST = 'smtp.sparkpostmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'SMTP_Injection'

@@ -44,16 +44,17 @@ pipeline.fit(train_x, train_y)
 f = open(model_directory + model_id + '.pkl', 'wb')
 pkl.dump(pipeline, f)
 
-port = 465  # For SSL
+port = settings.EMAIL_PORT
 password = settings.EMAIL_HOST_PASSWORD
 
 # Create a secure SSL context
 context = ssl.create_default_context()
 
-sender_email = settings.EMAIL_HOST_USER
+sender_email = settings.EMAIL_USER_NAME
 receiver_email = email
 message = "Subject: Training Finished\n\nThe training of the model " + model_name + " has finished."
 
-with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
+    server.starttls(context=context)
     server.login(sender_email, password)
     server.sendmail(sender_email, receiver_email, message)

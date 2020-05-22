@@ -11,6 +11,8 @@ from pr_curve import draw_pr_curve
 from roc_curve import draw_roc_curve
 from metrics_table import plot_metrics_table
 
+from django.conf import settings
+
 
 # get user_id, model_id, model_type, model_name, prediction_file, email in command line input
 user_id = sys.argv[1]
@@ -94,16 +96,17 @@ if not test_file_y.empty:
     roc_curve_plt = draw_roc_curve(test_file_y, prediction_y_proba[:, 1])
     roc_curve_plt.savefig(static_directory + 'user_' + str(user_id) + '/' + model_id + '_roc_curve.png')
 
-port = 465  # For SSL
-password = "crisprsuite123"
+port = settings.EMAIL_PORT
+password = settings.EMAIL_HOST_PASSWORD
 
 # Create a secure SSL context
 context = ssl.create_default_context()
 
-sender_email = "crisprsuite@gmail.com"
+sender_email = settings.EMAIL_USER_NAME
 receiver_email = email
 message = "Subject: Prediction Finished\n\nThe prediction of the model " + model_name + " is now available."
 
-with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
+    server.starttls(context=context)
     server.login(sender_email, password)
     server.sendmail(sender_email, receiver_email, message)
