@@ -68,7 +68,7 @@ class UserSignUpView(View):
             subject = "Confirmation Email for CRISPR Suite Account"
             email_to = email
             to_list = [email_to]
-            email_from = settings.EMAIL_HOST_USER
+            email_from = settings.EMAIL_USER_NAME
             send_mail(subject, message, email_from, to_list, fail_silently=False)
 
             return redirect('user:account_activation_sent')
