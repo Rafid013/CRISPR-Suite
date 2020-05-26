@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, reca
 from pr_curve import draw_multiple_pr_curve
 from roc_curve import draw_multiple_roc_curve
 from metrics_table import plot_metrics_table
-
+from django.core.mail import send_mail
 
 # get user_id, model_ids, model_types, model_names, prediction_file, email in command line input
 user_id = sys.argv[1]
@@ -90,8 +90,10 @@ context = ssl.create_default_context()
 
 sender_email = "crisprsuite@gmail.com"
 receiver_email = email
-message = "Subject: Comparison Finished\n\nThe comparison metrics are now available."
+message = "The comparison metrics are now available."
+subject = "Comparison Completed"
+send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
 
-with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-    server.login(sender_email, password)
-    server.sendmail(sender_email, receiver_email, message)
+# with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+#     server.login(sender_email, password)
+#     server.sendmail(sender_email, receiver_email, message)

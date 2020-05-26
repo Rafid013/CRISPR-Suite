@@ -102,7 +102,7 @@ class UserSignUpAPIView(APIView):
                 subject = "Confirmation Email for CRISPR Suite Account"
                 email_to = email
                 to_list = [email_to]
-                email_from = settings.EMAIL_HOST_USER
+                email_from = settings.EMAIL_USER_NAME
                 send_mail(subject, message, email_from, to_list, fail_silently=False)
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -227,7 +227,7 @@ class PasswordResetView(View):
                 subject = "Reset your password"
                 email_to = email
                 to_list = [email_to]
-                email_from = settings.EMAIL_HOST_USER
+                email_from = settings.EMAIL_USER_NAME
                 send_mail(subject, message, email_from, to_list, fail_silently=False)
                 return redirect('user:password-reset-done')
 

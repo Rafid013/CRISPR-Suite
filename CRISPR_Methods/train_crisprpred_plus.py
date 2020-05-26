@@ -11,6 +11,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from generate_features import position_independent, position_specific, gap_features
+from django.core.mail import send_mail
 
 from django.conf import settings
 
@@ -52,9 +53,11 @@ context = ssl.create_default_context()
 
 sender_email = settings.EMAIL_USER_NAME
 receiver_email = email
-message = "Subject: Training Finished\n\nThe training of the model " + model_name + " has finished."
+message = "The training of the model " + model_name + " has finished."
+subject = "Training Completed"
+send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
 
-with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
-    server.starttls(context=context)
-    server.login(sender_email, password)
-    server.sendmail(sender_email, receiver_email, message)
+# with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
+#     server.starttls(context=context)
+#     server.login(sender_email, password)
+#     server.sendmail(sender_email, receiver_email, message)

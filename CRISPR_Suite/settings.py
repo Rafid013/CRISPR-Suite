@@ -139,12 +139,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap3"
 THUMBNAIL_EXTENSION = "png"
 # EMAIL confirmation
 # Gmail Setup
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = False
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'crisprsuite@gmail.com'
-# EMAIL_HOST_PASSWORD = 'crisprsuite123'
-# EMAIL_PORT = 465
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_USER_NAME = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_HOST_PASSWORD = 'genomePrediction2020'
+EMAIL_PORT = 587
 
 # Console Setup
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -164,19 +165,19 @@ THUMBNAIL_EXTENSION = "png"
 # EMAIL_HOST_USER = 'support@crisprsuite.org'
 
 # add "anymail" in installed apps
-ANYMAIL = {
-    "SPARKPOST_API_KEY": "47c9d9f89cb79b9088289d65fa4fc6af908a6e13",
-    "SENDINBLUE_API_KEY": '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'
-}
+# ANYMAIL = {
+#     "SPARKPOST_API_KEY": "47c9d9f89cb79b9088289d65fa4fc6af908a6e13",
+#     "SENDINBLUE_API_KEY": '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'
+# }
 
 # SendinBlue Setup
 # pip install django-anymail[sendinblue]
 
 # SparkPost Setup
 # pip install django-anymail[sparkpost]
-EMAIL_HOST = 'smtp.sparkpostmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'SMTP_Injection'
-EMAIL_USER_NAME = 'crisprsuite@sparkpostbox.com'
-EMAIL_HOST_PASSWORD = '47c9d9f89cb79b9088289d65fa4fc6af908a6e13'
-EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.sparkpostmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'SMTP_Injection'
+# EMAIL_USER_NAME = 'crisprsuite@sparkpostbox.com'
+# EMAIL_HOST_PASSWORD = '47c9d9f89cb79b9088289d65fa4fc6af908a6e13'
+# EMAIL_USE_TLS = True

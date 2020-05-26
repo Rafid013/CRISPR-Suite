@@ -12,6 +12,7 @@ from roc_curve import draw_roc_curve
 from metrics_table import plot_metrics_table
 
 from django.conf import settings
+from django.core.mail import send_mail
 
 
 # get user_id, model_id, model_type, model_name, prediction_file, email in command line input
@@ -104,9 +105,25 @@ context = ssl.create_default_context()
 
 sender_email = settings.EMAIL_USER_NAME
 receiver_email = email
-message = "Subject: Prediction Finished\n\nThe prediction of the model " + model_name + " is now available."
+message = "The prediction of the model " + model_name + " is now available."
+subject = "Prediction Completed"
+send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
 
-with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
-    server.starttls(context=context)
-    server.login(sender_email, password)
-    server.sendmail(sender_email, receiver_email, message)
+# from sparkpost import SparkPost
+# sp = SparkPost(password)
+# sp.transmissions.send(
+#     use_sandbox=True,
+#     recipients=[receiver_email],
+#     html= '<p>' + message + '</p>',
+#     from_email=sender_email,
+#     subject=subject
+# )
+
+#sp = SparkPost('47c9d9f89cb79b9088289d65fa4fc6af908a6e13')
+
+#sp.transmissions.send(recipients=receipients, html= html, from_email=sender,subject=subject, use_sandbox =True)
+
+# with smtplib.SMTP(settings.EMAIL_USER_NAME, port) as server:
+#     server.starttls(context=context)
+#     server.login(sender_email, password)
+#     server.sendmail(sender_email, receiver_email, message)

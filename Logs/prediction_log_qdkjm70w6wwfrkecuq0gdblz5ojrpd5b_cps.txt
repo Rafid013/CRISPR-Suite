@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "CRISPR_Methods/predict.py", line 40, in <module>
-    f = open(model_directory + model_id + '.pkl', 'rb')
-FileNotFoundError: [Errno 2] No such file or directory: 'saved_models/cps.pkl'
