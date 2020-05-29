@@ -12,11 +12,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from generate_features import position_independent, position_specific, gap_features
 from django.core.mail import send_mail
-from django.conf import settings
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_USER_NAME = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_HOST_PASSWORD = 'genomePrediction2020'
+EMAIL_PORT = 587
 
 # get model_id, model_name, filename, email in command line input
 model_id = sys.argv[1]
-print(model_id)
 model_name = sys.argv[2]
 filename = sys.argv[3]
 email = sys.argv[4]
@@ -45,19 +52,23 @@ pipeline.fit(train_x, train_y)
 f = open(model_directory + model_id + '.pkl', 'wb')
 pkl.dump(pipeline, f)
 
-port = settings.EMAIL_PORT
-password = settings.EMAIL_HOST_PASSWORD
+port = EMAIL_PORT
+password = EMAIL_HOST_PASSWORD
+smtp_server = EMAIL_HOST
 
 # Create a secure SSL context
-context = ssl.create_default_context()
+context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
-sender_email = settings.EMAIL_USER_NAME
+sender_email = EMAIL_USER_NAME
 receiver_email = email
-message = "The training of the model " + model_name + " has finished."
-subject = "Training Completed"
-send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
+message = """\
+Subject: Training Completed
 
-# with smtplib.SMTP(settings.EMAIL_HOST_USER, port) as server:
-#     server.starttls(context=context)
-#     server.login(sender_email, password)
-#     server.sendmail(sender_email, receiver_email, message)
+The training of the model " + model_name + " has finished."""
+
+with smtplib.SMTP(smtp_server, port) as server:
+    server.ehlo()
+    server.starttls(context=context)
+    server.ehlo()
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, message)

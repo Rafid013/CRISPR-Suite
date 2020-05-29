@@ -11,9 +11,16 @@ from pr_curve import draw_pr_curve
 from roc_curve import draw_roc_curve
 from metrics_table import plot_metrics_table
 
-from django.conf import settings
 from django.core.mail import send_mail
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_USER_NAME = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_HOST_PASSWORD = 'genomePrediction2020'
+EMAIL_PORT = 587
 
 # get user_id, model_id, model_type, model_name, prediction_file, email in command line input
 user_id = sys.argv[1]
@@ -97,33 +104,23 @@ if not test_file_y.empty:
     roc_curve_plt = draw_roc_curve(test_file_y, prediction_y_proba[:, 1])
     roc_curve_plt.savefig(static_directory + 'user_' + str(user_id) + '/' + model_id + '_roc_curve.png')
 
-port = settings.EMAIL_PORT
-password = settings.EMAIL_HOST_PASSWORD
+port = EMAIL_PORT
+password = EMAIL_HOST_PASSWORD
+smtp_server = EMAIL_HOST
 
 # Create a secure SSL context
-context = ssl.create_default_context()
+context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
-sender_email = settings.EMAIL_USER_NAME
+sender_email = EMAIL_USER_NAME
 receiver_email = email
-message = "The prediction of the model " + model_name + " is now available."
-subject = "Prediction Completed"
-send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
+message = """\
+Subject: Prediction Completed
 
-# from sparkpost import SparkPost
-# sp = SparkPost(password)
-# sp.transmissions.send(
-#     use_sandbox=True,
-#     recipients=[receiver_email],
-#     html= '<p>' + message + '</p>',
-#     from_email=sender_email,
-#     subject=subject
-# )
+The prediction of the model """ + model_name + " is now available."
 
-#sp = SparkPost('47c9d9f89cb79b9088289d65fa4fc6af908a6e13')
-
-#sp.transmissions.send(recipients=receipients, html= html, from_email=sender,subject=subject, use_sandbox =True)
-
-# with smtplib.SMTP(settings.EMAIL_USER_NAME, port) as server:
-#     server.starttls(context=context)
-#     server.login(sender_email, password)
-#     server.sendmail(sender_email, receiver_email, message)
+with smtplib.SMTP(smtp_server, port) as server:
+    server.ehlo()
+    server.starttls(context=context)
+    server.ehlo()
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, message)

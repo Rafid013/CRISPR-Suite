@@ -140,7 +140,8 @@ class PredictionModelCreateView(generic.View):
                     Popen(['python', 'CRISPR_Methods/train_crisprpred_seq.py', str(prediction_model.pk),
                            prediction_model.model_name,
                            str(prediction_model.training_file), request.user.email], stdout=log, stderr=log)
-                messages.success(request, 'An email will be sent to you after model is created')
+                messages.success(request, 'An email will be sent to you after model is created\n'
+                                 + ' (Please check spam if no email is available)')
                 return redirect(reverse('prediction_models:models_list'))
             return render(request, self.template_name, {'form': form, 'is_guest': False})
         else:
@@ -286,7 +287,8 @@ class CompareView(generic.View):
             Popen(['python', 'CRISPR_Methods/compare.py', str(request.user.pk), str(selected_model_ids),
                    str(selected_model_types), str(selected_model_names), str(filename), request.user.email],
                   stdout=log, stderr=log)
-            messages.success(request, 'An email will be sent to you after comparison is completed')
+            messages.success(request, 'An email will be sent to you after comparison is completed\n'
+                             + ' (Please check spam if no email is available)')
             return redirect(reverse('prediction_models:compare'))
         else:
             return render(request, 'login_warning.html', {})
@@ -398,9 +400,9 @@ class CompareResultAPIView(APIView):
 class PredictView(generic.View):
     model = PredictionModel
     template_name = 'prediction_models/prediction.html'
-    prev_url = None
 
     def get(self, request, **kwargs):
+
         if self.request.user.is_authenticated:
             model_id = kwargs.get('model_id')
             if model_id == 'cp':
@@ -530,7 +532,8 @@ class PredictView(generic.View):
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.pk), str(model_id),
                        str(model_type), model_name,
                        str(filename), request.user.email], stdout=log, stderr=log)
-                messages.success(request, 'A email will be sent to you after prediction is completed')
+                messages.success(request, 'An email will be sent to you after prediction is completed\n'
+                                 + ' (Please check spam if no email is available)')
             else:
                 log = open('Logs/prediction_log_' + str(request.user.username) + '_' + str(model_id) + '.txt', 'w')
                 Popen(['python', 'CRISPR_Methods/predict.py', str(request.user.username), str(model_id),
@@ -538,7 +541,7 @@ class PredictView(generic.View):
                        str(filename), request.user.email], stdout=log, stderr=log)
                 messages.success(request, 'The prediction results will be available soon, wait a few minutes')
 
-            return redirect(reverse('prediction_models:models_list'))
+            return redirect('home')
         else:
             return render(request, 'login_warning.html', {})
 
