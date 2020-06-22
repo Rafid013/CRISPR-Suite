@@ -2,17 +2,16 @@ import pickle as pkl
 import smtplib
 import ssl
 import sys
+import time
 
 import numpy as np
 import pandas as pd
+from generate_features import position_independent, position_specific, gap_features
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from generate_features import position_independent, position_specific, gap_features
-from django.core.mail import send_mail
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
@@ -33,9 +32,14 @@ model_directory = 'saved_models/'
 
 training_file = pd.read_csv(media_directory + filename, delimiter=',')
 train_y = pd.DataFrame(training_file['label'].astype(np.int8), columns=['label'])
+
+feature_start_time = time.time()
 pos_ind = position_independent(training_file, 4).astype(np.int8)
 pos_spe = position_specific(training_file, 4).astype(np.int8)
 gap = gap_features(training_file).astype(np.int8)
+feature_end_time = time.time()
+print('Feature generation time: ' + str(feature_end_time - feature_start_time))
+
 train_x = pd.concat([pos_ind, pos_spe, gap], axis=1, sort=False)
 
 extraTree = ExtraTreesClassifier(n_estimators=500, n_jobs=-1, random_state=1)
@@ -47,7 +51,10 @@ steps = [('SFM', SelectFromModel(estimator=extraTree)),
 
 pipeline = Pipeline(steps)
 
+training_start_time = time.time()
 pipeline.fit(train_x, train_y)
+training_end_time = time.time()
+print('Training time: ' + str(training_end_time - training_start_time))
 
 f = open(model_directory + model_id + '.pkl', 'wb')
 pkl.dump(pipeline, f)

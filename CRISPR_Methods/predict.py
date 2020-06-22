@@ -10,6 +10,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, reca
 from pr_curve import draw_pr_curve
 from roc_curve import draw_roc_curve
 from metrics_table import plot_metrics_table
+import time
 
 from django.core.mail import send_mail
 
@@ -57,16 +58,23 @@ test_file_y = pd.DataFrame(data=[])
 if test_file.shape[1] == 2:
     test_file_y = test_file['label']
 
+feature_start_time = time.time()
 pos_ind = position_independent(test_file, 4).astype(np.int8)
 pos_spe = position_specific(test_file, 4).astype(np.int8)
+feature_end_time = time.time()
+print('Feature generation time: ' + str(feature_end_time - feature_start_time))
+
 if str(model_type) == '1':
     test_x = pd.concat([pos_ind, pos_spe], axis=1, sort=False)
 else:
     gap = gap_features(test_file)
     test_x = pd.concat([pos_ind, pos_spe, gap], axis=1, sort=False)
 
+prediction_start_time = time.time()
 prediction_y = model.predict(test_x)
 prediction_y_proba = model.predict_proba(test_x)
+prediction_end_time = time.time()
+print('Prediction time: ' + str(prediction_end_time - prediction_start_time))
 
 to_save = pd.DataFrame()
 to_save['sgRNA'] = test_file_x
