@@ -1,0 +1,4 @@
+data,number of samples,feature generation time (in seconds),training time (in seconds)
+2000,54.892,55.641
+3000,65.761,93.350
+4000,70.690,160.263

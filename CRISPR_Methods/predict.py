@@ -61,14 +61,15 @@ if test_file.shape[1] == 2:
 feature_start_time = time.time()
 pos_ind = position_independent(test_file, 4).astype(np.int8)
 pos_spe = position_specific(test_file, 4).astype(np.int8)
-feature_end_time = time.time()
-print('Feature generation time: ' + str(feature_end_time - feature_start_time))
 
 if str(model_type) == '1':
     test_x = pd.concat([pos_ind, pos_spe], axis=1, sort=False)
 else:
     gap = gap_features(test_file)
     test_x = pd.concat([pos_ind, pos_spe, gap], axis=1, sort=False)
+
+feature_end_time = time.time()
+print('Feature generation time: ' + str(feature_end_time - feature_start_time))
 
 prediction_start_time = time.time()
 prediction_y = model.predict(test_x)
@@ -132,3 +133,6 @@ with smtplib.SMTP(smtp_server, port) as server:
     server.ehlo()
     server.login(sender_email, password)
     server.sendmail(sender_email, receiver_email, message)
+
+send_mail("Prediction Completed", "The prediction of the model """ + model_name + " is now available.",
+          sender_email, [receiver_email], fail_silently=False)

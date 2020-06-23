@@ -1,0 +1,4 @@
+data,number of samples,feature generation time (in seconds),training time (in seconds)
+azimuth,2000,22.195,34.661
+azimuth,3000,30.211,83.987
+azimuth,4000,34.845,146.194

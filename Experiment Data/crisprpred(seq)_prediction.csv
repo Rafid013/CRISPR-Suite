@@ -1,0 +1,4 @@
+number of samples,feature generation time (in seconds), prediction time (in seconds)
+200,10.132,20.513
+300,16.032,20.566
+400,21.354,31.186
