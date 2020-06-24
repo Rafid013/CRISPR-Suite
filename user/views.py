@@ -46,7 +46,7 @@ class UserSignUpView(View):
                 return render(request, self.template_name, {'form': form})
 
             # send warning if account already exists with the given email
-            if email and User.objects.filter(email=email).exclude(username=username).exists():
+            if email and User.objects.filter(email=email).exists():
                 messages.warning(request, "An account already exists with this email")
                 return render(request, self.template_name, {'form': form})
 
@@ -86,7 +86,7 @@ class UserSignUpAPIView(APIView):
             email = serializer.validated_data['email']
 
             # send forbidden if account with the given email already exists
-            if email and User.objects.filter(email=email).exclude(username=username).exists():
+            if email and User.objects.filter(email=email).exists():
                 return Response(status=status.HTTP_403_FORBIDDEN)
 
             # save user data
@@ -106,7 +106,7 @@ class UserSignUpAPIView(APIView):
                 send_mail(subject, message, email_from, to_list, fail_silently=False)
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
 
 
 def account_activation_sent(request):
