@@ -139,3 +139,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap3"
 THUMBNAIL_EXTENSION = "png"
 # EMAIL confirmation
 # Gmail Setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_USER_NAME = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_HOST_PASSWORD = 'genomePrediction2020'
+EMAIL_PORT = 587
