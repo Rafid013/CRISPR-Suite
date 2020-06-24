@@ -11,3 +11,4 @@ saved_models/*
 !saved_models/tmp.txt
 static/user_*/*
 predictions/user_*/*
+CRISPR_Suite/settings.py
