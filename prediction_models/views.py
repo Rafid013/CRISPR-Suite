@@ -655,8 +655,10 @@ class ResultView(generic.View):
         if self.request.user.is_authenticated:
             if request.user.username != request.session.session_key:
                 user_id = request.user.pk
+                is_guest = False
             else:
                 user_id = request.user.username
+                is_guest = True
 
             result_directory = 'static/user_' + str(user_id) + '/'
             get_directory = '/' + result_directory
@@ -704,7 +706,7 @@ class ResultView(generic.View):
                                'path_pr': path_pr,
                                'model_info': model_info,
                                'request_time': request_time,
-                               'is_guest': False})
+                               'is_guest': is_guest})
             return render(request, 'error.html', {'status_code': 403})
         else:
             return render(request, 'login_warning.html', {})

@@ -56,7 +56,7 @@
                   </tbody>
             </table>
         </div>
-
+        {% if is_guest == False %}
         <label for="prediction_models"><h3>Prediction Models</h3></label>
         <div id="prediction_models" >
             {% if all_models %}
@@ -91,6 +91,7 @@
             <h1>No Prediction Models Available</h1>
             {% endif %}
         </div>
+    {% endif %}
     </div>
     </div>
 
