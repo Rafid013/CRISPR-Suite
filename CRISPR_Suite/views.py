@@ -25,3 +25,47 @@ class AboutPage(generic.TemplateView):
             return render(request, self.template_name, {'is_guest': False})
         else:
             return render(request, self.template_name, {'is_guest': True})
+
+
+class CRISPRpredPage(generic.TemplateView):
+    template_name = "crisprpred.html"
+
+    def get(self, request, *args, **kwargs):
+        # check if the user is guest or not (the username is same as the session key for a guest)
+        if request.user.username != request.session.session_key:
+            return render(request, self.template_name, {'is_guest': False})
+        else:
+            return render(request, self.template_name, {'is_guest': True})
+
+
+class CRISPRpredPPPage(generic.TemplateView):
+    template_name = "crisprpred_pp.html"
+
+    def get(self, request, *args, **kwargs):
+        # check if the user is guest or not (the username is same as the session key for a guest)
+        if request.user.username != request.session.session_key:
+            return render(request, self.template_name, {'is_guest': False})
+        else:
+            return render(request, self.template_name, {'is_guest': True})
+
+
+class CRISPRpredSEQPage(generic.TemplateView):
+    template_name = "crisprpred_seq.html"
+
+    def get(self, request, *args, **kwargs):
+        # check if the user is guest or not (the username is same as the session key for a guest)
+        if request.user.username != request.session.session_key:
+            return render(request, self.template_name, {'is_guest': False})
+        else:
+            return render(request, self.template_name, {'is_guest': True})
+
+
+class PublicationsPage(generic.TemplateView):
+    template_name = "publications.html"
+
+    def get(self, request, *args, **kwargs):
+        # check if the user is guest or not (the username is same as the session key for a guest)
+        if request.user.username != request.session.session_key:
+            return render(request, self.template_name, {'is_guest': False})
+        else:
+            return render(request, self.template_name, {'is_guest': True})

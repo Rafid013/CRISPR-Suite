@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}CRISPRpred(SEQ){% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" is_guest=is_guest %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+
+<div id="sec1" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>CRISPRpred(SEQ)</h1>
+        <p class="lead">
+            <h3>
+            CRISPRpred(SEQ) follows the pipeline of <a href="{% url 'crisprpred' %}">CRISPRpred</a> and
+            <a href="{% url 'crisprpred_pp' %}">CRISPRpred++</a> while including a set of new features called n_gapped
+            di-nucleotide. Like <a href="{% url 'crisprpred_pp' %}">CRISPRpred++</a>, it uses Extremely Randomized Tree
+            (Extra Tree) for feature ranking.
+            </h3>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

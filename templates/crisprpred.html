@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}CRISPRpred{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" is_guest=is_guest %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+
+<div id="sec1" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>CRISPRpred</h1>
+        <p class="lead">
+            <h3>
+            CRISPRpred is based on the pipeline presented in <a href="https://doi.org/10.1371/journal.pone.0181943">
+            Rahman et al. (2017).</a>
+            It was retrained with the dataset of
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1459-4">
+            DeepCRISPR</a>.
+            This pipepline incorporates both position specific and
+            position independent features. The features are ranked using Random Forest algorithm. Finally a SVM model
+            was trained using the selected features.
+            </h3>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

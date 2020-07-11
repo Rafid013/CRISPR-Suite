@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Publications{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="publications" is_guest=is_guest %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+
+<div id="sec1" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>Publications</h1>
+        <p class="lead">
+            <h3>
+            <ol>
+                <li>
+                <p align="left">
+                Rafid, A. H. M., Toufikuzzaman, M., Rahman, M. S., & Rahman, M. S. (2020).
+                <cite>CRISPRpred (SEQ): a sequence-based method for sgRNA on target activity prediction using traditional
+                    machine learning.</cite> BMC Bioinformatics, 21(1), 1-13.
+                <a href="https://doi.org/10.1186/s12859-020-3531-9">Paper link.</a></p>
+                </p>
+                </li>
+
+                <li>
+                <p align="left" >
+                Rahman, M. K., & Rahman, M. S. (2017).
+                <cite>CRISPRpred: a flexible and efficient tool for sgRNAs on-target activity prediction in CRISPR/Cas9
+                    systems.</cite> PloS one, 12(8), e0181943.
+                <a href="https://doi.org/10.1371/journal.pone.0181943">Paper link.</a></p>
+                </li>
+            </ol>
+            </h3>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -8,4 +8,8 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path("", views.HomePage.as_view(), name="home"),
     path('about/', views.AboutPage.as_view(), name="about"),
+    path('crisprpred/', views.CRISPRpredPage.as_view(), name="crisprpred"),
+    path('crisprpred_pp/', views.CRISPRpredPPPage.as_view(), name="crisprpred_pp"),
+    path('crisprpred_seq/', views.CRISPRpredSEQPage.as_view(), name="crisprpred_seq"),
+    path('publications/', views.PublicationsPage.as_view(), name="publications"),
 ]

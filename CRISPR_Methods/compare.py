@@ -90,7 +90,8 @@ context = ssl.create_default_context()
 
 sender_email = "crisprsuite@gmail.com"
 receiver_email = email
-message = "The comparison metrics are now available."
+message = "" \
+          "The comparison metrics are now available."
 subject = "Comparison Completed"
 send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
 
