@@ -10,5 +10,6 @@
         <li {% if active_link == "compare_results" %}class="active"{% endif %}><a href="{% url 'prediction_models:compare_results' %}">Comparison Results</a></li>
     {% endif %}
 {% endif %}
-<li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>
 <li {% if active_link == "publications" %}class="active"{% endif %}><a href="{% url 'publications' %}">Publications</a></li>
+<li {% if active_link == "about" %}class="active"{% endif %}><a href="{% url 'about' %}">About</a></li>
+
