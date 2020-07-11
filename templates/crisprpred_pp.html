@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}CRISPRpred++{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" is_guest=is_guest %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+
+<div id="sec1" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>CRISPRpred++</h1>
+        <p class="lead">
+            <h3>
+            CRISPRpred++ is an improvement on <a href="{% url 'crisprpred' %}">CRISPRpred</a>. In CRISPRpred++
+            Extremely Randomized Tree (Extra Tree) is used for feature ranking instead of Random Forest. The rest are
+            same as <a href="{% url 'crisprpred' %}">CRISPRpred</a>.
+            </h3>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

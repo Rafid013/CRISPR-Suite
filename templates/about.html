@@ -17,7 +17,14 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <h1>{% include "_brandname.html" %}</h1>
-        <p class="lead"></p>
+        <p class="lead">
+            <h3>
+            CRISPR Suite is a collection of machine learning models for predicting sgRNA on target activity.
+            There are three models named <a href="{% url 'crisprpred' %}">CRISPRpred</a>,
+            <a href="{% url 'crisprpred_pp' %}">CRISPRpred++</a> and <a href="{% url 'crisprpred_seq' %}">CRISPRpred(SEQ)</a>.
+            Each of them can be used for prediction and retraining purpose. There are also options for comparing results of different models.
+          </h3>
+        </p>
       </div>
     </div>
   </div>
