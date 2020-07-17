@@ -39,11 +39,16 @@ train_y = train_data.iloc[:, -1]
 test_x = test_data.iloc[:, :-1]
 test_y = test_data.iloc[:, -1]
 
+if train_y.iloc[0] == 0:
+    idx = 1
+else:
+    idx = 0
+
 model = Pipeline(steps)
 model.fit(train_x, train_y)
 
 predict = model.predict(test_x)
-predict_proba = model.predict_proba(test_x)[:, 1]
+predict_proba = model.predict_proba(test_x)[:, idx]
 
 acc = accuracy_score(test_y, predict)
 pre = precision_score(test_y, predict)

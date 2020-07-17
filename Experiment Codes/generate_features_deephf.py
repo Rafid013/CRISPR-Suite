@@ -58,7 +58,7 @@ def position_specific(df, order, nucleotides):
 
 nucleotides_ = ['A', 'C', 'T', 'G']
 
-data = pd.read_csv('../Experiment Data/deephf_data.csv', delimiter=',')
+data = pd.read_csv('../Experiment Data/deephf_data_0.5.csv', delimiter=',')
 
 labels_wt = data['Wt_Efficiency_Class']
 labels_esp = data['eSpCas 9_Efficiency_Class']
@@ -69,11 +69,11 @@ df_pos_spe = position_specific(data, 4, nucleotides_).astype(np.int8)
 df_gap = gap_features(data, nucleotides_).astype(np.int8)
 
 df_main = pd.concat([df_pos_ind, df_pos_spe, df_gap], axis=1, sort=False).astype(np.int8)
-df_main.to_hdf('../Experiment Data/deephf_x.h5', key='deephf')
+df_main.to_hdf('../Experiment Data/deephf_x_0.5.h5', key='deephf')
 
-labels_wt.to_hdf('../Experiment Data/deephf_y_wt.h5', key='deephf')
-labels_esp.to_hdf('../Experiment Data/deephf_y_esp.h5', key='deephf')
-labels_sp.to_hdf('../Experiment Data/deephf_y_sp.h5', key='deephf')
+labels_wt.to_hdf('../Experiment Data/deephf_y_wt_0.5.h5', key='deephf')
+labels_esp.to_hdf('../Experiment Data/deephf_y_esp_0.5.h5', key='deephf')
+labels_sp.to_hdf('../Experiment Data/deephf_y_sp_0.5.h5', key='deephf')
 
 df_main = pd.concat([df_pos_ind, df_pos_spe], axis=1, sort=False).astype(np.int8)
-df_main.to_hdf('../Experiment Data/deephf_without_gapped_x.h5', key='deephf')
+df_main.to_hdf('../Experiment Data/deephf_without_gapped_x_0.5.h5', key='deephf')
