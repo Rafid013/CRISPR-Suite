@@ -31,4 +31,4 @@ for idx, row in data.iterrows():
 data['Wt_Efficiency_Class'] = pd.Series(wt_efficiency)
 data['eSpCas 9_Efficiency_Class'] = pd.Series(espcas9_efficiency)
 data['SpCas9-HF1_Efficiency_Class'] = pd.Series(spcas9_hf1_efficiency)
-data.to_csv('../Experiment Data/deephf_data_0.5.csv', sep=',', index=False)
+data.to_csv('../Experiment Data/deephf_data.csv', sep=',', index=False)
