@@ -22,7 +22,11 @@
 
     <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <h2>Select no more than 5 models for comparison</h2>
+    <div class="form-message" style="text-align: center">
+        <h4>
+            Check the instructions for this page <a href="https://github.com/Rafid013/CRISPR-Suite/wiki/Comparing-Models" target="_blank">here</a>.
+        </h4>
+    </div>
     <div>
     <div id="pretrained_models" class="col-md-6">
         <label for="pretrained_models"><h3>Pre-trained Models</h3></label>

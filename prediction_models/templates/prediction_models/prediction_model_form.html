@@ -5,7 +5,11 @@
 {% block title %}{{ block.super }}New Model{% endblock %}
 
 {% block form %}
-
+    <div class="form-message" style="text-align: center">
+        <h4>
+            Check the instructions for this page <a href="https://github.com/Rafid013/CRISPR-Suite/wiki/Creating-a-Model" target="_blank">here</a>.
+        </h4>
+    </div>
     <form  method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}

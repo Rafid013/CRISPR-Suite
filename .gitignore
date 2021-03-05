@@ -12,3 +12,4 @@ saved_models/*
 static/user_*/*
 predictions/user_*/*
 CRISPR_Suite/settings.py
+/etc/secret_key.txt
