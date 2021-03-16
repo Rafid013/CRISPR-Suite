@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, reca
 from pr_curve import draw_multiple_pr_curve
 from roc_curve import draw_multiple_roc_curve
 from metrics_table import plot_metrics_table
-from django.core.mail import send_mail
+
 
 # get user_id, model_ids, model_types, model_names, prediction_file, email in command line input
 user_id = sys.argv[1]
@@ -24,6 +24,21 @@ model_directory = 'saved_models/'
 media_directory = 'media/'
 prediction_directory = 'predictions/'
 static_directory = 'static/'
+
+if os.path.exists('static/user_' + str(user_id) + '/comparison_metrics.png'):
+    os.remove('static/user_' + str(user_id) + '/comparison_metrics.png')
+if os.path.exists('static/user_' + str(user_id) + '/comparison_roc_curve.png'):
+    os.remove('static/user_' + str(user_id) + '/comparison_roc_curve.png')
+if os.path.exists('static/user_' + str(user_id) + '/comparison_pr_curve.png'):
+    os.remove('static/user_' + str(user_id) + '/comparison_pr_curve.png')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_USER_NAME = 'crispr@grad.cse.buet.ac.bd'
+EMAIL_HOST_PASSWORD = 'genomePrediction2020'
+EMAIL_PORT = 587
 
 test_file = pd.read_csv(media_directory + prediction_file, delimiter=',')
 
@@ -82,19 +97,24 @@ pr_curve_plt.savefig(static_directory + 'user_' + str(user_id) + '/comparison_pr
 roc_curve_plt = draw_multiple_roc_curve(test_file_y, prediction_probas, model_name_list)
 roc_curve_plt.savefig(static_directory + 'user_' + str(user_id) + '/comparison_roc_curve.png')
 
-port = 465  # For SSL
-password = "crisprsuite123"
+
+port = EMAIL_PORT
+password = EMAIL_HOST_PASSWORD
+smtp_server = EMAIL_HOST
 
 # Create a secure SSL context
-context = ssl.create_default_context()
+context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
-sender_email = "crisprsuite@gmail.com"
+sender_email = EMAIL_USER_NAME
 receiver_email = email
-message = "" \
-          "The comparison metrics are now available."
-subject = "Comparison Completed"
-send_mail(subject, message, sender_email, [receiver_email], fail_silently=False)
+message = """\
+Subject: Comparison Completed
 
-# with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-#     server.login(sender_email, password)
-#     server.sendmail(sender_email, receiver_email, message)
+The comparison metrics are now available."""
+
+with smtplib.SMTP(smtp_server, port) as server:
+    server.ehlo()
+    server.starttls(context=context)
+    server.ehlo()
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, message)

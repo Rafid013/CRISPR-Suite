@@ -353,6 +353,7 @@ class CompareResultView(generic.View):
         get_directory = '/' + result_directory
         if self.request.user.is_authenticated and request.user.username != request.session.session_key:
             try:
+
                 open(result_directory + 'comparison_metrics.png', 'rb')
             except FileNotFoundError:
                 messages.warning(request, "No comparisons available")

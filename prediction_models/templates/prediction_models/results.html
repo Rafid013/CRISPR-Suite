@@ -18,10 +18,24 @@
         <br><h3><div class="col-md-12">Generated Graphs</div></h3><br><br><br>
         <div class="row">
       		<div class="col-md-6">
-            	<a href="#" class="pop"><img src="{{ path_roc }}?t=<?php echo time();?" alt="ROC Curve"></a>
+            	<a href="#" class="pop">
+                    <img id="roc_curve" src="{{ path_roc }}" alt="ROC Curve">
+                    <script>
+                        let timestamp = new Date().getTime();
+                        let img = document.getElementById("roc_curve");
+                        img.src += "?t=" + timestamp;
+                    </script>
+                </a>
         	</div>
         	<div class="col-md-6">
-          		<a href="#" class="pop"><img src="{{ path_pr }}?t=<?php echo time();?" alt="PR Curve"></a>
+          		<a href="#" class="pop">
+                    <img id="pr_curve" src="{{ path_pr }}" alt="PR Curve">
+                    <script>
+                        let timestamp = new Date().getTime();
+                        let img = document.getElementById("pr_curve");
+                        img.src += "?t=" + timestamp;
+                    </script>
+                </a>
         	</div>
       	</div>
     </div>
@@ -32,7 +46,12 @@
         <br><h3><div class="col-md-12">Generated Table</div></h3><br><br><br>
         <div class="row">
       		<a href="#" class="pop">
-                <img class="img-responsive" src="{{ path_table }}?t=<?php echo time();?" alt="Metrics Table" style="margin: 0 auto; object-fit: cover"><br>
+                <img id="metric_table" class="img-responsive" src="{{ path_table }}" alt="Metrics Table" style="margin: 0 auto; object-fit: cover"><br>
+                <script>
+                    let timestamp = new Date().getTime();
+                    let img = document.getElementById("metric_table");
+                    img.src += "?t=" + timestamp;
+                </script>
             </a>
       	</div>
     </div>

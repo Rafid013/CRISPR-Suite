@@ -12,8 +12,6 @@ from roc_curve import draw_roc_curve
 from metrics_table import plot_metrics_table
 import time
 
-from django.core.mail import send_mail
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
@@ -133,6 +131,3 @@ with smtplib.SMTP(smtp_server, port) as server:
     server.ehlo()
     server.login(sender_email, password)
     server.sendmail(sender_email, receiver_email, message)
-
-send_mail("Prediction Completed", "The prediction of the model """ + model_name + " is now available.",
-          sender_email, [receiver_email], fail_silently=False)

@@ -70,7 +70,7 @@ receiver_email = email
 message = """\
 Subject: Training Completed
 
-The training of the model " + model_name + " has finished."""
+The training of the model """ + model_name + """ has finished."""
 
 with smtplib.SMTP(smtp_server, port) as server:
     server.ehlo()
