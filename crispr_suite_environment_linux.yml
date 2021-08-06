@@ -1,0 +1,50 @@
+name: crispr
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - blas=1.0
+  - ca-certificates=2021.7.5
+  - certifi=2021.5.30
+  - django=2.2.5
+  - intel-openmp=2020.2
+  - joblib=0.17.0
+  - ld_impl_linux-64=2.33.1
+  - libedit=3.1.20191231
+  - libffi=3.3
+  - libgcc-ng=9.1.0
+  - libgfortran-ng=7.3.0
+  - libstdcxx-ng=9.1.0
+  - mkl=2019.4
+  - mkl-service=2.3.0
+  - mkl_fft=1.2.0
+  - mkl_random=1.1.0
+  - ncurses=6.2
+  - numpy=1.19.1
+  - numpy-base=1.19.1
+  - openssl=1.1.1k
+  - pip=20.3.3
+  - python=3.7.7
+  - pytz=2021.1
+  - readline=8.0
+  - scikit-learn=0.21.2
+  - scipy=1.5.2
+  - setuptools=52.0.0
+  - six=1.15.0
+  - sqlite=3.33.0
+  - sqlparse=0.4.1
+  - tk=8.6.10
+  - wheel=0.36.2
+  - xz=5.2.5
+  - zlib=1.2.11
+  - pip:
+    - charset-normalizer==2.0.4
+    - django-anymail==8.4
+    - django-crispy-forms==1.12.0
+    - djangorestframework==3.12.4
+    - easy-thumbnails==2.7.1
+    - idna==3.2
+    - pillow==8.3.1
+    - requests==2.26.0
+    - urllib3==1.26.6
+prefix: /home/rafid/anaconda3/envs/crispr
