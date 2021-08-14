@@ -7,7 +7,7 @@ def draw_pr_curve(y_true, y_pred):
     plt.title('Precision Recall Curve')
 
     p, r, threshold = metrics.precision_recall_curve(y_true, y_pred)
-    pr_auc = metrics.average_precision_score(y_true, y_pred)
+    pr_auc = metrics.auc(r, p)
     plt.plot(r, p, label='PR AUC = %0.2f' % pr_auc)
     plt.legend(loc='lower right')
 
@@ -25,7 +25,7 @@ def draw_multiple_pr_curve(y_true, y_pred_list, labels):
 
     for y_pred, label in zip(y_pred_list, labels):
         p, r, threshold = metrics.precision_recall_curve(y_true, y_pred)
-        pr_auc = metrics.average_precision_score(y_true, y_pred)
+        pr_auc = metrics.auc(r, p)
         plt.plot(r, p, label=label + ' PR AUC = %0.2f' % pr_auc)
         plt.legend(loc='lower right')
 
